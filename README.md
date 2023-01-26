@@ -14,4 +14,5 @@ The Syntax is inspired by ntfy as you may notice if you've ever used ntfy before
 Use ```curl -d "[Message_Body]" [host]:[port]``` to send a message.
 
 You can also add title like this ```curl -H "Title: [Title_Body]" -d "[Message_Body]" [host]:[port]```
+
 All aliases for Title are: ```X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)```
