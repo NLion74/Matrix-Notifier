@@ -37,7 +37,7 @@ Afterwards just change the host, port and scheme to wherever the server is reach
 
 When deleting the Database of the server you will have to also delete ids.json in the bot/saved folder. Otherwise the bot will not send messages where the id is saved within the ids.json file.
 
-Also you should be aware that the server only stores the last 25 messages sent to it. If you wanna increase that number edit the saver.py and change the SQL LIMIT on line 41
+Also you should be aware that the server only stores the last 100 messages sent to it. If you wanna increase that number edit the saver.py and change the SQL LIMIT on line 41
 
 ## General Information
 
