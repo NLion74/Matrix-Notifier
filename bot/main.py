@@ -22,7 +22,7 @@ async def main():
 
     while True:
         await sync.sync(scheme, url, client)
-        await sleep(10)
+        await sleep(5)
 
 
 try:

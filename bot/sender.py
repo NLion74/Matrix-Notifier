@@ -1,7 +1,7 @@
 import os
 import json
 from dataclasses import dataclass
-from asyncio import sleep
+
 
 @dataclass
 class Message:
@@ -24,3 +24,4 @@ async def send(msg, client):
     msg = Message(id=msg[0], title=msg[1], content=msg[2])
     for roomid in roomids:
         await client.room_send(room_id=roomid, message_type="m.room.message", content={"msgtype": "m.text", "body": f"{msg.content}"})
+        print(f"Message sent")

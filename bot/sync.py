@@ -1,6 +1,7 @@
 import json
 import requests
 import os
+from asyncio import sleep
 
 import sender
 
@@ -15,7 +16,6 @@ async def check(messages, client):
             f.close()
     else:
         ids = []
-
     for msg in messages:
         id = msg[0]
         if id in ids:
@@ -23,20 +23,18 @@ async def check(messages, client):
         else:
             ids.append(id)
             await sender.send(msg, client)
-
-    with open("./saved/ids.json", "w") as f:
-        json.dump(ids, f)
-        f.close()
+            with open("./saved/ids.json", "w") as f:
+                json.dump(ids, f)
 
 
 async def sync(scheme, url, client):
+    print("Resyncing")
     try:
         res = requests.get(f"{scheme}{url}")
         messagesb = res.content.decode('utf-8')
         messages = json.loads(messagesb)
         await check(messages, client)
-    except ConnectionError:
-        print("The Server seems to be down")
-        raise ConnectionError
-    except Exception:
-        raise Exception
+    except requests.exceptions.RequestException:
+        print("The server seems to be down. Retrying in 20 seconds")
+        await sleep(15)
+        return False
