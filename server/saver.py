@@ -38,6 +38,6 @@ def clean_db():
     con = sqlite3.connect("./database/messages.db")
     cur = con.cursor()
 
-    cur.execute('''DELETE FROM messages WHERE id NOT IN (SELECT id FROM (SELECT id FROM messages ORDER BY id DESC LIMIT 100))''')
+    cur.execute('''DELETE FROM messages WHERE id NOT IN (SELECT id FROM (SELECT id FROM messages ORDER BY id DESC LIMIT 25))''')
 
     con.commit()
