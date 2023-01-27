@@ -14,6 +14,7 @@ def recv(conn, addr):
     res = responder.respond(rq, conn)
 
     if not res:
+        conn.close()
         return False
 
     msg = parser.messageparse(rq, parameter)
