@@ -28,7 +28,8 @@ To setup the bot you'll have to create a file called roomids.json in the saved f
 └── README.md
 ```
 
-If you ran either the server or bot before this, there may be additional files but don't let that confuse you. After that you should put the room ids of the rooms you want messages getting sent to in a JSON Array. It should look like this. ```["room_id_here", "room_id_here"]```
+If you ran either the server or bot before this, there may be additional files but don't let that confuse you. After that you should put the room ids of the rooms you want messages getting sent to in a JSON Array. If you don't know how thats supposed to look, heres an example:
+```["room_id_here", "room_id_here"]```
 
 Afterwards just change the host, port and scheme to wherever the server is reachable, as well as changing the Bot Creds to your the ones of your bot and you should be good to start the main.py of the bot. 
 
@@ -36,11 +37,11 @@ Afterwards just change the host, port and scheme to wherever the server is reach
 
 When deleting the Database of the server you will have to also delete ids.json in the bot/saved folder. Otherwise the bot will not send messages where the id is saved within the ids.json file.
 
-Also you should be aware that the server only stores the last 25 messages sent to it. If you wanna increase that number edit the saver.py and change the SQL LIMIT in line 41
+Also you should be aware that the server only stores the last 25 messages sent to it. If you wanna increase that number edit the saver.py and change the SQL LIMIT on line 41
 
 ## General Information
 
-The bot and server are to completely independent components meaning that you could theoretically take the server and create another client for it, like on discord. You can request all messages from the server using a get request. It will return them in a JSON Array.
+The bot and server are to completely independent components meaning that you could theoretically take the server and create another client for it, like on discord. You can request all messages from the server using a GET request. It will return them in a JSON Array.
 
 ## Usage
 
