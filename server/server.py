@@ -31,4 +31,4 @@ def start(s):
         thread = threading.Thread(target=recv, args=(conn, addr))
         thread.start()
 
-        print(f"\nActive Connections: {threading.activeCount() - 1}")
+        print(f"Active Connections: {threading.active_count() - 1}")
