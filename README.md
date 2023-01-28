@@ -3,6 +3,8 @@ A Matrix Bot inspired by gotify and ntfy though it has way less features.
 
 Currently it supports titles and content server side but the bot is only using the content and just ignoring the title.
 
+Docker support is planned.
+
 ## Setup
 
 To start just change the host and port in server/main.py to which the websocket will bind
