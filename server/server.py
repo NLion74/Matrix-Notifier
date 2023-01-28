@@ -7,6 +7,7 @@ import saver
 
 def recv(conn, addr):
     print(f"connected to: {addr[0]}")
+
     buffer = conn.recv(4096)
     rq = parser.httparse(buffer)
     parameter = parser.headerparse(rq)
@@ -25,11 +26,12 @@ def recv(conn, addr):
     conn.close()
 
 
-def start(s):
-    print("Waiting for incoming Connections...")
+def start(s, host, port):
+    print(f"Listening on {host}:{port}")
     while True:
         conn, addr = s.accept()
+
         thread = threading.Thread(target=recv, args=(conn, addr))
         thread.start()
 
-        print(f"Active Connections: {threading.active_count() - 1}")
+        print(f"Active Connections: {threading.active_count() - 1}\n")
