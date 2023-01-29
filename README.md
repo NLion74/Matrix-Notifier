@@ -15,7 +15,9 @@ Make sure you have docker.io, docker-compose and git installed, before continuin
 
 First of all you should clone the repository using git like this: ```git clone https://github.com/NLion74/Matrix-Notifier```.
 
-Afterwards move into the docker directory and copy the example.env to .env, where you should adjust the roomid as well setting up the botcreds. These being the values: botuser, botpass and homeserver. When you're done adjusting the environment variables to your liking, you may wanna start the docker-compose by running ```docker-compose up -d```.
+Afterwards move into the docker directory and copy the example.env to .env, where you should adjust the roomid as well setting up the botcreds. These being the values: botuser, botpass and homeserver. 
+
+When you're done adjusting the environment variables to your liking, you may wanna start the docker-compose by running ```docker-compose up -d```.
 
 #### Disclaimer
 
