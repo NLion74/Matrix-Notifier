@@ -19,7 +19,7 @@ Afterwards move into the docker directory and copy the example.env to .env, wher
 
 #### Disclaimer
 
-When deleting the messages.db Database of the server you will have to also delete ids.json. Otherwise the bot will not send messages where the id is saved within the ids.json file.
+When deleting the messages.db database of the server you will have to also delete ids.json. Otherwise the bot will not send messages where the id is saved within the ids.json file.
 
 ### Install from source
 
