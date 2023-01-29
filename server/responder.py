@@ -10,7 +10,7 @@ def respond(rq, conn):
             content = "Cannot deliever empty message\n"
             content_length = len(content)
             content_type = "text/plain"
-            response = f"{status_line}\\r\\nContent-Length: {content_length}\r\nContent-Type: {content_type}\r\n\r\n{content}"
+            response = f"{status_line}\\r\\nContent-Length: {content_length}\r\nContent-Type: {content_type}\r\n\r\n{content}\r\n"
             conn.sendall(bytes(response, 'utf-8'))
             return False
         else:
@@ -18,7 +18,7 @@ def respond(rq, conn):
             content = "Successfully delievered message\n"
             content_length = len(content)
             content_type = "text/plain"
-            response = f"{status_line}\\r\\nContent-Length: {content_length}\r\nContent-Type: {content_type}\r\n\r\n{content}"
+            response = f"{status_line}\\r\\nContent-Length: {content_length}\r\nContent-Type: {content_type}\r\n\r\n{content}\r\n"
             conn.sendall(bytes(response, 'utf-8'))
             return True
     if rq.method == "GET":
@@ -45,7 +45,7 @@ def respond(rq, conn):
         content = content_data
         content_length = len(content)
         content_type = "text/plain"
-        response = f"{status_line}\\r\\nContent-Length: {content_length}\r\nContent-Type: {content_type}\r\n\r\n{content}"
+        response = f"{status_line}\\r\\nContent-Length: {content_length}\r\nContent-Type: {content_type}\r\n\r\n{content}\r\n"
         conn.sendall(bytes(response, 'utf-8'))
         return False
     else:
@@ -53,6 +53,6 @@ def respond(rq, conn):
         content = "Method Not Allowed"
         content_length = len(content)
         content_type = "text/plain"
-        response = f"{status_line}\\r\\nContent-Length: {content_length}\r\nContent-Type: {content_type}\r\n\r\n{content}"
+        response = f"{status_line}\\r\\nContent-Length: {content_length}\r\nContent-Type: {content_type}\r\n\r\n{content}\r\n"
         conn.sendall(bytes(response, 'utf-8'))
         return False
