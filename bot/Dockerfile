@@ -12,7 +12,7 @@ ENV docker yes
 
 ENV port 5505
 
-ENV host 172.0.0.3
+ENV host server
 
 ENV botuser ""
 
