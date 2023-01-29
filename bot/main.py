@@ -24,16 +24,21 @@ if docker:
     home_server = os.environ.get('homeserver', False)
 
 url = f"{scheme}{host}:{port}"
-print(f"{home_server}", f"{bot_name}", f"{bot_pass}", f"{url}")
 
 
 async def main():
+    docker = os.environ.get('docker', False)
+    if docker:
+        sync_interval = os.environ.get('sync_interval', False)
+    else:
+        sync_interval = 5
+
     client = AsyncClient(f"{home_server}", f"{bot_name}")
     print(await client.login(f"{bot_pass}"))
 
     while True:
         await sync.sync(url, client)
-        await sleep(5)
+        await sleep(int(sync_interval))
 
 
 try:
