@@ -1,5 +1,4 @@
 import os
-import json
 from dataclasses import dataclass
 
 
@@ -26,16 +25,19 @@ def decode(content):
 
 
 async def send(msg, client):
-    if not os.path.exists("./saved"):
-        os.mkdir("./saved")
-
-    if os.path.exists("./saved/roomids.json"):
-        with open("./saved/roomids.json", "r") as f:
-            roomids = json.load(f)
-            f.close()
+    docker = os.environ.get('docker', False)
+    if docker:
+        roomid = os.environ.get('roomid', False)
     else:
-        roomids = []
+        if not os.path.exists("./saved"):
+            os.mkdir("./saved")
+        if os.path.exists("./saved/roomid.txt"):
+            with open("./saved/roomid.txt", "r") as f:
+                roomid = f.read()
+                f.close()
+        else:
+            roomid = ""
+
     msg = Message(id=msg[0], title=decode(msg[1]), content=decode(msg[2]))
-    for roomid in roomids:
-        await client.room_send(room_id=roomid, message_type="m.room.message", content={"msgtype": "m.text", "body": f"{msg.content}"})
-        print(f"Message sent")
+    await client.room_send(room_id=roomid, message_type="m.room.message", content={"msgtype": "m.text", "body": f"{msg.content}"})
+    print(f"Message sent")
