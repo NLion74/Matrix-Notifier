@@ -10,7 +10,7 @@ ENV docker yes
 
 ENV port 5505
 
-ENV sqlimit 25
+ENV sqlimit 100
 
 EXPOSE 5505
 
