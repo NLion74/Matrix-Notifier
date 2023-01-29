@@ -28,7 +28,6 @@ async def check(messages, client):
                 f.close()
         else:
             ids = []
-    print("checking")
     for msg in messages:
         id = msg[0]
         if id in ids:
@@ -50,7 +49,6 @@ async def sync( url, client):
         res = requests.get(f"{url}")
         messagesb = res.content.decode('utf-8')
         messages = json.loads(messagesb)
-        print("checking")
         await check(messages, client)
     except requests.exceptions.RequestException:
         print("The server seems to be down. Retrying in 20 seconds")
