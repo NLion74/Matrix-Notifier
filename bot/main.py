@@ -77,6 +77,9 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
             )
         print("Logged in via access token")
 
+        if client.should_upload_keys:
+            await client.keys_upload()
+
     return client
 
 
