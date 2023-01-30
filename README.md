@@ -9,11 +9,46 @@ The easiest way of installing would be to use docker, however if for any reason 
 
 Before starting you may wanna create a bot account on the homeserver of your liking.
 
+### Requirements
+
+If youre using the docker-compose.yml you will need to have docker and docker-compose as well as curl installed, and when using the dev-docker-compose.yml you will also need git. building from source you will need python3 matrix-nio and requests installed.
+
+Building from source is not recommended however if you decide to do so anyways you will need python3, matrix-nio and requests installed.
+
 ### Install with Docker
 
-Make sure you have docker.io, docker-compose and git installed, before continuing.
+There are two docker-compose.yml files provided, the docker-compose.yml and the dev-docker-compose.yml. The docker-compose.yml is whats recommended and also the most stable, using the image from dockerhub and the other one building from the git repository.
 
-First of all you should clone the repository using git like this: ```git clone https://github.com/NLion74/Matrix-Notifier```.
+If you're using the default docker-compose follow the instructions below:
+```
+# Create a directory for your docker-compose and move into it
+mkdir ./matrix-notifier && cd ./matrix-notifier
+
+# Clone the docker-compose.yml and example.env
+curl -O https://raw.githubusercontent.com/NLion74/Matrix-Notifier/main/docker/docker-compose.yml
+curl -O https://raw.githubusercontent.com/NLion74/Matrix-Notifier/main/docker/example.env
+
+# Copy the example.env to .env
+cp example.env .env
+
+# Customize the .env file and when youre done start the docker-compose
+docker-compose up -d
+```
+
+If you're using the dev docker-compose follow these instructions below:
+```
+# Clone the repository
+git clone https://github.com/NLion74/Matrix-Notifier
+
+# Move into the repository's docker folder
+cd ./Matrix-Notifier/docker
+
+# Copy the example.env to .env
+cp example.env .env
+
+# Customize the .env file and when youre done start the docker-compose
+docker-compose up -d
+```
 
 Afterwards move into the docker directory and copy the example.env to .env, where you should adjust the roomid as well setting up the botcreds. These being the values: botuser, botpass and homeserver. 
 
@@ -24,6 +59,8 @@ When you're done adjusting the environment variables to your liking, you may wan
 When deleting the messages.db database of the server you will have to also delete ids.json. Otherwise the bot will not send messages where the id is saved within the ids.json file.
 
 ### Install from source
+
+Building from source is not recommended but if you decide to do so anyways heres a guide.
 
 To start just change the host and port in server/main.py to which the websocket will bind.
 
