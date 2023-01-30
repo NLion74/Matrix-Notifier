@@ -38,6 +38,7 @@ async def send(msg, client):
         else:
             roomid = ""
 
+    print(roomid)
     msg = Message(id=msg[0], title=decode(msg[1]), content=decode(msg[2]))
     await client.room_send(room_id=roomid, message_type="m.room.message", content={"msgtype": "m.text", "body": f"{msg.content}"})
     print(f"Message sent")
