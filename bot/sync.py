@@ -29,7 +29,7 @@ async def check(messages, client):
         else:
             ids = []
     for msg in messages:
-        id = msg[0]
+        id = msg['Id']
         if id in ids:
             continue
         else:

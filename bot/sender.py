@@ -1,12 +1,4 @@
 import os
-from dataclasses import dataclass
-
-
-@dataclass
-class Message:
-    id: int
-    title: str
-    content: str
 
 
 def decode(content):
@@ -39,6 +31,5 @@ async def send(msg, client):
             roomid = ""
 
     print(roomid)
-    msg = Message(id=msg[0], title=decode(msg[1]), content=decode(msg[2]))
-    await client.room_send(room_id=roomid, message_type="m.room.message", content={"msgtype": "m.text", "body": f"{msg.content}"})
+    await client.room_send(room_id=roomid, message_type="m.room.message", content={"msgtype": "m.text", "body": f"{decode(msg['Content'])}"})
     print(f"Message sent")

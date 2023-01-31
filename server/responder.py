@@ -37,7 +37,12 @@ def respond(rq, conn):
 
         cur.execute('''SELECT * FROM messages''')
         data = cur.fetchall()
-        content_data = json.dumps(data)
+        message_data_list = []
+        for tuple in data:
+            message_data = dict([('Id', tuple[0]), ('Title', tuple[1]), ('Content', tuple[2])])
+            message_data_list.append(message_data)
+
+        content_data = json.dumps(message_data_list)
 
         con.commit()
 

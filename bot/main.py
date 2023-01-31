@@ -1,5 +1,5 @@
 import asyncio
-from nio import AsyncClient, AsyncClientConfig, LoginResponse
+from nio import AsyncClient, AsyncClientConfig, LoginResponse, InviteMemberEvent
 from asyncio import sleep
 import os
 import json
