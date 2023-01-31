@@ -5,14 +5,13 @@ import os
 import json
 
 import sync
+import config
 
-docker = os.environ.get('docker', False)
-if docker:
-    config_file = "/data/credentials.json"
-    store_path = "/data/store"
-else:
-    config_file = "./saved/credentials.json"
-    store_path = "./saved/store"
+data_dir = config.datadir_bot
+if not os.path.exists(data_dir):
+    os.mkdir(data_dir)
+config_file = f"{data_dir}/credentials.json"
+store_path = f"{data_dir}/store"
 
 
 def write_details_to_disk(resp: LoginResponse, home_server) -> None:
@@ -84,33 +83,16 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
 
 
 async def main():
-    # Server
-    host = "127.0.0.1"
-    port = "5505"
-    scheme = "http://"
 
     # Bot Creds
-    bot_name = "@bot_user:home.server"
-    bot_pass = "bot_pass"
-    home_server = "https://home.server"
-    device_name = "matrix-nio"
+    bot_name = config.bot_name
+    bot_pass = config.bot_pass
+    home_server = config.home_server
+    device_name = config.device_name
 
-    docker = os.environ.get('docker', False)
-    if docker:
-        host = os.environ.get('host', False)
-        port = os.environ.get('port', False)
-        bot_name = os.environ.get('botuser', False)
-        bot_pass = os.environ.get('botpass', False)
-        home_server = os.environ.get('homeserver', False)
-        device_name = os.environ.get('devicename', False)
+    url = config.server_url
 
-    url = f"{scheme}{host}:{port}"
-
-    docker = os.environ.get('docker', False)
-    if docker:
-        sync_interval = os.environ.get('sync_interval', False)
-    else:
-        sync_interval = 5
+    sync_interval = config.sync_interval
 
     client = await login(home_server, bot_name, bot_pass, device_name)
 

@@ -12,8 +12,6 @@ ENV docker yes
 
 ENV port 5505
 
-ENV host server
-
 ENV devicename "matrix-nio"
 
 ENV botuser ""

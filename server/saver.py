@@ -1,6 +1,8 @@
 import sqlite3
 import os
 
+import config
+
 
 def get_current_id(cur):
     cur.execute('''SELECT id FROM messages ORDER BY ID DESC LIMIT 1''')
@@ -21,15 +23,11 @@ def get_next_id(cur):
 
 
 def save_to_db(msg):
-    docker = os.environ.get('docker', False)
-    if docker:
-        if not os.path.exists("/data"):
-            os.mkdir("/data")
-        con = sqlite3.connect("/data/messages.db")
-    else:
-        if not os.path.exists("./database"):
-            os.mkdir("./database")
-        con = sqlite3.connect("./database/messages.db")
+    data_dir = config.datadir_server
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+
+    con = sqlite3.connect(f"{data_dir}/messages.db")
     cur = con.cursor()
 
     cur.execute('''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, title text, content text)''')
@@ -40,15 +38,12 @@ def save_to_db(msg):
 
 
 def clean_db():
-    docker = os.environ.get('docker', False)
-    if docker:
-        limit = os.environ.get('sqlimit', False)
-        con = sqlite3.connect("/data/messages.db")
-    else:
-        limit = 25
-        con = sqlite3.connect("./database/messages.db")
+    data_dir = config.datadir_server
+
+    con = sqlite3.connect(f"{data_dir}/messages.db")
     cur = con.cursor()
 
+    limit = config.limit
     cur.execute(f'''DELETE FROM messages WHERE id NOT IN (SELECT id FROM (SELECT id FROM messages ORDER BY id DESC LIMIT {limit}))''')
 
     con.commit()

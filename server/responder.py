@@ -2,6 +2,8 @@ import sqlite3
 import os
 import json
 
+import config
+
 
 def respond(rq, conn):
     if rq.method == "POST":
@@ -22,15 +24,11 @@ def respond(rq, conn):
             conn.sendall(bytes(response, 'utf-8'))
             return True
     if rq.method == "GET":
-        docker = os.environ.get('docker', False)
-        if docker:
-            if not os.path.exists("/data"):
-                os.mkdir("/data")
-            con = sqlite3.connect("/data/messages.db")
-        else:
-            if not os.path.exists("./database"):
-                os.mkdir("./database")
-            con = sqlite3.connect("./database/messages.db")
+        data_dir = config.datadir_server
+        if not os.path.exists(data_dir):
+            os.mkdir(data_dir)
+
+        con = sqlite3.connect(f"{data_dir}/messages.db")
         cur = con.cursor()
 
         cur.execute('''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, title text, content text)''')

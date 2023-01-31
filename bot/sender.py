@@ -1,4 +1,4 @@
-import os
+import config
 
 
 def decode(content):
@@ -17,18 +17,7 @@ def decode(content):
 
 
 async def send(msg, client):
-    docker = os.environ.get('docker', False)
-    if docker:
-        roomid = os.environ.get('roomid', False)
-    else:
-        if not os.path.exists("./saved"):
-            os.mkdir("./saved")
-        if os.path.exists("./saved/roomid.txt"):
-            with open("./saved/roomid.txt", "r") as f:
-                roomid = f.read()
-                f.close()
-        else:
-            roomid = ""
+    roomid = config.room_id
 
     print(roomid)
     await client.room_send(room_id=roomid, message_type="m.room.message", content={"msgtype": "m.text", "body": f"{decode(msg['Content'])}"})

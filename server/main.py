@@ -1,16 +1,13 @@
-import socket
 import os
+import socket
 
 import server
+import config
 
 
 def main():
-    host = '0.0.0.0'
-    port = '5505'
-
-    docker = os.environ.get('docker', False)
-    if docker:
-        port = os.environ.get('port', False)
+    host = "0.0.0.0"
+    port = config.port
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
