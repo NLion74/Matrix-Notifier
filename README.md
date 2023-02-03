@@ -84,11 +84,16 @@ The bot and server are to completely independent components meaning that you cou
 
 The Syntax is inspired by ntfy as you may notice if you've ever used ntfy before.
 
-Use ```curl -d "[Message_Body]" [host]:[port]``` to send a message.
+Use ```curl -H "Channel: [Room_Id]" -d "[Message_Body]" [host]:[port]``` to send a message. It is required to use the channel header as you need to provide the server with a room_id to send the message to.
 
-You can also add title like this ```curl -H "Title: [Title_Body]" -d "[Message_Body]" [host]:[port]```.
+Here's a list of headers together with their provided aliases and a description of what these headers are used for:
+```
+# Required for sending messages. Used to tell the server which room ids to send messages to. Can be used repeatedly.
+X-Channel(Case Sensitive) - Channel(Case Insensitive), c(Case Insensitive)
 
-There are various aliases to set titles including: ```X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)```.
+# Sets the title of the message. Cannot be used repeatedly
+X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
+```
 
 ## Contact
 If there are any questions regarding this project, feel free to contact me over any platform listed on https://nlion.nl/.
