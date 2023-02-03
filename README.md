@@ -15,6 +15,8 @@ The easiest way of installing would be to use docker, however if for any reason 
 
 Before starting you may wanna create a bot account on the homeserver of your liking.
 
+If you're ever having trouble with the database just use the example-database.db provided.
+
 ### Requirements
 
 If youre using the docker-compose.yml you will need to have docker and docker-compose as well as curl installed, and when using the dev-docker-compose.yml you will also need git. building from source you will need python3 matrix-nio and requests installed.
