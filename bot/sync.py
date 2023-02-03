@@ -40,4 +40,4 @@ async def sync( url, client):
     except requests.exceptions.RequestException:
         print("The server seems to be down. Retrying in 20 seconds")
         await sleep(15)
-        return Falsessssssss
+        return False

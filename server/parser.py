@@ -12,11 +12,13 @@ class HttpRequest:
 
 @dataclass
 class ParaMeter:
+    channel: []
     title: str
 
 
 @dataclass
 class Message:
+    channel: []
     title: str
     content: str
 
@@ -49,20 +51,32 @@ def httparse(r):
 def headerparse(rq):
     # Defaults
     title = ""
+    channel = []
 
     for header in rq.headers:
         header = str(header)
-        h = header.rsplit(": ", 1)
-        parameter = h[0]
-        option = h[1]
+        try:
+            h = header.rsplit(": ", 1)
+            parameter = h[0]
+            option = h[1]
+        except IndexError:
+            try:
+                h = header.rsplit(":", 1)
+                parameter = h[0]
+                option = h[1]
+            except IndexError:
+                print("Invalid header")
+
         if parameter == "X-Title" or parameter.lower() == "title" or parameter.lower() == "t":
             title = option
+        elif parameter == "X-Channel" or parameter.lower() == "channel" or parameter.lower() == "c":
+            channel.append(option)
 
-    parameter = ParaMeter(title=title)
+    parameter = ParaMeter(title=title, channel=channel)
 
     return parameter
 
 
 def messageparse(rq, parameter):
-    msg = Message(title=parameter.title, content=rq.body)
+    msg = Message(title=parameter.title, content=rq.body, channel=parameter.channel)
     return msg

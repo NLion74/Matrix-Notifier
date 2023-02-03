@@ -13,9 +13,6 @@ bot_pass = ''
 home_server = ''
 device_name = 'matrix-nio'
 
-# The room id where the messages should be sent to
-room_id = ''
-
 # How many often the bot sync's with the server in seconds
 sync_interval = 5
 

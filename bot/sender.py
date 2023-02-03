@@ -1,3 +1,5 @@
+import json
+
 import config
 
 
@@ -17,8 +19,12 @@ def decode(content):
 
 
 async def send(msg, client):
-    roomid = config.room_id
+    roomid = msg['Channel']
+    roomid = json.loads(roomid)
 
-    print(roomid)
-    await client.room_send(room_id=roomid, message_type="m.room.message", content={"msgtype": "m.text", "body": f"{decode(msg['Content'])}"})
-    print(f"Message sent")
+    if not roomid:
+        print("No Channel Id provided")
+    else:
+        for room in roomid:
+            await client.room_send(room_id=room, message_type="m.room.message", content={"msgtype": "m.text", "body": f"{decode(msg['Content'])}"})
+            print(f"Message sent")

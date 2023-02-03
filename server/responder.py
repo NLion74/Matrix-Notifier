@@ -37,7 +37,7 @@ def respond(rq, conn):
         data = cur.fetchall()
         message_data_list = []
         for tuple in data:
-            message_data = dict([('Id', tuple[0]), ('Title', tuple[1]), ('Content', tuple[2])])
+            message_data = dict([('Id', tuple[0]), ('Channel', tuple[1]), ('Title', tuple[2]), ('Content', tuple[3])])
             message_data_list.append(message_data)
 
         content_data = json.dumps(message_data_list)

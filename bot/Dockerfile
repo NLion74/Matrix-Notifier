@@ -20,8 +20,6 @@ ENV botpass ""
 
 ENV homeserver ""
 
-ENV roomid ""
-
 ENV sync_interval 5
 
 CMD [ "python3", "main.py" ]
