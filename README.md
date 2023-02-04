@@ -5,7 +5,7 @@ Currently it supports titles and content server side but the bot is only using t
 
 There are a few things that this bot currently can't do as I've been having trouble adding them. So they might be added soon, but they could just as well never be added. These features include unicode support and room accept support.
 
-Unicode support is currently only partially supported as I used a workaround that is in no way perfect. Supported Characters include: ä, ö, ü, ß, Ä, Ü, Ö, €, § and ©.
+Unicode support is currently only partially supported as I used a workaround that is in no way perfect.
 
 Room accept support would mean that the bot would automatically accept the invite of the room with the specified room id. This currently does not work and you have to manually accept the room invite by logging into the bot account.
 
