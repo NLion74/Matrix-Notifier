@@ -1,19 +1,13 @@
 import json
-
-import config
+import re
+import codecs
 
 
 def decode(content):
-    content = content.replace("\\xf6", "ö")
-    content = content.replace("\\xe4", "ä")
-    content = content.replace("\\xfc", "ü")
-    content = content.replace("\\xdf", "ß")
-    content = content.replace("\\xdc", "Ü")
-    content = content.replace("\\xd6", "Ö")
-    content = content.replace("\\xc4", "Ä")
-    content = content.replace("\\x80", "€")
-    content = content.replace("\\xa7", "§")
-    content = content.replace("\\xa9", "©")
+    for match in re.findall(r"\\x[a-f0-9][a-f0-9]", content):
+        print(match[2::])
+        s = chr(int(match[2::], 16))
+        content = content.replace(match, s)
 
     return content
 
@@ -21,6 +15,8 @@ def decode(content):
 async def send(msg, client):
     roomid = msg['Channel']
     roomid = json.loads(roomid)
+
+
 
     if not roomid:
         print("No Channel Id provided")

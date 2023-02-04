@@ -44,7 +44,6 @@ def httparse(r):
         headers.append(header)
 
     rq = HttpRequest(method=method, uri=uri, version=version, headers=headers, body=body)
-
     return rq
 
 
