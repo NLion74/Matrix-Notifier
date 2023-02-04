@@ -58,9 +58,7 @@ cp example.env .env
 docker-compose up -d
 ```
 
-Afterwards move into the docker directory and copy the example.env to .env, where you should adjust the roomid as well setting up the botcreds. These being the values: botuser, botpass and homeserver. 
-
-When you're done adjusting the environment variables to your liking, you may wanna start the docker-compose by running ```docker-compose up -d```.
+Now everything should be up and running and you can now.
 
 #### Disclaimer
 
@@ -77,10 +75,6 @@ Afterwards just start the server/main.py and bot/main.py.
 #### Disclaimer
 
 When deleting the Database of the server you will have to also delete ids.json in the bot/saved folder. Otherwise the bot will not send messages where the id is saved within the ids.json file.
-
-## General Information
-
-The bot and server are to completely independent components meaning that you could theoretically take the server and create another client for it, like on discord. You can request all messages from the server using a GET request. It will return them in a JSON Array.
 
 ## Usage
 
