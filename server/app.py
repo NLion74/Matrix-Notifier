@@ -22,7 +22,7 @@ def post():
     saver.save_to_db(msg)
     saver.clean_db()
 
-    return "Thingy Workingy", 200
+    return "Message successfully send", 200
 
 
 @app.route("/", methods=['GET'])
