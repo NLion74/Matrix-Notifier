@@ -87,5 +87,9 @@ X-Channel(Case Sensitive) - Channel(Case Insensitive), c(Case Insensitive)
 X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
 ```
 
+### Disclamer
+
+Note that if you're room id contains a "," the server will break. I don't know if room ids with "," in them exist but if they do this will be an issue that you should be aware of.
+
 ## Contact
 If there are any questions regarding this project, feel free to contact me over any platform listed on https://nlion.nl/.
