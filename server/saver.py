@@ -31,12 +31,12 @@ def save_to_db(msg):
     con = sqlite3.connect(f"{data_dir}/messages.db")
     cur = con.cursor()
 
-    cur.execute('''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channel text, title text, content text)''')
+    cur.execute('''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text)''')
     id = get_next_id(cur)
 
-    channel = json.dumps(msg.channel)
+    channels = json.dumps(msg.channels)
 
-    cur.execute(f'''INSERT OR IGNORE INTO messages VALUES ('{id}', '{channel}', '{msg.title}', '{msg.content}')''')
+    cur.execute(f'''INSERT OR IGNORE INTO messages VALUES ('{id}', '{channels}', '{msg.title}', '{msg.content}')''')
 
     con.commit()
 

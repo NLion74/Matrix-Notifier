@@ -33,9 +33,9 @@ async def check(messages, client):
 async def sync( url, client):
     print("Resyncing")
     try:
-        res = requests.get(f"{url}")
-        messagesb = res.content.decode('utf-8')
-        messages = json.loads(messagesb)
+        res = requests.get(url)
+        messages = json.loads(res.content)
+
         await check(messages, client)
     except requests.exceptions.RequestException:
         print("The server seems to be down. Retrying in 20 seconds")

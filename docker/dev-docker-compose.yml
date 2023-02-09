@@ -2,7 +2,9 @@ version: "3.3"
 
 services:
   bot:
-    image: nlion/matrix-notifier-bot
+    build:
+      context: ../bot
+      dockerfile: Dockerfile
     restart: unless-stopped
     container_name: "matrix-notifer-bot"
     env_file:
@@ -11,7 +13,9 @@ services:
       - ./data:/data
 
   server:
-    image: nlion/matrix-notifier-server
+    build:
+      context: ../server
+      dockerfile: Dockerfile
     restart: unless-stopped
     container_name: "matrix-notifer-server"
     ports:
