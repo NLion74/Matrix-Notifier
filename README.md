@@ -3,11 +3,7 @@ A Matrix Bot inspired by gotify and ntfy though it has way less features.
 
 Currently it supports titles and content server side but the bot is only using the content and just ignoring the title.
 
-There are a few things that this bot currently can't do as I've been having trouble adding them. So they might be added soon, but they could just as well never be added. These features include unicode support and room accept support.
-
-Unicode support is currently only partially supported as I used a workaround that is in no way perfect.
-
-Room accept support would mean that the bot would automatically accept the invite of the room with the specified room id. This currently does not work and you have to manually accept the room invite by logging into the bot account.
+Currently this bot does not support room accepting meaning that you'll have to manually log into the bot and accept the room you wanna send your messages to.
 
 ## Setup
 
@@ -68,9 +64,9 @@ When deleting the messages.db database of the server you will have to also delet
 
 Building from source is not recommended but if you decide to do so anyways heres a guide.
 
-To configure, edit the server/config.py and the bot/config.py. Important values to set before starting are The Bot Creds and room_id in bot/config.py.
+To configure, edit the server/config.py and the bot/config.py. Important values to set before starting are The Bot Creds bot/config.py.
 
-Afterwards just start the server/main.py and bot/main.py.
+Afterwards just start the server/app.py and bot/main.py.
 
 #### Disclaimer
 
