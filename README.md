@@ -56,10 +56,6 @@ docker-compose up -d
 
 Now everything should be up and running and you can now.
 
-#### Disclaimer
-
-When deleting the messages.db database of the server you will have to also delete ids.json. Otherwise the bot will not send messages where the id is saved within the ids.json file.
-
 ### Install from source
 
 Building from source is not recommended but if you decide to do so anyways heres a guide.
@@ -67,10 +63,6 @@ Building from source is not recommended but if you decide to do so anyways heres
 To configure, edit the server/config.py and the bot/config.py. Important values to set before starting are The Bot Creds bot/config.py.
 
 Afterwards just start the server/app.py and bot/main.py.
-
-#### Disclaimer
-
-When deleting the Database of the server you will have to also delete ids.json in the bot/saved folder. Otherwise the bot will not send messages where the id is saved within the ids.json file.
 
 ## Usage
 
