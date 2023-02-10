@@ -19,15 +19,29 @@ async def check(messages, client):
     else:
         ids = []
 
-    for msg in messages:
-        id = msg['Id']
-        if id in ids:
-            continue
-        else:
-            ids.append(id)
-            await sender.send(msg, client)
-            with open(f"{data_dir}/ids.json", "w") as f:
-                json.dump(ids, f)
+    # Fix if ids is zero index out of range
+    if not ids:
+        prev_id = -1
+    else:
+        prev_id = ids[(len(ids) - 1)]
+
+    if not messages:
+        curr_id = -1
+    else:
+        curr_id = messages[(len(messages) - 1)]['Id']
+
+    if curr_id >= prev_id or prev_id == -1:
+        for msg in messages:
+            id = msg['Id']
+            if id in ids:
+                continue
+            else:
+                ids.append(id)
+                await sender.send(msg, client)
+                with open(f"{data_dir}/ids.json", "w") as f:
+                    json.dump(ids, f)
+    else:
+        os.remove(f"{data_dir}/ids.json")
 
 
 async def sync( url, client):

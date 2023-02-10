@@ -34,7 +34,7 @@ def get():
     con = sqlite3.connect(f"{data_dir}/messages.db")
     cur = con.cursor()
 
-    cur.execute('''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, title text, content text)''')
+    cur.execute('''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text)''')
 
     cur.execute('''SELECT * FROM messages''')
     data = cur.fetchall()
