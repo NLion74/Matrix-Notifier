@@ -19,6 +19,9 @@ sync_interval = 5
 # Where data will persist for the bot
 datadir_bot = "./data"
 
+authorization = False
+auth_secret = ""
+
 
 # Do Not Touch
 # If docker is used it will use the environment values
@@ -31,3 +34,5 @@ if docker:
     device_name = os.environ.get('devicename', False)
     sync_interval = os.environ.get('sync_interval', False)
     datadir_bot = "/data"
+    authorization = os.environ.get('authorization', False)
+    auth_secret = os.environ.get('auth_secret', False)

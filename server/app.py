@@ -5,6 +5,7 @@ import json
 
 import config
 import parser
+import authenticator
 import saver
 
 app = Flask(__name__)
@@ -17,6 +18,11 @@ def post():
 
     parameter = parser.headerparse(headers=headers)
 
+    auth_res = authenticator.auth(parameter)
+
+    if not auth_res:
+        return "Unauthorized", 401
+
     msg = parser.messageparse(parameter=parameter, body=body)
 
     saver.save_to_db(msg)
@@ -27,6 +33,15 @@ def post():
 
 @app.route("/", methods=['GET'])
 def get():
+    headers = dict(request.headers)
+
+    parameter = parser.headerparse(headers=headers)
+
+    auth_res = authenticator.auth(parameter)
+
+    if not auth_res:
+        return "Unauthorized", 401
+
     data_dir = config.datadir_server
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)

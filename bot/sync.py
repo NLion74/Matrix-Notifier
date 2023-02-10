@@ -47,9 +47,21 @@ async def check(messages, client):
 async def sync( url, client):
     print("Resyncing")
     try:
-        res = requests.get(url)
-        messages = json.loads(res.content)
+        if str(config.authorization) == "true":
+            authorization = True
+        else:
+            authorization = False
 
+        if authorization:
+            res = requests.get(url, headers={ "Authorization": config.auth_secret })
+        else:
+            res = requests.get(url)
+            if res.status_code == 401:
+                print("Authorization seems to be enabled but not in the bot config. Retrying in 20 seconds")
+                await sleep(15)
+                return False
+
+        messages = json.loads(res.content)
         await check(messages, client)
     except requests.exceptions.RequestException:
         print("The server seems to be down. Retrying in 20 seconds")

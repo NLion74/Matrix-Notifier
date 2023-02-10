@@ -13,13 +13,13 @@ ENV docker yes
 ENV port 5505
 
 ENV devicename "matrix-nio"
-
 ENV botuser ""
-
 ENV botpass ""
-
 ENV homeserver ""
 
 ENV sync_interval 5
+
+ENV authorization false
+ENV auth_secret ""
 
 CMD [ "python3", "main.py" ]

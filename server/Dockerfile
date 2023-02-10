@@ -11,8 +11,10 @@ COPY ./ ./
 ENV docker yes
 
 ENV port 5505
-
 ENV sqlimit 100
+
+ENV authorization false
+ENV auth_secret ""
 
 EXPOSE 5505
 

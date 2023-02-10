@@ -14,6 +14,7 @@ class HttpRequest:
 class ParaMeter:
     channels: []
     title: str
+    auth_pass: str
 
 
 @dataclass
@@ -27,6 +28,7 @@ def headerparse(headers):
     # Defaults
     title = ""
     channels = []
+    auth_pass = ""
 
 
     for header, header_content in headers.items():
@@ -39,8 +41,10 @@ def headerparse(headers):
                     channels.append(channel)
             else:
                 channels.append(header_content)
+        elif header == "X-Authorization" or header.lower() == "authorization" or header.lower() == "auth":
+            auth_pass = header_content
 
-    parameter = ParaMeter(title=title, channels=channels)
+    parameter = ParaMeter(title=title, channels=channels, auth_pass=auth_pass)
 
     return parameter
 

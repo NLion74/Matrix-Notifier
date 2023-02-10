@@ -9,6 +9,9 @@ limit = 100
 # Where data will persist for the server
 datadir_server = "./data"
 
+authorization = False
+auth_secret = ""
+
 
 # Do Not Touch
 # If docker is used it will use the environment values
@@ -17,3 +20,5 @@ if docker:
     port = os.environ.get('port', False)
     limit = os.environ.get('sqlimit', False)
     datadir_server = "/data"
+    authorization = os.environ.get('authorization', False)
+    auth_secret = os.environ.get('auth_secret', False)
