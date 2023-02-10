@@ -77,6 +77,9 @@ X-Channel(Case Sensitive) - Channel(Case Insensitive), c(Case Insensitive)
 
 # Sets the title of the message. Cannot be used repeatedly
 X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
+
+# Used for api authentication
+X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Insensitive)
 ```
 
 ### Disclamer
