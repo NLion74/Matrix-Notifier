@@ -1,7 +1,6 @@
 import json
 import requests
 import os
-from asyncio import sleep
 
 import sender
 import config
@@ -57,13 +56,11 @@ async def sync( url, client):
         else:
             res = requests.get(url)
             if res.status_code == 401:
-                print("Authorization seems to be enabled but not in the bot config. Retrying in 20 seconds")
-                await sleep(15)
+                print("Authorization seems to be enabled but not in the bot config")
                 return False
 
         messages = json.loads(res.content)
         await check(messages, client)
     except requests.exceptions.RequestException:
-        print("The server seems to be down. Retrying in 20 seconds")
-        await sleep(15)
+        print("The server seems to be down.")
         return False

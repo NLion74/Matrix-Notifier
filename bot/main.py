@@ -1,11 +1,12 @@
 import asyncio
-from nio import AsyncClient, AsyncClientConfig, LoginResponse, InviteMemberEvent
+from nio import AsyncClient, AsyncClientConfig, LoginResponse, InviteMemberEvent, RoomMessageText
 from asyncio import sleep
 import os
 import json
 
 import sync
 import config
+from Callbacks import Callbacks
 
 data_dir = config.datadir_bot
 if not os.path.exists(data_dir):
@@ -14,7 +15,7 @@ config_file = f"{data_dir}/credentials.json"
 store_path = f"{data_dir}/store"
 
 
-def write_details_to_disk(resp: LoginResponse, home_server) -> None:
+async def write_details_to_disk(resp: LoginResponse, home_server) -> None:
     with open(config_file, "w") as f:
         json.dump(
             {
@@ -47,10 +48,15 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
             config=bot_config,
         )
 
+        callbacks = Callbacks(client)
+        client.add_event_callback(callbacks.invite, (InviteMemberEvent,))
+        client.add_event_callback(callbacks.message, (RoomMessageText,))
+
+
         resp = await client.login(password=bot_pass, device_name=device_name)
 
         if isinstance(resp, LoginResponse):
-            write_details_to_disk(resp, home_server)
+            await write_details_to_disk(resp, home_server)
         else:
             print(f'homeserver = "{home_server}"; user = "{bot_name}"')
             print(f"Failed to log in: {resp}")
@@ -69,6 +75,10 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
                 config=bot_config,
             )
 
+            callbacks = Callbacks(client)
+            client.add_event_callback(callbacks.invite, (InviteMemberEvent,))
+            client.add_event_callback(callbacks.message, (RoomMessageText,))
+
             client.restore_login(
                 user_id=config["user_id"],
                 device_id=config["device_id"],
@@ -83,7 +93,6 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
 
 
 async def main():
-
     # Bot Creds
     bot_name = config.bot_name
     bot_pass = config.bot_pass
@@ -94,10 +103,11 @@ async def main():
 
     sync_interval = config.sync_interval
 
-    client = await login(home_server, bot_name, bot_pass, device_name)
+    client = await login(home_server=home_server, bot_name=bot_name, bot_pass=bot_pass, device_name=device_name)
 
     while True:
         await sync.sync(url, client)
+        await client.sync(timeout=30000)
         await sleep(int(sync_interval))
 
 
