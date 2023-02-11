@@ -17,8 +17,6 @@ ENV botuser ""
 ENV botpass ""
 ENV homeserver ""
 
-ENV sync_interval 5
-
 ENV authorization false
 ENV auth_secret ""
 

@@ -1,6 +1,5 @@
 import asyncio
 from nio import AsyncClient, AsyncClientConfig, LoginResponse, InviteMemberEvent, RoomMessageText
-from asyncio import sleep
 import os
 import json
 import logging
@@ -109,14 +108,11 @@ async def main():
 
     url = config.server_url
 
-    sync_interval = config.sync_interval
-
     client = await login(home_server=home_server, bot_name=bot_name, bot_pass=bot_pass, device_name=device_name)
 
     while True:
         await sync.sync(url, client)
-        await client.sync(timeout=30000)
-        await sleep(int(sync_interval))
+        await client.sync(timeout=1000)
 
 
 try:

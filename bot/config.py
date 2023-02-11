@@ -13,9 +13,6 @@ bot_pass = ''
 home_server = ''
 device_name = 'matrix-nio'
 
-# How many often the bot sync's with the server in seconds
-sync_interval = 5
-
 # Where data will persist for the bot
 datadir_bot = "./data"
 
@@ -32,7 +29,6 @@ if docker:
     bot_pass = os.environ.get('botpass', False)
     home_server = os.environ.get('homeserver', False)
     device_name = os.environ.get('devicename', False)
-    sync_interval = os.environ.get('sync_interval', False)
     datadir_bot = "/data"
     authorization = os.environ.get('authorization', False)
     auth_secret = os.environ.get('auth_secret', False)
