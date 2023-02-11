@@ -10,7 +10,7 @@ import config
 from Callbacks import Callbacks
 
 logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s %(name)-12s: %(levelname)-8s %(message)s',
+                    format='%(asctime)s %(message)s',
                     datefmt='%m-%d %H:%M',)
 
 logger = logging.getLogger()
