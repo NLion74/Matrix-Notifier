@@ -3,10 +3,18 @@ from nio import AsyncClient, AsyncClientConfig, LoginResponse, InviteMemberEvent
 from asyncio import sleep
 import os
 import json
+import logging
 
 import sync
 import config
 from Callbacks import Callbacks
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(name)-12s: %(levelname)-8s %(message)s',
+                    datefmt='%m-%d %H:%M',)
+
+logger = logging.getLogger()
+
 
 data_dir = config.datadir_bot
 if not os.path.exists(data_dir):
@@ -58,11 +66,11 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
         if isinstance(resp, LoginResponse):
             await write_details_to_disk(resp, home_server)
         else:
-            print(f'homeserver = "{home_server}"; user = "{bot_name}"')
-            print(f"Failed to log in: {resp}")
+            logger.critical(f'homeserver = "{home_server}"; user = "{bot_name}"')
+            logger.critical(f"Failed to log in: {resp}")
             quit(1)
 
-        print("Logged in via password")
+        logger.info("Logged in via password")
 
     else:
         with open(config_file, "r") as f:
@@ -84,7 +92,7 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
                 device_id=config["device_id"],
                 access_token=config["access_token"],
             )
-        print("Logged in via access token")
+        logger.info("Logged in via access token")
 
         if client.should_upload_keys:
             await client.keys_upload()
@@ -114,5 +122,5 @@ async def main():
 try:
     asyncio.run(main())
 except KeyboardInterrupt:
-    print("Received keyboard interrupt.")
+    logger.error("Received keyboard interrupt.")
     quit(0)

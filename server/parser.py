@@ -1,4 +1,7 @@
 from dataclasses import dataclass
+import logging
+
+logger = logging.getLogger()
 
 
 @dataclass
@@ -53,7 +56,7 @@ def messageparse(parameter, body):
     try:
         content = body.decode("utf-8")
     except UnicodeError:
-        print("client doesn't seem to be using valid utf-8")
+        logger.error("Client doesn't seem to be using valid utf-8")
         try:
             content = body.decode("cp932")
         except UnicodeError:
@@ -63,7 +66,7 @@ def messageparse(parameter, body):
                 try:
                     content = body.decode("ISO-8859-1")
                 except UnicodeError:
-                    print("Couldn't decode request data")
+                    logger.error("Couldn't decode request data")
 
 
     msg = Message(title=parameter.title, content=content, channels=parameter.channels)

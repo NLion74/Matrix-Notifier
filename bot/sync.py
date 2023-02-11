@@ -1,9 +1,12 @@
 import json
 import requests
 import os
+import logging
 
 import sender
 import config
+
+logger = logging.getLogger(__name__)
 
 
 async def check(messages, client):
@@ -44,7 +47,7 @@ async def check(messages, client):
 
 
 async def sync( url, client):
-    print("Resyncing")
+    logger.info("Resyncing")
     try:
         if str(config.authorization) == "true":
             authorization = True
@@ -56,11 +59,11 @@ async def sync( url, client):
         else:
             res = requests.get(url)
             if res.status_code == 401:
-                print("Authorization seems to be enabled but not in the bot config")
+                logger.error("Authorization seems to be enabled but not in the bot config")
                 return False
 
         messages = json.loads(res.content)
         await check(messages, client)
     except requests.exceptions.RequestException:
-        print("The server seems to be down.")
+        logger.error("The server seems to be down.")
         return False

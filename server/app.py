@@ -2,11 +2,14 @@ from flask import Flask, request
 import sqlite3
 import os
 import json
+import logging
 
 import config
 import parser
 import authenticator
 import saver
+
+logger = logging.getLogger()
 
 app = Flask(__name__)
 
