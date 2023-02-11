@@ -3,8 +3,6 @@ A Matrix Bot inspired by gotify and ntfy though it has way less features.
 
 Technically this bot supports titles and content server side but the bot is only using the content and just ignoring the title.
 
-Currently this bot does not support room accepting meaning that you'll have to manually log into the bot and accept the room you wanna send your messages to.
-
 ## Setup
 
 The easiest way of installing would be to use docker, however if for any reason that is not an option you can also install it from source.
