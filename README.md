@@ -1,7 +1,7 @@
 # Matrix-Notifier
 A Matrix Bot inspired by gotify and ntfy though it has way less features.
 
-Currently it supports titles and content server side but the bot is only using the content and just ignoring the title.
+Technically this bot supports titles and content server side but the bot is only using the content and just ignoring the title.
 
 Currently this bot does not support room accepting meaning that you'll have to manually log into the bot and accept the room you wanna send your messages to.
 
@@ -11,7 +11,7 @@ The easiest way of installing would be to use docker, however if for any reason 
 
 Before starting you may wanna create a bot account on the homeserver of your liking.
 
-If you're ever having trouble with the database just use the example-database.db provided.
+If you're ever having trouble with the database just use the example-database.db provided under examples/example-database.
 
 ### Requirements
 
@@ -81,6 +81,8 @@ X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
 # Used for api authentication
 X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Insensitive)
 ```
+
+There are also a few examples provided in the examples directory that are using the python requests library.
 
 ### Disclamer
 
