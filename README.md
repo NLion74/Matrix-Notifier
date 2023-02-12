@@ -3,8 +3,6 @@ A Matrix Bot inspired by gotify and ntfy though it has way less features.
 
 Technically this bot supports titles and content server side but the bot is only using the content and just ignoring the title.
 
-Note that receivng the message can take up to 30 seconds. Thats just how long it takes if you have a problem with that you can use the dev-docker-compose and remove the "await client.sync(timeout=1000)" in the bot/main.py though this will cause the bot not be able to accept room invites anymore. After doing that you can except the message to be received in a matter of seconds.
-
 ## Setup
 
 The easiest way of installing would be to use docker, however if for any reason that is not an option you can also install it from source.
