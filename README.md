@@ -81,9 +81,26 @@ Now if all the dependencies are installed the server and bot should be up and ru
 
 The Syntax is inspired by ntfy as you may notice if you've ever used ntfy before.
 
-Use ```curl -H "Channel: [Room_Id]" -d "[Message_Body]" [host]:[port]``` to send a message. It is required to use the channel header as you need to provide the server with a room_id to send the message to.
+The format for sending messages looks like this:
+
+```
+curl \
+  -H "Channel: [Room_Id]" \
+  -d "[Message_Body]" \
+  [host]:[port]
+```
+
+Another example with actual values:
+
+```
+curl \
+  -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" \
+  -d "Your server went down!" \
+  127.0.0.1:5505
+```
 
 Here's a list of headers together with their provided aliases and a description of what these headers are used for:
+
 ```
 # Required for sending messages. Used to tell the server which room ids to send messages to. Can be used repeatedly.
 X-Channel(Case Sensitive) - Channel(Case Insensitive), c(Case Insensitive)
@@ -95,7 +112,7 @@ X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
 X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Insensitive)
 ```
 
-There are also a few examples provided in the examples directory that are using the python requests library.
+For more examples take a look into the examples directory.
 
 ### Disclamer
 
