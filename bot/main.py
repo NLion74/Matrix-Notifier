@@ -3,6 +3,7 @@ from nio import AsyncClient, AsyncClientConfig, LoginResponse, InviteMemberEvent
 import os
 import json
 import logging
+from time import sleep
 
 import sync
 import config
@@ -99,8 +100,13 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
     return client
 
 
+async def sync_forever(client, timeout):
+    while True:
+        logger.info("Resyncing with matrix")
+        await client.sync(timeout=timeout)
+
+
 async def main():
-    # Bot Creds
     bot_name = config.bot_name
     bot_pass = config.bot_pass
     home_server = config.home_server
@@ -110,13 +116,16 @@ async def main():
 
     client = await login(home_server=home_server, bot_name=bot_name, bot_pass=bot_pass, device_name=device_name)
 
-    while True:
-        await sync.sync(url, client)
-        await client.sync(timeout=30000)
+    f1 = loop.create_task(sync_forever(client=client, timeout=30000))
+    f2 = loop.create_task(sync.sync_forever(url, client))
+
+    await asyncio.wait([f1, f2])
 
 
 try:
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
+    loop.close()
 except KeyboardInterrupt:
     logger.error("Received keyboard interrupt.")
     quit(0)

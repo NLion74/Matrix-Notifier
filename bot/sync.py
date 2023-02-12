@@ -2,6 +2,7 @@ import json
 import requests
 import os
 import logging
+from asyncio import sleep
 
 import sender
 import config
@@ -46,8 +47,8 @@ async def check(messages, client):
         os.remove(f"{data_dir}/ids.json")
 
 
-async def sync( url, client):
-    logger.info("Resyncing")
+async def sync(url, client):
+    logger.info("Resyncing with server")
     try:
         if str(config.authorization) == "true":
             authorization = True
@@ -67,3 +68,9 @@ async def sync( url, client):
     except requests.exceptions.RequestException:
         logger.error("The server seems to be down.")
         return False
+
+
+async def sync_forever(url, client):
+    while True:
+        await sync(url, client)
+        await sleep(1)
