@@ -15,7 +15,7 @@ If you're ever having trouble with the database just use the example-database.db
 
 If youre using the docker-compose.yml you will need to have docker and docker-compose as well as curl installed, and when using the dev-docker-compose.yml you will also need git. building from source you will need python3 matrix-nio and requests installed.
 
-Building from source is not recommended however if you decide to do so anyways you will need python3, matrix-nio and requests installed.
+Building from source is not recommended however if you decide to do so anyways you will need python3, matrix-nio, requests and flask installed.
 
 ### Install with Docker
 
@@ -52,15 +52,30 @@ cp example.env .env
 docker-compose up -d
 ```
 
-Now everything should be up and running and you can now.
+Now everything should be up and running and you can now move to the [Usage Section](https://github.com/NLion74/Matrix-Notifier/#Usage).
 
 ### Install from source
 
 Building from source is not recommended but if you decide to do so anyways heres a guide.
 
-To configure, edit the server/config.py and the bot/config.py. Important values to set before starting are The Bot Creds bot/config.py.
+```
+# Clone the repository
+git clone https://github.com/NLion74/Matrix-Notifier
 
-Afterwards just start the server/app.py and bot/main.py.
+# Move into the repository's server folder
+cd ./Matrix-Notifier/server
+
+# Edit the config.py and start the server
+python3 app.py
+
+# Move into the repository's bot folder
+cd ../bot
+
+# Edit the config.py and start the bot
+python3 main.py
+```
+
+Now if all the dependencies are installed the server and bot should be up and running. You can now move on to the [Usage Section](https://github.com/NLion74/Matrix-Notifier/#Usage).
 
 ## Usage
 
