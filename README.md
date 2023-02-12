@@ -13,7 +13,7 @@ If you're ever having trouble with the database just use the example-database.db
 
 ### Requirements
 
-If youre using the docker-compose.yml you will need to have docker and docker-compose as well as curl installed, and when using the dev-docker-compose.yml you will also need git. building from source you will need python3 matrix-nio and requests installed.
+If you're using the docker-compose.yml you will need to have docker and docker-compose as well as curl installed, and when using the dev-docker-compose.yml you will also need git. building from source you will need python3 matrix-nio and requests installed.
 
 Building from source is not recommended however if you decide to do so anyways you will need python3, matrix-nio, requests and flask installed.
 
@@ -33,7 +33,7 @@ curl -O https://raw.githubusercontent.com/NLion74/Matrix-Notifier/main/docker/ex
 # Copy the example.env to .env
 cp example.env .env
 
-# Customize the .env file and when youre done start the docker-compose
+# Customize the .env file and when you're done start the docker-compose
 docker-compose up -d
 ```
 
@@ -48,7 +48,7 @@ cd ./Matrix-Notifier/docker
 # Copy the example.env to .env
 cp example.env .env
 
-# Customize the .env file and when youre done start the docker-compose
+# Customize the .env file and when you're done start the docker-compose
 docker-compose up -d
 ```
 
@@ -114,7 +114,7 @@ X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Ins
 
 For more examples take a look into the examples directory.
 
-### Disclamer
+### Disclaimer
 
 Note that if you're room id contains a "," the server will break. I don't know if room ids with "," in them exist but if they do this will be an issue that you should be aware of.
 
