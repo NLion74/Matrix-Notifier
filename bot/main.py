@@ -112,7 +112,7 @@ async def main():
 
     while True:
         await sync.sync(url, client)
-        await client.sync(timeout=1000)
+        await client.sync(timeout=30000)
 
 
 try:
