@@ -1,5 +1,6 @@
 import config
 
+
 def auth(parameter):
     if str(config.authorization).lower() == "true":
         authorization = True

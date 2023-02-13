@@ -7,7 +7,7 @@ Technically this bot supports titles and content server side but the bot is only
 
 The easiest way of installing would be to use docker, however if for any reason that is not an option you can also install it from source.
 
-Before starting you may wanna create a bot account on the homeserver of your liking.
+Before starting, you may want to create a bot account on the homeserver of your liking.
 
 If you're ever having trouble with the database just use the example-database.db provided under examples/example-database.
 
@@ -15,11 +15,11 @@ If you're ever having trouble with the database just use the example-database.db
 
 If you're using the docker-compose.yml you will need to have docker and docker-compose as well as curl installed, and when using the dev-docker-compose.yml you will also need git. building from source you will need python3 matrix-nio and requests installed.
 
-Building from source is not recommended however if you decide to do so anyways you will need python3, matrix-nio, requests and flask installed.
+Building from source is not recommended however if you decide to do so anyway you will need python3, matrix-nio, requests and flask installed.
 
 ### Install with Docker
 
-There are two docker-compose.yml files provided, the docker-compose.yml and the dev-docker-compose.yml. The docker-compose.yml is whats recommended and also the most stable, using the image from dockerhub and the other one building from the git repository.
+There are two docker-compose.yml files provided, the docker-compose.yml and the dev-docker-compose.yml. The docker-compose.yml is what's recommended and also the most stable, using the image from dockerhub and the other one building from the git repository.
 
 If you're using the default docker-compose follow the instructions below:
 ```
@@ -52,11 +52,11 @@ cp example.env .env
 docker-compose up -d
 ```
 
-Now everything should be up and running and you can now move to the [Usage Section](https://github.com/NLion74/Matrix-Notifier/#Usage).
+Now everything should be up and running, and you can now move to the [Usage Section](https://github.com/NLion74/Matrix-Notifier/#Usage).
 
 ### Install from source
 
-Building from source is not recommended but if you decide to do so anyways heres a guide.
+Building from source is not recommended but if you decide to do so anyway here's a guide.
 
 ```
 # Clone the repository

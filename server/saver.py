@@ -31,12 +31,14 @@ def save_to_db(msg):
     con = sqlite3.connect(f"{data_dir}/messages.db")
     cur = con.cursor()
 
-    cur.execute('''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text)''')
+    cur.execute(
+        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text)''')
     id = get_next_id(cur)
 
     channels = json.dumps(msg.channels)
 
-    cur.execute(f'''INSERT OR IGNORE INTO messages VALUES ('{id}', '{channels}', '{msg.title}', '{msg.content}')''')
+    cur.execute(
+        f'''INSERT OR IGNORE INTO messages VALUES ('{id}', '{channels}', '{msg.title}', '{msg.content}')''')
 
     con.commit()
 
@@ -48,6 +50,7 @@ def clean_db():
     cur = con.cursor()
 
     limit = config.limit
-    cur.execute(f'''DELETE FROM messages WHERE id NOT IN (SELECT id FROM (SELECT id FROM messages ORDER BY id DESC LIMIT {limit}))''')
+    cur.execute(
+        f'''DELETE FROM messages WHERE id NOT IN (SELECT id FROM (SELECT id FROM messages ORDER BY id DESC LIMIT {limit}))''')
 
     con.commit()

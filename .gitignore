@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # Custom
-saved/
 databases/
 data/
+.idea

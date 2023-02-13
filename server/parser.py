@@ -15,14 +15,14 @@ class HttpRequest:
 
 @dataclass
 class ParaMeter:
-    channels: []
+    channels: list
     title: str
     auth_pass: str
 
 
 @dataclass
 class Message:
-    channels: []
+    channels: list
     title: str
     content: str
 
@@ -32,7 +32,6 @@ def headerparse(headers):
     title = ""
     channels = []
     auth_pass = ""
-
 
     for header, header_content in headers.items():
         if header == "X-Title" or header.lower() == "title" or header.lower() == "t":
@@ -68,6 +67,6 @@ def messageparse(parameter, body):
                 except UnicodeError:
                     logger.error("Couldn't decode request data")
 
-
-    msg = Message(title=parameter.title, content=content, channels=parameter.channels)
+    msg = Message(title=parameter.title, content=content,
+                  channels=parameter.channels)
     return msg

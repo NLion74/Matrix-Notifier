@@ -22,7 +22,6 @@ async def check(messages, client):
     else:
         ids = []
 
-    # Fix if ids is zero index out of range
     if not ids:
         prev_id = -1
     else:
@@ -56,11 +55,13 @@ async def sync(url, client):
             authorization = False
 
         if authorization:
-            res = requests.get(url, headers={ "Authorization": config.auth_secret })
+            res = requests.get(
+                url, headers={"Authorization": config.auth_secret})
         else:
             res = requests.get(url)
             if res.status_code == 401:
-                logger.error("Authorization seems to be enabled but not in the bot config")
+                logger.error(
+                    "Authorization seems to be enabled but not in the bot config")
                 return False
 
         messages = json.loads(res.content)
