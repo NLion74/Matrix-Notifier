@@ -3,7 +3,6 @@ from nio import AsyncClient, AsyncClientConfig, LoginResponse, InviteMemberEvent
 import os
 import json
 import logging
-from time import sleep
 
 import sync
 import config
@@ -14,7 +13,6 @@ logging.basicConfig(level=logging.INFO,
                     datefmt='%m-%d %H:%M',)
 
 logger = logging.getLogger()
-
 
 data_dir = config.datadir_bot
 if not os.path.exists(data_dir):

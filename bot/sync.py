@@ -73,5 +73,6 @@ async def sync(url, client):
 
 async def sync_forever(url, client):
     while True:
+        logger.info("Resyncing with server1")
         await sync(url, client)
         await sleep(1)

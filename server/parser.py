@@ -18,6 +18,7 @@ class ParaMeter:
     channels: list
     title: str
     auth_pass: str
+    markdown: str
 
 
 @dataclass
@@ -25,6 +26,7 @@ class Message:
     channels: list
     title: str
     content: str
+    markdown: str
 
 
 def headerparse(headers):
@@ -32,6 +34,7 @@ def headerparse(headers):
     title = ""
     channels = []
     auth_pass = ""
+    markdown = "false"
 
     for header, header_content in headers.items():
         if header == "X-Title" or header.lower() == "title" or header.lower() == "t":
@@ -45,13 +48,19 @@ def headerparse(headers):
                 channels.append(header_content)
         elif header == "X-Authorization" or header.lower() == "authorization" or header.lower() == "auth":
             auth_pass = header_content
+        elif header == "X-Markdown" or header.lower() == "markdown" or header.lower() == "m":
+            if str(header_content).lower() == "true" or str(header_content).lower() == "false":
+                markdown = str(header_content).lower()
+            else:
+                return False
 
-    parameter = ParaMeter(title=title, channels=channels, auth_pass=auth_pass)
+    parameter = ParaMeter(title=title, channels=channels, auth_pass=auth_pass, markdown=markdown)
 
     return parameter
 
 
 def messageparse(parameter, body):
+    content = ""
     try:
         content = body.decode("utf-8")
     except UnicodeError:
@@ -68,5 +77,5 @@ def messageparse(parameter, body):
                     logger.error("Couldn't decode request data")
 
     msg = Message(title=parameter.title, content=content,
-                  channels=parameter.channels)
+                  channels=parameter.channels, markdown=parameter.markdown)
     return msg

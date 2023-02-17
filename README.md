@@ -13,9 +13,13 @@ If you're ever having trouble with the database just use the example-database.db
 
 ### Requirements
 
-If you're using the docker-compose.yml you will need to have docker and docker-compose as well as curl installed, and when using the dev-docker-compose.yml you will also need git. building from source you will need python3 matrix-nio and requests installed.
+If you're using the docker-compose.yml you will need to have docker and docker-compose as well as curl installed, and when using the dev-docker-compose.yml you will also need git.
 
-Building from source is not recommended however if you decide to do so anyway you will need python3, matrix-nio, requests and flask installed.
+Building from source is not recommended however if you decide to do so anyway you can install the requirements by using the requirements.txt provided in the server and bot directory.
+To do so just move to the directory and use this command:
+```
+pip3 install -r requirements.txt
+```
 
 ### Install with Docker
 
@@ -110,6 +114,9 @@ X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
 
 # Used for api authentication
 X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Insensitive)
+
+# Used to enable and disable markdown. Default is set to false
+X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
 ```
 
 For more examples take a look into the examples directory.

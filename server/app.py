@@ -21,6 +21,9 @@ def post():
 
     parameter = parser.headerparse(headers=headers)
 
+    if not parameter:
+        return "Wrong header format", 403
+
     auth_res = authenticator.auth(parameter)
 
     if not auth_res:
@@ -53,14 +56,15 @@ def get():
     cur = con.cursor()
 
     cur.execute(
-        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text)''')
+        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, markdown text)''')
 
     cur.execute('''SELECT * FROM messages''')
     data = cur.fetchall()
     message_data_list = []
     for tuple in data:
         message_data = dict([('Id', tuple[0]), ('Channels', tuple[1]),
-                            ('Title', tuple[2]), ('Content', tuple[3])])
+                            ('Title', tuple[2]), ('Content', tuple[3]),
+                            ('Markdown', tuple[4])])
         message_data_list.append(message_data)
 
     content_data = json.dumps(message_data_list)
