@@ -129,7 +129,6 @@ If you want to see the messages that are stored on the server you can do that li
 
 ```
 curl \
-  -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" \
   127.0.0.1:5505/messages
 ```
 
