@@ -1,8 +1,6 @@
 # Matrix-Notifier
 A Matrix Bot inspired by gotify and ntfy though it has way less features.
 
-Technically this bot supports titles and content server side but the bot is only using the content and just ignoring the title.
-
 ## Setup
 
 The easiest way of installing would be to use docker, however if for any reason that is not an option you can also install it from source.
