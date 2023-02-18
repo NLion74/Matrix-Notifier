@@ -121,7 +121,7 @@ X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
 
 Alternatively if you could use the Web UI to send messages, which looks like this:
 
-![img.png](assets/img.png)
+![img_1.png](assets/img.png)
 
 For more examples take a look into the examples directory.
 
