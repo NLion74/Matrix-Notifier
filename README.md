@@ -1,5 +1,5 @@
 # Matrix-Notifier
-A Matrix Bot inspired by gotify and ntfy though it has way less features.
+Simple REST-API for sending messages over the [Matrix](https://matrix.org) protocol, build with [matrix-nio](https://github.com/poljar/matrix-nio).
 
 ## Setup
 
