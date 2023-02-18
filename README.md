@@ -109,13 +109,13 @@ Here's a list of headers together with their provided aliases and a description 
 # Required for sending messages. Used to tell the server which room ids to send messages to. Can be used repeatedly.
 X-Channel(Case Sensitive) - Channel(Case Insensitive), c(Case Insensitive)
 
-# Sets the title of the message. Cannot be used repeatedly
+# Sets the title of the message. Cannot be used repeatedly.
 X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
 
-# Used for api authentication
+# Used for api authentication. Cannot be used repeatedly.
 X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Insensitive)
 
-# Used to enable and disable markdown. Default is set to false
+# Used to enable and disable markdown. Default is set to false. Cannot be used repeatedly
 X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
 ```
 
