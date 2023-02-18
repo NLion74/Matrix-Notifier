@@ -11,9 +11,7 @@ async def send(msg, client):
 
     if str(msg['Markdown']) == "true":
         markdown_enabled = True
-        print("markdown")
     else:
-        print("no markdown")
         markdown_enabled = False
 
     if markdown_enabled:

@@ -110,7 +110,7 @@ async def main():
     home_server = config.home_server
     device_name = config.device_name
 
-    url = config.server_url
+    url = f"{config.server_url}/messages"
 
     client = await login(home_server=home_server, bot_name=bot_name, bot_pass=bot_pass, device_name=device_name)
 

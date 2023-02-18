@@ -94,7 +94,7 @@ curl \
   [host]:[port]
 ```
 
-Another example with actual values:
+Another example with some actual values:
 
 ```
 curl \
@@ -119,7 +119,22 @@ X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Ins
 X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
 ```
 
+Alternatively if you could use the Web UI to send messages, which looks like this:
+
+![img.png](assets/img.png)
+
 For more examples take a look into the examples directory.
+
+If you want to get the messages on the server you can do that like this:
+
+```
+curl \
+  -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" \
+  127.0.0.1:5505/messages
+```
+
+If authorization is enabled you'll also have to add an authorization header as well of course.
+
 
 ### Disclaimer
 

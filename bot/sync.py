@@ -49,7 +49,7 @@ async def check(messages, client):
 async def sync(url, client):
     logger.info("Resyncing with server")
     try:
-        if str(config.authorization) == "true":
+        if str(config.authorization) == "true" or config.authorization == True:
             authorization = True
         else:
             authorization = False

@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import sqlite3
 import os
 import json
@@ -11,11 +11,14 @@ import saver
 
 logger = logging.getLogger()
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder='web/static',
+            static_url_path='/static',
+            template_folder='web/templates')
 
 
 @app.route("/", methods=['POST'])
-def post():
+def post_messages():
     body = request.get_data()
     headers = dict(request.headers)
 
@@ -37,8 +40,8 @@ def post():
     return "Message successfully send", 200
 
 
-@app.route("/", methods=['GET'])
-def get():
+@app.route("/messages", methods=['GET'])
+def get_messages():
     headers = dict(request.headers)
 
     parameter = parser.headerparse(headers=headers)
@@ -72,6 +75,11 @@ def get():
     con.commit()
 
     return content_data, 200
+
+
+@app.route("/", methods=['GET'])
+def get_page():
+    return render_template('index.html', token=(config.authorization == True))
 
 
 if __name__ == "__main__":

@@ -32,3 +32,8 @@ if docker:
     datadir_bot = "/data"
     authorization = os.environ.get('authorization', False)
     auth_secret = os.environ.get('auth_secret', False)
+
+if str(authorization).lower() == "true" or authorization == True:
+    authorization = True
+else:
+    authorization = False

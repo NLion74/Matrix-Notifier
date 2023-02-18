@@ -2,7 +2,7 @@ import config
 
 
 def auth(parameter):
-    if str(config.authorization).lower() == "true":
+    if str(config.authorization).lower() == "true" or config.authorization == True:
         authorization = True
     else:
         authorization = False
