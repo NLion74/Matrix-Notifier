@@ -105,7 +105,7 @@ curl \
 
 And on ios with element installed that would result in a notifcation like this:
 
-![notification.png](assets/notification.png)
+![notification.png](assets/images/notifications.png)
 
 Here's a list of headers together with their provided aliases and a description of what these headers are used for:
 
@@ -130,7 +130,7 @@ X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
 
 Alternatively you could use the Web UI to send messages, which looks like this:
 
-![webui.png](assets/webui.png)
+![webui.png](assets/images/webui.png)
 
 For more examples take a look into the examples directory.
 
