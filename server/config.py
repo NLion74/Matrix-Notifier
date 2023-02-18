@@ -9,7 +9,7 @@ limit = 100
 # Where data will persist for the server
 datadir_server = "./data"
 
-authorization = True
+authorization = False
 auth_secret = ""
 
 

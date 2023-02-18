@@ -10,34 +10,34 @@ logger = logging.getLogger(__name__)
 async def fetch_content(msg, tags, markdown_enabled):
     if tags:
         emojis = await convert_emojis(tags)
-        if markdown_enabled:
+        if markdown_enabled and not msg['Title'] == "":
             content = {"msgtype": "m.text",
-                       "body": f"{emojis}\n{msg['Content']}",
+                       "body": f"{emojis}{msg['Title']}:\n{msg['Content']}",
                        "format": "org.matrix.custom.html",
-                       "formatted_body": markdown(msg['Content'], extensions=['nl2br'])}
-        elif markdown_enabled and not msg['Title'] == "":
+                       "formatted_body": f"{emojis}{msg['Title']}:\n{markdown(msg['Content'], extensions=['nl2br'])}"}
+        elif markdown_enabled:
             content = {"msgtype": "m.text",
-                       "body": f"{emojis}{msg['Title']}\n{msg['Content']}",
+                       "body": f"{emojis}:\n{msg['Content']}",
                        "format": "org.matrix.custom.html",
-                       "formatted_body": markdown(f"{msg['Title']}:\n{msg['Content']}", extensions=['nl2br'])}
+                       "formatted_body": f"{emojis}:\n{markdown(msg['Content'], extensions=['nl2br'])}"}
         elif not msg['Title'] == "":
             content = {"msgtype": "m.text",
-                       "body": f"{emojis}{msg['Title']}\n{msg['Content']}"}
+                       "body": f"{emojis}{msg['Title']}:\n{msg['Content']}"}
         else:
             content = {"msgtype": "m.text",
-                       "body": f"{emojis}\n{msg['Content']}"}
+                       "body": f"{emojis}:\n{msg['Content']}"}
 
     else:
-        if markdown_enabled:
+        if markdown_enabled and not msg['Title'] == "":
+            content = {"msgtype": "m.text",
+                       "body": f"{msg['Title']}:\n{markdown(msg['Content'], extensions=['nl2br'])}",
+                       "format": "org.matrix.custom.html",
+                       "formatted_body": f"{msg['Title']}:\n{markdown(msg['Content'], extensions=['nl2br'])}"}
+        elif markdown_enabled:
             content = {"msgtype": "m.text",
                        "body": f"{msg['Content']}",
                        "format": "org.matrix.custom.html",
                        "formatted_body": markdown(msg['Content'], extensions=['nl2br'])}
-        elif markdown_enabled and not msg['Title'] == "":
-            content = {"msgtype": "m.text",
-                       "body": f"{msg['Title']}\n{msg['Content']}",
-                       "format": "org.matrix.custom.html",
-                       "formatted_body": markdown(f"{msg['Title']}:\n{msg['Content']}", extensions=['nl2br'])}
         elif not msg['Title'] == "":
             content = {"msgtype": "m.text",
                        "body": f"{msg['Title']}:\n{msg['Content']}"}

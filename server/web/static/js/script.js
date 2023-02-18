@@ -23,8 +23,6 @@ const onSubmit = async (e) => {
     const channel = channelInput.value;
     const markdown = check_checkbox(markdownCheckbox);
 
-    console.log(markdown);
-
     const res = await fetch('/', {
         method: 'POST',
         headers: {
