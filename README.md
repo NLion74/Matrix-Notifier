@@ -54,7 +54,7 @@ cp example.env .env
 docker-compose up -d
 ```
 
-Now everything should be up and running, and you can now move to the [Usage Section](https://github.com/NLion74/Matrix-Notifier/#Usage).
+Now everything should be up and running, and you can now move to the [Usage Section](#Usage).
 
 ### Install from source
 

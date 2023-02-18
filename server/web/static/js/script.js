@@ -1,5 +1,4 @@
 function check_checkbox(checkbox)  {
-    console.log(checkbox)
     if (checkbox.checked) {
         return "true";
     }
@@ -26,11 +25,11 @@ const onSubmit = async (e) => {
     const res = await fetch('/', {
         method: 'POST',
         headers: {
-            Authorization: token,
-            Channel: channel,
-            Title: title,
-            Tags: tags,
-            Markdown: markdown
+            'Authorization': token,
+            'Channel': channel,
+            'Title': title,
+            'Tags': tags,
+            'Markdown': markdown
         },
         body: (message)
     })
