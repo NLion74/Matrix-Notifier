@@ -1,4 +1,7 @@
-from nio import AsyncClient, InviteMemberEvent, MatrixRoom, RoomMessageText
+from nio import (AsyncClient,
+                 InviteMemberEvent,
+                 MatrixRoom,
+                 RoomMessageText,)
 import logging
 
 logger = logging.getLogger(__name__)

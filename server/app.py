@@ -59,7 +59,7 @@ def get_messages():
     cur = con.cursor()
 
     cur.execute(
-        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, markdown text)''')
+        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
 
     cur.execute('''SELECT * FROM messages''')
     data = cur.fetchall()

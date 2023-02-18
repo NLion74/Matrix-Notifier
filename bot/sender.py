@@ -1,8 +1,10 @@
-import json
 import logging
 from markdown import markdown
 import emoji
 import json
+
+from nio import (RoomSendResponse,
+                 ErrorResponse,)
 
 logger = logging.getLogger(__name__)
 
@@ -76,7 +78,15 @@ async def send(msg, client):
         logger.info("No Channel Id provided")
     else:
         for room in roomids:
-            await client.room_send(room_id=room,
-                                   message_type="m.room.message",
-                                   content=content)
-            logger.info(f"Message sent")
+            try:
+                res = await client.room_send(room_id=room,
+                                       message_type="m.room.message",
+                                       content=content,
+                                       ignore_unverified_devices=True,)
+
+                if isinstance(res, ErrorResponse):
+                    raise Exception(res)
+            except Exception as err:
+                logger.error(err)
+            finally:
+                logger.info(f"Message sent")

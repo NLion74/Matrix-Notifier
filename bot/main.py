@@ -1,11 +1,15 @@
 import asyncio
-from nio import AsyncClient, AsyncClientConfig, LoginResponse, InviteMemberEvent, RoomMessageText
+from nio import (AsyncClient,
+                 AsyncClientConfig,
+                 LoginResponse,
+                 InviteMemberEvent,
+                 RoomMessageText,)
 import os
 import json
 import logging
 
 import sync
-import config
+import config as configfile
 from Callbacks import Callbacks
 
 logging.basicConfig(level=logging.INFO,
@@ -14,7 +18,7 @@ logging.basicConfig(level=logging.INFO,
 
 logger = logging.getLogger()
 
-data_dir = config.datadir_bot
+data_dir = configfile.datadir_bot
 if not os.path.exists(data_dir):
     os.mkdir(data_dir)
 config_file = f"{data_dir}/credentials.json"
@@ -34,9 +38,15 @@ async def write_details_to_disk(resp: LoginResponse, home_server) -> None:
         )
 
 
-async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
+async def login() -> AsyncClient:
+    bot_name = configfile.bot_name
+    bot_pass = configfile.bot_pass
+    home_server = configfile.home_server
+    device_name = configfile.device_name
+
     bot_config = AsyncClientConfig(
         store_sync_tokens=True,
+        encryption_enabled=True,
     )
 
     if not os.path.exists(config_file):
@@ -48,16 +58,11 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
             os.mkdir(store_path)
 
         client = AsyncClient(
-            home_server,
-            bot_name,
+            homeserver=home_server,
+            user=bot_name,
             store_path=store_path,
             config=bot_config,
         )
-
-        callbacks = Callbacks(client)
-        client.add_event_callback(callbacks.invite, (InviteMemberEvent,))
-        client.add_event_callback(callbacks.message, (RoomMessageText,))
-
 
         resp = await client.login(password=bot_pass, device_name=device_name)
 
@@ -81,10 +86,6 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
                 config=bot_config,
             )
 
-            callbacks = Callbacks(client)
-            client.add_event_callback(callbacks.invite, (InviteMemberEvent,))
-            client.add_event_callback(callbacks.message, (RoomMessageText,))
-
             client.restore_login(
                 user_id=config["user_id"],
                 device_id=config["device_id"],
@@ -92,38 +93,43 @@ async def login(home_server, bot_name, bot_pass, device_name) -> AsyncClient:
             )
         logger.info("Logged in via access token")
 
-        if client.should_upload_keys:
-            await client.keys_upload()
-
     return client
 
 
-async def sync_forever(client, timeout):
+async def sync_forever(client, timeout, full_state):
     while True:
         logger.info("Resyncing with matrix")
-        await client.sync(timeout=timeout)
+        await client.sync(timeout=timeout, full_state=full_state,)
 
 
 async def main():
-    bot_name = config.bot_name
-    bot_pass = config.bot_pass
-    home_server = config.home_server
-    device_name = config.device_name
+    url = f"{configfile.server_url}/messages"
 
-    url = f"{config.server_url}/messages"
+    client = await login()
 
-    client = await login(home_server=home_server, bot_name=bot_name, bot_pass=bot_pass, device_name=device_name)
+    callbacks = Callbacks(client)
+    client.add_event_callback(callbacks.invite, (InviteMemberEvent,))
+    client.add_event_callback(callbacks.message, (RoomMessageText,))
 
-    f1 = loop.create_task(sync_forever(client=client, timeout=30000))
-    f2 = loop.create_task(sync.sync_forever(url, client))
+    await client.sync(full_state=True)
+
+    if client.should_upload_keys:
+        await client.keys_upload()
+
+    if client.should_query_keys:
+        await client.keys_query()
+
+    if client.should_claim_keys:
+        await client.keys_claim()
+
+    f1 = asyncio.get_event_loop().create_task(sync_forever(client=client, timeout=30000, full_state=False,))
+    f2 = asyncio.get_event_loop().create_task(sync.sync_forever(url, client))
 
     await asyncio.wait([f1, f2])
 
 
 try:
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
-    loop.close()
+    asyncio.run(main())
 except KeyboardInterrupt:
     logger.error("Received keyboard interrupt.")
     quit(0)
