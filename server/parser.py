@@ -5,19 +5,11 @@ logger = logging.getLogger()
 
 
 @dataclass
-class HttpRequest:
-    method: str
-    uri: str
-    version: str
-    headers: list
-    body: str
-
-
-@dataclass
 class ParaMeter:
     channels: list
     title: str
     auth_pass: str
+    tags: list
     markdown: str
 
 
@@ -26,7 +18,15 @@ class Message:
     channels: list
     title: str
     content: str
+    tags: list
     markdown: str
+
+
+def remove_spaces(tag):
+    if str(tag).startswith(" "):
+        tag = tag[1::]
+        tag = remove_spaces(tag)
+    return tag
 
 
 def headerparse(headers):
@@ -35,6 +35,7 @@ def headerparse(headers):
     channels = []
     auth_pass = ""
     markdown = "false"
+    parsed_tags = []
 
     for header, header_content in headers.items():
         if header == "X-Title" or header.lower() == "title" or header.lower() == "t":
@@ -53,8 +54,18 @@ def headerparse(headers):
                 markdown = str(header_content).lower()
             else:
                 return False
+        elif header == "X-Tags" or header.lower() == "tags" or header.lower() == "tag" or header.lower() == "ta":
+            tags = header_content.rsplit(",")
+            parsed_tags = []
+            for tag in tags:
+                tag = str(tag).lower()
+                tag = remove_spaces(tag)
+                parsed_tags.append(tag)
 
-    parameter = ParaMeter(title=title, channels=channels, auth_pass=auth_pass, markdown=markdown)
+
+    parameter = ParaMeter(title=title, channels=channels,
+                          auth_pass=auth_pass, markdown=markdown,
+                          tags=parsed_tags)
 
     return parameter
 
@@ -77,5 +88,6 @@ def messageparse(parameter, body):
                     logger.error("Couldn't decode request data")
 
     msg = Message(title=parameter.title, content=content,
-                  channels=parameter.channels, markdown=parameter.markdown)
+                  channels=parameter.channels, markdown=parameter.markdown,
+                  tags=parameter.tags)
     return msg

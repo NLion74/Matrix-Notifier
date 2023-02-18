@@ -32,13 +32,14 @@ def save_to_db(msg):
     cur = con.cursor()
 
     cur.execute(
-        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, markdown text)''')
+        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
     id = get_next_id(cur)
 
     channels = json.dumps(msg.channels)
+    tags = json.dumps(msg.tags)
 
     cur.execute(
-        f'''INSERT OR IGNORE INTO messages VALUES ('{id}', '{channels}', '{msg.title}', '{msg.content}', '{msg.markdown}')''')
+        f'''INSERT OR IGNORE INTO messages VALUES ('{id}', '{channels}', '{msg.title}', '{msg.content}', '{tags}', '{msg.markdown}')''')
 
     con.commit()
 

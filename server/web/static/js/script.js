@@ -18,6 +18,7 @@ const onSubmit = async (e) => {
 
     const message = messageInput.value;
     const title = titleInput.value;
+    const tags = tagsInput.value;
     const token = window.tokenInput?.value;
     const channel = channelInput.value;
     const markdown = check_checkbox(markdownCheckbox);
@@ -30,6 +31,7 @@ const onSubmit = async (e) => {
             Authorization: token,
             Channel: channel,
             Title: title,
+            Tags: tags,
             Markdown: markdown
         },
         body: (message)
@@ -43,6 +45,7 @@ const onSubmit = async (e) => {
         msgSuccessDiv.innerText = "Message send";
         messageInput.value = "";
         titleInput.value = "";
+        tagsInput.value = "";
     }
 
     sendButton.disabled = false;

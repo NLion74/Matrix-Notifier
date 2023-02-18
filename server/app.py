@@ -67,7 +67,7 @@ def get_messages():
     for tuple in data:
         message_data = dict([('Id', tuple[0]), ('Channels', tuple[1]),
                             ('Title', tuple[2]), ('Content', tuple[3]),
-                            ('Markdown', tuple[4])])
+                            ('Tags', tuple[4]),('Markdown', tuple[5])])
         message_data_list.append(message_data)
 
     content_data = json.dumps(message_data_list)

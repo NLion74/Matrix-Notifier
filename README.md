@@ -98,13 +98,14 @@ Another example with some actual values:
 curl \
   -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" \
   -H "Title: Server Failure"
+  -H "Tags: exclamation, computer"
   -d "Your server went down!" \
   127.0.0.1:5505
 ```
 
-And on ios that would result in a notifcation like this:
+And on ios with element installed that would result in a notifcation like this:
 
-![img.png](assets/notifcation.png)
+![notification.png](assets/notification.png)
 
 Here's a list of headers together with their provided aliases and a description of what these headers are used for:
 
@@ -115,6 +116,11 @@ X-Channel(Case Sensitive) - Channel(Case Insensitive), c(Case Insensitive)
 # Sets the title of the message. Cannot be used repeatedly.
 X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
 
+# Used to put emojis into the title without actually typing them out.
+# Useful if wherever you want to send emojis from doesnt support utf-8.
+# Emoji codes can be found here: https://www.webfx.com/tools/emoji-cheat-sheet/
+X-Tags(Case Sensitive) - Tags(Case Insensitive), Tag(Case Insensitive), ta(Case Insensitive)
+
 # Used for api authentication. Cannot be used repeatedly.
 X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Insensitive)
 
@@ -124,7 +130,7 @@ X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
 
 Alternatively if you could use the Web UI to send messages, which looks like this:
 
-![img_1.png](assets/webui.png)
+![webui.png](assets/webui.png)
 
 For more examples take a look into the examples directory.
 
