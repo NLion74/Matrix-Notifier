@@ -97,9 +97,14 @@ Another example with some actual values:
 ```
 curl \
   -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" \
+  -H "Title: Server Failure"
   -d "Your server went down!" \
   127.0.0.1:5505
 ```
+
+And on ios that would result in a notifcation like this:
+
+![img.png](assets/notifcation.png)
 
 Here's a list of headers together with their provided aliases and a description of what these headers are used for:
 
@@ -119,7 +124,7 @@ X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
 
 Alternatively if you could use the Web UI to send messages, which looks like this:
 
-![img_1.png](assets/img.png)
+![img_1.png](assets/webui.png)
 
 For more examples take a look into the examples directory.
 

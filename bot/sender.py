@@ -15,23 +15,21 @@ async def send(msg, client):
         markdown_enabled = False
 
     if markdown_enabled:
-        if not msg['Title'] == "":
-            content = {"msgtype": "m.text",
-                       "body": f"{msg['Title']}\n{msg['Content']}",
-                       "format": "org.matrix.custom.html",
-                       "formatted_body": markdown(f"{msg['Title']}:\n{msg['Content']}", extensions=['nl2br'])}
-        else:
-            content = {"msgtype": "m.text",
-                       "body": f"{msg['Content']}",
-                       "format": "org.matrix.custom.html",
-                       "formatted_body": markdown(msg['Content'], extensions=['nl2br'])}
+        content = {"msgtype": "m.text",
+                   "body": f"{msg['Content']}",
+                   "format": "org.matrix.custom.html",
+                   "formatted_body": markdown(msg['Content'], extensions=['nl2br'])}
+    elif markdown_enabled and not msg['Title'] == "":
+        content = {"msgtype": "m.text",
+                   "body": f"{msg['Title']}\n{msg['Content']}",
+                   "format": "org.matrix.custom.html",
+                   "formatted_body": markdown(f"{msg['Title']}:\n{msg['Content']}", extensions=['nl2br'])}
+    elif not msg['Title'] == "":
+        content = {"msgtype": "m.text",
+                   "body": f"{msg['Title']}:\n{msg['Content']}"}
     else:
-        if not msg['Title'] == "":
-            content = {"msgtype": "m.text",
-                       "body": f"{msg['Title']}:\n{msg['Content']}"}
-        else:
-            content = {"msgtype": "m.text",
-                       "body": f"{msg['Content']}"}
+        content = {"msgtype": "m.text",
+                   "body": f"{msg['Content']}"}
 
     if not roomids:
         logger.info("No Channel Id provided")
