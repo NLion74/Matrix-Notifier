@@ -128,7 +128,7 @@ X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Ins
 X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
 ```
 
-Alternatively if you could use the Web UI to send messages, which looks like this:
+Alternatively you could use the Web UI to send messages, which looks like this:
 
 ![webui.png](assets/webui.png)
 
