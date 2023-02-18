@@ -125,7 +125,7 @@ Alternatively if you could use the Web UI to send messages, which looks like thi
 
 For more examples take a look into the examples directory.
 
-If you want to get the messages on the server you can do that like this:
+If you want to see the messages that are stored on the server you can do that like this:
 
 ```
 curl \
