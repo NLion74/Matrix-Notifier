@@ -74,4 +74,4 @@ async def sync(url, client):
 async def sync_forever(url, client):
     while True:
         await sync(url, client)
-        await sleep(1)
+        await sleep(0.25)
