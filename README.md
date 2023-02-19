@@ -124,9 +124,11 @@ After you've seen how to send messages via POST this should be rather self-expla
 
 #### Webhooks
 
-An alternative to using POST would be to send messages via HTTP GET request. This can be done by using webhooks.
+An alternative to using POST would be to send messages via webhook which supports both GET and POST requests.
 
 To use webhooks, simply make a request to the ```/webhook``` route and use queries to provide options just like you would normally.
+
+if you don't specify a message it will default to "webhook triggered"-
 
 ```
 curl "127.0.0.1:5505/webhook?channel=!liLFnvuVbMtrtbOYMS:matrix.org&title=Server+Failure&tags=exclamation,computer&message=Your+server+went+down!"

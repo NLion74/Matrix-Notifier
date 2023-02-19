@@ -95,7 +95,7 @@ def messageparse(parameter, body):
 
 def queryparse(queries):
     # Defaults
-    message = ""
+    message = "webhook triggered"
     title = ""
     channels = []
     auth_pass = ""
@@ -128,9 +128,6 @@ def queryparse(queries):
                 tag = str(tag).lower()
                 tag = remove_spaces(tag)
                 parsed_tags.append(tag)
-
-    if message == "":
-        return "no_message", "no_message"
 
     parameter = ParaMeter(title=title, channels=channels,
                           auth_pass=auth_pass, markdown=markdown,

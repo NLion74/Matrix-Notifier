@@ -77,7 +77,7 @@ def get_messages():
     return content_data, 200
 
 
-@app.route("/webhook", methods=['GET'])
+@app.route("/webhook", methods=['GET', 'POST'])
 def webhook_messages():
     queries = dict(request.args)
 
@@ -85,8 +85,6 @@ def webhook_messages():
 
     if parameter == "wrong_markdown":
         return "Wrong query format", 403
-    elif parameter == "no_message":
-        return "No message supplied", 403
 
     auth_res = authenticator.auth(parameter)
 
