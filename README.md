@@ -92,18 +92,13 @@ Now if all the dependencies are installed the server and bot should be up and ru
 
 ## Usage
 
-The Syntax is inspired by ntfy as you may notice if you've ever used ntfy before.
+### Sending messages
 
-The format for sending messages looks like this:
+Messages can be sent via HTTP POST or using the web UI.
 
-```
-curl \
-  -H "Channel: [Room_Id]" \
-  -d "[Message_Body]" \
-  [host]:[port]
-```
+#### POST
 
-Another example with some actual values:
+Here's an example showing how you can send messages via POST request:
 
 ```
 curl \
@@ -118,11 +113,86 @@ And on ios with element installed that would result in a notifcation like this:
 
 ![notification.png](assets/images/notifications.png)
 
-Here's a list of headers together with their provided aliases and a description of what these headers are used for:
+#### Web UI
+
+Alternatively you could use the Web UI to send messages, which looks like this:
+
+![webui.png](assets/images/webui.png)
+
+
+After you've seen how to send messages via POST this should be rather self-explanatory.
+
+### Options
+
+In this section we will be going through every single option, explain what they do and how to use them. At the end of the section you'll find a summary of all options.
+
+#### Channel
+
+This option is always required, and is used for the bot to identify the rooms. The value has to be the room id of the room you want your messages getting sent to.
+
+To obtain the room id of a room on element right-click the room, then click on Settings. The room id can then be found in advanced section under Internal room ID.
+
+#### Authorization
+
+This option is required for authentication if enabled.
+
+```
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "Authorization: super_secure_secret" -d "This message requires authentication"
+```
+
+![authorization_example.png](assets/images/authorization_example.png)
+
+#### Message title
+
+The title will be a line on top of the message with a ":" at the end of the title.
+Setting a title is optional.
+
+```
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "X-Title: My amazing title" -d "Titles are just so amazing" 127.0.0.1:5505
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "Title: My amazing title" -d "Titles are just so amazing" 127.0.0.1:5505
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "t: My amazing title" -d "Titles are just so amazing" 127.0.0.1:5505
+```
+
+![title_example.png](assets/images/title_example.png)
+
+#### Message tags
+
+The tags will be a line on top of the message with a ":" at the end of the tags. To send multiple tags just split them with "," between them. With this you could tag specific server to identify them.
+Setting tags is optional.
+
+A list of emojis can be found here: https://www.webfx.com/tools/emoji-cheat-sheet/
+
+```
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "X-Tags: computer_disk, exclamation" -d "Drive failure detected" 127.0.0.1:5505
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "Tags: computer_disk, exclamation" -d "Drive failure detected" 127.0.0.1:5505
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "ta: computer_disk, exclamation" -d "Drive failure detected" 127.0.0.1:5505
+```
+
+![tags_example.png](assets/images/tags_example.png)
+
+#### Markdown messages
+
+This option enables the use of markdown. Setting markdown is optional. Default is set to false.
+Markdown can only be used in the message body not for the headers.
+
+A guide on how to use markdown can be found here: https://www.markdownguide.org/basic-syntax/.
+
+```
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "X-Markdown: true" -d "_italic text_" 127.0.0.1:5505
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "Markdown: true" -d "_italic text_" 127.0.0.1:5505
+curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "m: true" -d "_italic text_" 127.0.0.1:5505
+```
+
+![markdown_example.png](assets/images/markdown_example.png)
+
+#### List of all options
 
 ```
 # Required for sending messages. Used to tell the server which room ids to send messages to. Can be used repeatedly.
 X-Channel(Case Sensitive) - Channel(Case Insensitive), c(Case Insensitive)
+
+# Used for api authentication. Cannot be used repeatedly.
+X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Insensitive)
 
 # Sets the title of the message. Cannot be used repeatedly.
 X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
@@ -132,32 +202,29 @@ X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
 # Emoji codes can be found here: https://www.webfx.com/tools/emoji-cheat-sheet/
 X-Tags(Case Sensitive) - Tags(Case Insensitive), Tag(Case Insensitive), ta(Case Insensitive)
 
-# Used for api authentication. Cannot be used repeatedly.
-X-Authorization(Case Sensitive) - Authorization(Case Insensitive), auth(Case Insensitive)
-
 # Used to enable and disable markdown. Default is set to false. Cannot be used repeatedly
 X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
 ```
 
-Alternatively you could use the Web UI to send messages, which looks like this:
+If you need more examples take a look into the examples directory.
 
-![webui.png](assets/images/webui.png)
+### Getting messages from the server
 
-For more examples take a look into the examples directory.
+#### GET
 
-If you want to see the messages that are stored on the server you can do that like this:
+If you want to get the messages from the server you can do that via HTTP GET request.
 
 ```
 curl \
   127.0.0.1:5505/messages
 ```
 
-If authorization is enabled you'll also have to add an authorization header as well of course.
-
+This will return all messages in json format.
+Don't forget to add the authorization header if authorization is enabled.
 
 ### Disclaimer
 
-Note that if you're room id contains a "," the server will break. I don't know if room ids with "," in them exist but if they do this will be an issue that you should be aware of.
+Note that if your room id contains a "," the server will break. I don't know if room ids with "," in them exist but if they do this will be an issue that you should be aware of.
 
 ## Contact
 If there are any questions regarding this project, feel free to contact me over any platform listed on https://nlion.nl/.

@@ -44,7 +44,7 @@ def post_messages():
 def get_messages():
     headers = dict(request.headers)
 
-    parameter = parser.headerparse(headers=headers)
+    parameter = parser.parameterparse(headers=headers)
 
     auth_res = authenticator.auth(parameter)
 
