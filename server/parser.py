@@ -29,7 +29,7 @@ def remove_spaces(tag):
     return tag
 
 
-def parameterparse(headers):
+def headerparse(headers):
     # Defaults
     title = ""
     channels = []
@@ -53,7 +53,7 @@ def parameterparse(headers):
             if str(header_content).lower() == "true" or str(header_content).lower() == "false":
                 markdown = str(header_content).lower()
             else:
-                return False
+                return "wrong_markdown"
         elif header == "X-Tags" or header.lower() == "tags" or header.lower() == "tag" or header.lower() == "ta":
             tags = header_content.rsplit(",")
             parsed_tags = []
@@ -87,6 +87,59 @@ def messageparse(parameter, body):
                 except UnicodeError:
                     logger.error("Couldn't decode request data")
 
+    msg = Message(title=parameter.title, content=content,
+                  channels=parameter.channels, markdown=parameter.markdown,
+                  tags=parameter.tags)
+    return msg
+
+
+def queryparse(queries):
+    # Defaults
+    message = ""
+    title = ""
+    channels = []
+    auth_pass = ""
+    markdown = "false"
+    parsed_tags = []
+
+    for query, query_content in queries.items():
+        if query == "X-Message" or query.lower() == "message" or query.lower() == "ms":
+            message = query_content
+        if query == "X-Title" or query.lower() == "title" or query.lower() == "t":
+            title = query_content
+        elif query == "X-Channel" or query.lower() == "channel" or query.lower() == "c":
+            if "," in query_content:
+                temp_channels = query_content.rsplit(",")
+                for channel in temp_channels:
+                    channels.append(channel)
+            else:
+                channels.append(query_content)
+        elif query == "X-Authorization" or query.lower() == "authorization" or query.lower() == "auth":
+            auth_pass = query_content
+        elif query == "X-Markdown" or query.lower() == "markdown" or query.lower() == "m":
+            if str(query_content).lower() == "true" or str(query_content).lower() == "false":
+                markdown = str(query_content).lower()
+            else:
+                return "wrong_markdown", "wrong_markdown"
+        elif query == "X-Tags" or query.lower() == "tags" or query.lower() == "tag" or query.lower() == "ta":
+            tags = query_content.rsplit(",")
+            parsed_tags = []
+            for tag in tags:
+                tag = str(tag).lower()
+                tag = remove_spaces(tag)
+                parsed_tags.append(tag)
+
+    if message == "":
+        return "no_message", "no_message"
+
+    parameter = ParaMeter(title=title, channels=channels,
+                          auth_pass=auth_pass, markdown=markdown,
+                          tags=parsed_tags)
+
+    return parameter, message
+
+
+def webhookmessageparse(parameter, content):
     msg = Message(title=parameter.title, content=content,
                   channels=parameter.channels, markdown=parameter.markdown,
                   tags=parameter.tags)

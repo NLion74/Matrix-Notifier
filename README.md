@@ -11,6 +11,7 @@ Simple REST-API for sending messages over the [Matrix](https://matrix.org) proto
 - Tag support to embed emojis in the title by using their short codes
 - Title support
 - Web UI to send messages
+- Webhooks
 
 ## Setup
 
@@ -94,7 +95,7 @@ Now if all the dependencies are installed the server and bot should be up and ru
 
 ### Sending messages
 
-Messages can be sent via HTTP POST or using the web UI.
+Messages can either be sent via HTTP POST request and by using the Web UI or via HTTP GET request by using Webhooks
 
 #### POST
 
@@ -119,8 +120,21 @@ Alternatively you could use the Web UI to send messages, which looks like this:
 
 ![webui.png](assets/images/webui.png)
 
-
 After you've seen how to send messages via POST this should be rather self-explanatory.
+
+#### Webhooks
+
+An alternative to using POST would be to send messages via HTTP GET request. This can be done by using webhooks.
+
+To use webhooks, simply make a request to the ```/webhook``` route and use queries to provide options just like you would normally.
+
+```
+curl "127.0.0.1:5505/webhook?channel=!liLFnvuVbMtrtbOYMS:matrix.org&title=Server+Failure&tags=exclamation,computer&message=Your+server+went+down!"
+```
+
+Which would result in a notification like this.
+
+![notification.png](assets/images/notifications.png)
 
 ### Options
 
@@ -225,6 +239,8 @@ Don't forget to add the authorization header if authorization is enabled.
 ### Disclaimer
 
 Note that if your room id contains a "," the server will break. I don't know if room ids with "," in them exist but if they do this will be an issue that you should be aware of.
+
+Also, when using webhooks make sure your auth_secret doesn't contain any "&" because that's used to split the queries.
 
 ## Contact
 If there are any questions regarding this project, feel free to contact me over any platform listed on https://nlion.nl/.

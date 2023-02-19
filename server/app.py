@@ -22,10 +22,10 @@ def post_messages():
     body = request.get_data()
     headers = dict(request.headers)
 
-    parameter = parser.parameterparse(headers=headers)
+    parameter = parser.headerparse(headers=headers)
 
-    if not parameter:
-        return "Wrong header format", 403
+    if parameter == "wrong_markdown":
+        return "Wrong markdown format", 403
 
     auth_res = authenticator.auth(parameter)
 
@@ -44,7 +44,7 @@ def post_messages():
 def get_messages():
     headers = dict(request.headers)
 
-    parameter = parser.parameterparse(headers=headers)
+    parameter = parser.headerparse(headers=headers)
 
     auth_res = authenticator.auth(parameter)
 
@@ -75,6 +75,30 @@ def get_messages():
     con.commit()
 
     return content_data, 200
+
+
+@app.route("/webhook", methods=['GET'])
+def webhook_messages():
+    queries = dict(request.args)
+
+    parameter, message = parser.queryparse(queries=queries)
+
+    if parameter == "wrong_markdown":
+        return "Wrong query format", 403
+    elif parameter == "no_message":
+        return "No message supplied", 403
+
+    auth_res = authenticator.auth(parameter)
+
+    if not auth_res:
+        return "Unauthorized", 401
+
+    msg = parser.webhookmessageparse(parameter=parameter, content=message)
+
+    saver.save_to_db(msg)
+    saver.clean_db()
+
+    return "Message successfully send", 200
 
 
 @app.route("/", methods=['GET'])
