@@ -22,7 +22,7 @@ def post_messages():
     body = request.get_data()
     headers = dict(request.headers)
 
-    parameter = parser.headerparse(headers=headers)
+    parameter = parser.parameterparse(headers=headers)
 
     if not parameter:
         return "Wrong header format", 403
