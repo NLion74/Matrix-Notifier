@@ -29,7 +29,7 @@ def remove_spaces(tag):
     return tag
 
 
-def parameterparse(headers, queries):
+def parameterparse(headers):
     # Defaults
     title = ""
     channels = []

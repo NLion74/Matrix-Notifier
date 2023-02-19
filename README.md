@@ -1,5 +1,5 @@
 # Matrix-Notifier
-Simple REST-API for sending messages over the [Matrix](https://matrix.org) protocol, build with [matrix-nio](https://github.com/poljar/matrix-nio).
+Simple REST-API for sending messages over the [Matrix](https://matrix.org) protocol, built with [matrix-nio](https://github.com/poljar/matrix-nio).
 
 ## Features
 
