@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class Callbacks():
+class Callbacks:
     def __init__(self, client: AsyncClient):
         self.client = client
 

@@ -1,6 +1,17 @@
 # Matrix-Notifier
 Simple REST-API for sending messages over the [Matrix](https://matrix.org) protocol, build with [matrix-nio](https://github.com/poljar/matrix-nio).
 
+## Features
+
+- Docker support
+- Authentication support
+- Sending encrypted messages
+- UTF-8 support
+- Markdown support for messages
+- Tag support to embed emojis in the title by using their short codes
+- Title support
+- Web UI to send messages
+
 ## Setup
 
 The easiest way of installing would be to use docker, however if for any reason that is not an option you can also install it from source.
