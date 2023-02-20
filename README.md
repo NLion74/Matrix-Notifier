@@ -89,13 +89,17 @@ cd ../bot
 python3 main.py
 ```
 
-Now if all the dependencies are installed the server and bot should be up and running. You can now move on to the [Usage Section](https://github.com/NLion74/Matrix-Notifier/#Usage).
+Now if all the dependencies are installed the server and bot should be up and running. You can now move on to the [Usage Section](#Usage).
 
 ## Usage
 
+Before moving on to sending messages you should create a room with the bot in it and copy the room id.
+
+To obtain the room id of a room on [Element](https://element.io/) right-click the room, then click on Settings. The room id can then be found in advanced section under Internal room ID.
+
 ### Sending messages
 
-Messages can either be sent via HTTP POST request and by using the Web UI or via HTTP GET request by using Webhooks
+Messages can either be sent via HTTP POST request and by using the Web UI or via HTTP GET request by using Webhooks.
 
 #### POST
 
@@ -146,7 +150,7 @@ In this section we will be going through every single option, explain what they 
 
 This option is always required, and is used for the bot to identify the rooms. The value has to be the room id of the room you want your messages getting sent to.
 
-To obtain the room id of a room on element right-click the room, then click on Settings. The room id can then be found in advanced section under Internal room ID.
+To obtain the room id of a room on [Element](https://element.io/) right-click the room, then click on Settings. The room id can then be found in advanced section under Internal room ID.
 
 #### Authorization
 
