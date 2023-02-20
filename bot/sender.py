@@ -80,12 +80,12 @@ async def send(msg, client):
         for room in roomids:
             try:
                 res = await client.room_send(room_id=room,
-                                       message_type="m.room.message",
-                                       content=content,
-                                       ignore_unverified_devices=True,)
+                                             message_type="m.room.message",
+                                             content=content,
+                                             ignore_unverified_devices=True,)
 
                 if isinstance(res, ErrorResponse):
                     raise Exception(res)
                 logger.info(f"Message sent")
             except Exception as err:
-                logger.error(err)
+                logger.exception(err)

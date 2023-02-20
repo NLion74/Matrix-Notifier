@@ -42,16 +42,3 @@ def save_to_db(msg):
         f'''INSERT OR IGNORE INTO messages VALUES ('{id}', '{channels}', '{msg.title}', '{msg.content}', '{tags}', '{msg.markdown}')''')
 
     con.commit()
-
-
-def clean_db():
-    data_dir = config.datadir_server
-
-    con = sqlite3.connect(f"{data_dir}/messages.db")
-    cur = con.cursor()
-
-    limit = config.limit
-    cur.execute(
-        f'''DELETE FROM messages WHERE id NOT IN (SELECT id FROM (SELECT id FROM messages ORDER BY id DESC LIMIT {limit}))''')
-
-    con.commit()

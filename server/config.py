@@ -3,9 +3,6 @@ import os
 # Port the server will use
 port = '5505'
 
-# How many entries should be kept in the database
-limit = 100
-
 # Where data will persist for the server
 datadir_server = "./data"
 
@@ -18,7 +15,6 @@ auth_secret = ""
 docker = os.environ.get('docker', False)
 if docker:
     port = os.environ.get('port', False)
-    limit = os.environ.get('sqlimit', False)
     datadir_server = "/data"
     authorization = os.environ.get('authorization', False)
     auth_secret = os.environ.get('auth_secret', False)

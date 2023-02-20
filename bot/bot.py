@@ -41,8 +41,6 @@ async def login() -> AsyncClient:
     device_name = configfile.device_name
 
     bot_config = AsyncClientConfig(
-        max_limit_exceeded=0,
-        max_timeouts=0,
         store_sync_tokens=True,
         encryption_enabled=True,
     )

@@ -35,16 +35,15 @@ def post_messages():
     msg = parser.messageparse(parameter=parameter, body=body)
 
     saver.save_to_db(msg)
-    saver.clean_db()
 
     return "Message successfully send", 200
 
 
 @app.route("/messages", methods=['GET'])
 def get_messages():
-    headers = dict(request.headers)
+    queries = dict(request.args)
 
-    parameter = parser.headerparse(headers=headers)
+    parameter, message = parser.queryparse(queries=queries)
 
     auth_res = authenticator.auth(parameter.auth_pass)
 
@@ -61,7 +60,7 @@ def get_messages():
     cur.execute(
         '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
 
-    cur.execute('''SELECT * FROM messages''')
+    cur.execute(f'''SELECT * FROM messages ORDER BY id DESC LIMIT {parameter.limit}''')
     data = cur.fetchall()
     message_data_list = []
     for tuple in data:

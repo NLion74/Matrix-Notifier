@@ -11,6 +11,7 @@ class ParaMeter:
     auth_pass: str
     tags: list
     markdown: str
+    limit: int
 
 
 @dataclass
@@ -36,6 +37,7 @@ def headerparse(headers):
     auth_pass = ""
     markdown = "false"
     parsed_tags = []
+    limit = 100
 
     for header, header_content in headers.items():
         if header == "X-Title" or header.lower() == "title" or header.lower() == "t":
@@ -61,11 +63,13 @@ def headerparse(headers):
                 tag = str(tag).lower()
                 tag = remove_spaces(tag)
                 parsed_tags.append(tag)
+        elif header == "X-Limit" or header.lower() == "limit" or header.lower() == "l":
+            limit = header_content
 
 
     parameter = ParaMeter(title=title, channels=channels,
                           auth_pass=auth_pass, markdown=markdown,
-                          tags=parsed_tags)
+                          tags=parsed_tags, limit=limit)
 
     return parameter
 
@@ -101,6 +105,7 @@ def queryparse(queries):
     auth_pass = ""
     markdown = "false"
     parsed_tags = []
+    limit = 100
 
     for query, query_content in queries.items():
         if query == "X-Message" or query.lower() == "message" or query.lower() == "ms":
@@ -128,10 +133,12 @@ def queryparse(queries):
                 tag = str(tag).lower()
                 tag = remove_spaces(tag)
                 parsed_tags.append(tag)
+        elif query == "X-Limit" or query.lower() == "limit" or query.lower() == "l":
+            limit = query_content
 
     parameter = ParaMeter(title=title, channels=channels,
                           auth_pass=auth_pass, markdown=markdown,
-                          tags=parsed_tags)
+                          tags=parsed_tags, limit=limit)
 
     return parameter, message
 

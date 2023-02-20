@@ -11,7 +11,6 @@ RUN pip3 install --user --no-cache-dir -r requirements.txt
 ENV docker yes
 
 ENV port 5505
-ENV sqlimit 100
 
 ENV authorization false
 ENV auth_secret ""

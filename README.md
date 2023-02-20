@@ -205,6 +205,17 @@ curl -H "Channel: !liLFnvuVbMtrtbOYMS:matrix.org" -H "m: true" -d "_italic text_
 
 ![markdown_example.png](assets/images/markdown_example.png)
 
+#### Markdown messages
+
+This option is used as a query when requesting messages from the server via HTTP GET request.
+Default is set to 100.
+
+```
+curl 127.0.0.1:5505/messages?limit=250
+```
+
+
+
 #### List of all options
 
 ```
@@ -222,8 +233,11 @@ X-Title(Case Sensitive) - Title(Case Insensitive), t(Case Insensitive)
 # Emoji codes can be found here: https://www.webfx.com/tools/emoji-cheat-sheet/
 X-Tags(Case Sensitive) - Tags(Case Insensitive), Tag(Case Insensitive), ta(Case Insensitive)
 
-# Used to enable and disable markdown. Default is set to false. Cannot be used repeatedly
+# Used to enable and disable markdown. Default is set to false. Cannot be used repeatedly.
 X-Markdown(Case Sensitive) - Markdown(Case Insensitive), m(Case Insensitive)
+
+# Used to manipulate how many messages the server should return when requesting messages via HTTP GET.
+X-Limit(Case Sensitive) - Limit(Case Insensitive), l(Case Insensitive)
 ```
 
 If you need more examples take a look into the examples directory.
@@ -235,12 +249,16 @@ If you need more examples take a look into the examples directory.
 If you want to get the messages from the server you can do that via HTTP GET request.
 
 ```
-curl \
-  127.0.0.1:5505/messages
+curl 127.0.0.1:5505/messages
 ```
 
-This will return all messages in json format.
-Don't forget to add the authorization header if authorization is enabled.
+This will return the last 100 messages in json format by default. You can however increase the limit by adding a query like this:
+
+```
+curl 127.0.0.1:5505/messages?limit=250
+```
+
+if authorization is enabled you will have to also add an authorization query.
 
 ### Disclaimer
 

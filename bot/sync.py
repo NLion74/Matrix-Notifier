@@ -15,6 +15,7 @@ async def check(messages, client):
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
 
+    # This is a mess, and I have to fix it.
     if os.path.exists(f"{data_dir}/ids.json"):
         with open(f"{data_dir}/ids.json", "r") as f:
             ids = json.load(f)
@@ -22,28 +23,15 @@ async def check(messages, client):
     else:
         ids = []
 
-    if not ids:
-        prev_id = -1
-    else:
-        prev_id = ids[(len(ids) - 1)]
-
-    if not messages:
-        curr_id = -1
-    else:
-        curr_id = messages[(len(messages) - 1)]['Id']
-
-    if curr_id >= prev_id or prev_id == -1:
-        for msg in messages:
-            id = msg['Id']
-            if id in ids:
-                continue
-            else:
-                ids.append(id)
-                await sender.send(msg, client)
-                with open(f"{data_dir}/ids.json", "w") as f:
-                    json.dump(ids, f)
-    else:
-        os.remove(f"{data_dir}/ids.json")
+    for msg in messages:
+        id = msg['Id']
+        if id in ids:
+            continue
+        else:
+            ids.append(id)
+            await sender.send(msg, client)
+            with open(f"{data_dir}/ids.json", "w") as f:
+                json.dump(ids, f)
 
 
 async def sync(url, client):
@@ -55,10 +43,9 @@ async def sync(url, client):
             authorization = False
 
         if authorization:
-            res = requests.get(
-                url, headers={"Authorization": config.auth_secret})
+            res = requests.get(f"{url}?limit=100&auth={config.auth_secret}")
         else:
-            res = requests.get(url)
+            res = requests.get(f"{url}?limit=100")
             if res.status_code == 401:
                 logger.error(
                     "Authorization seems to be enabled but not in the bot config")
