@@ -17,7 +17,7 @@ Simple REST-API for sending messages over the [Matrix](https://matrix.org) proto
 
 The easiest way of installing would be to use docker, however if for any reason that is not an option you can also install it from source.
 
-Before starting, you may want to create a bot account on the homeserver of your liking.
+Before starting, you may want to create a bot account on the homeserver of your liking. Or if your homeserver supports registration without email adress and captcha, it will just create an account using the specified credentials. 
 
 If you're ever having trouble with the database just use the example-database.db provided under examples/example-database.
 
