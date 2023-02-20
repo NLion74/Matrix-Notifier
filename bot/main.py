@@ -1,16 +1,12 @@
 import asyncio
-from nio import (AsyncClient,
-                 AsyncClientConfig,
-                 LoginResponse,
-                 InviteMemberEvent,
+from nio import (InviteMemberEvent,
                  RoomMessageText,)
-import os
-import json
 import logging
 
 import sync
 import config as configfile
 from Callbacks import Callbacks
+import bot
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(message)s',
@@ -18,94 +14,11 @@ logging.basicConfig(level=logging.INFO,
 
 logger = logging.getLogger()
 
-data_dir = configfile.datadir_bot
-if not os.path.exists(data_dir):
-    os.mkdir(data_dir)
-config_file = f"{data_dir}/credentials.json"
-store_path = f"{data_dir}/store"
-
-
-async def write_details_to_disk(resp: LoginResponse, home_server) -> None:
-    with open(config_file, "w") as f:
-        json.dump(
-            {
-                "home_server": home_server,
-                "user_id": resp.user_id,
-                "device_id": resp.device_id,
-                "access_token": resp.access_token,
-            },
-            f,
-        )
-
-
-async def login() -> AsyncClient:
-    bot_name = configfile.bot_name
-    bot_pass = configfile.bot_pass
-    home_server = configfile.home_server
-    device_name = configfile.device_name
-
-    bot_config = AsyncClientConfig(
-        store_sync_tokens=True,
-        encryption_enabled=True,
-    )
-
-    if not os.path.exists(config_file):
-
-        if not (home_server.startswith("https://") or home_server.startswith("http://")):
-            home_server = "https://" + home_server
-
-        if not os.path.exists(store_path):
-            os.mkdir(store_path)
-
-        client = AsyncClient(
-            homeserver=home_server,
-            user=bot_name,
-            store_path=store_path,
-            config=bot_config,
-        )
-
-        resp = await client.login(password=bot_pass, device_name=device_name)
-
-        if isinstance(resp, LoginResponse):
-            await write_details_to_disk(resp, home_server)
-        else:
-            logger.critical(f'homeserver = "{home_server}"; user = "{bot_name}"')
-            logger.critical(f"Failed to log in: {resp}")
-            quit(1)
-
-        logger.info("Logged in via password")
-
-    else:
-        with open(config_file, "r") as f:
-            config = json.load(f)
-            client = AsyncClient(
-                config["home_server"],
-                config["user_id"],
-                device_id=config["device_id"],
-                store_path=store_path,
-                config=bot_config,
-            )
-
-            client.restore_login(
-                user_id=config["user_id"],
-                device_id=config["device_id"],
-                access_token=config["access_token"],
-            )
-        logger.info("Logged in via access token")
-
-    return client
-
-
-async def sync_forever(client, timeout, full_state):
-    while True:
-        logger.info("Resyncing with matrix")
-        await client.sync(timeout=timeout, full_state=full_state,)
-
 
 async def main():
     url = f"{configfile.server_url}/messages"
 
-    client = await login()
+    client = await bot.login()
 
     callbacks = Callbacks(client)
     client.add_event_callback(callbacks.invite, (InviteMemberEvent,))
@@ -122,7 +35,7 @@ async def main():
     if client.should_claim_keys:
         await client.keys_claim()
 
-    f1 = asyncio.get_event_loop().create_task(sync_forever(client=client, timeout=30000, full_state=False,))
+    f1 = asyncio.get_event_loop().create_task(bot.sync_forever(client=client, timeout=30000, full_state=False,))
     f2 = asyncio.get_event_loop().create_task(sync.sync_forever(url, client))
 
     await asyncio.wait([f1, f2])

@@ -128,11 +128,14 @@ An alternative to using POST would be to send messages via webhook which support
 
 To use webhooks, simply make a request to the ```/webhook``` route and use queries to provide options just like you would normally.
 
-if you don't specify a message it will default to "webhook triggered"-
+if you don't specify a message it will default to "webhook triggered".
 
 ```
 curl "127.0.0.1:5505/webhook?channel=!liLFnvuVbMtrtbOYMS:matrix.org&title=Server+Failure&tags=exclamation,computer&message=Your+server+went+down!"
 ```
+
+# Test:
+> test
 
 Which would result in a notification like this.
 
