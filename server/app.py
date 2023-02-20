@@ -27,7 +27,7 @@ def post_messages():
     if parameter == "wrong_markdown":
         return "Wrong markdown format", 403
 
-    auth_res = authenticator.auth(parameter)
+    auth_res = authenticator.auth(parameter.auth_pass)
 
     if not auth_res:
         return "Unauthorized", 401
@@ -46,7 +46,7 @@ def get_messages():
 
     parameter = parser.headerparse(headers=headers)
 
-    auth_res = authenticator.auth(parameter)
+    auth_res = authenticator.auth(parameter.auth_pass)
 
     if not auth_res:
         return "Unauthorized", 401
@@ -86,7 +86,7 @@ def webhook_messages():
     if parameter == "wrong_markdown":
         return "Wrong query format", 403
 
-    auth_res = authenticator.auth(parameter)
+    auth_res = authenticator.auth(parameter.auth_pass)
 
     if not auth_res:
         return "Unauthorized", 401
