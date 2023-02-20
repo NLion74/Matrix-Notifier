@@ -134,9 +134,6 @@ if you don't specify a message it will default to "webhook triggered".
 curl "127.0.0.1:5505/webhook?channel=!liLFnvuVbMtrtbOYMS:matrix.org&title=Server+Failure&tags=exclamation,computer&message=Your+server+went+down!"
 ```
 
-# Test:
-> test
-
 Which would result in a notification like this.
 
 ![notification.png](assets/images/notifications.png)
