@@ -1,6 +1,7 @@
 import asyncio
 from nio import (InviteMemberEvent,
-                 RoomMessageText,)
+                 RoomMessageText,
+                 MegolmEvent,)
 import logging
 
 import sync
@@ -23,6 +24,7 @@ async def main():
     callbacks = Callbacks(client)
     client.add_event_callback(callbacks.invite, (InviteMemberEvent,))
     client.add_event_callback(callbacks.message, (RoomMessageText,))
+    client.add_event_callback(callbacks.decryption_failure, (MegolmEvent,))
 
     await client.sync(full_state=True)
 

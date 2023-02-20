@@ -1,6 +1,11 @@
 from nio import (AsyncClient,
                  AsyncClientConfig,
-                 LoginResponse,)
+                 LoginResponse,
+                 JoinedMembersError,
+                 JoinedMembersResponse,)
+from aiohttp import (ClientConnectionError,
+                     ServerDisconnectedError)
+from asyncio import sleep
 import os
 import json
 import logging
@@ -36,6 +41,8 @@ async def login() -> AsyncClient:
     device_name = configfile.device_name
 
     bot_config = AsyncClientConfig(
+        max_limit_exceeded=0,
+        max_timeouts=0,
         store_sync_tokens=True,
         encryption_enabled=True,
     )
@@ -59,12 +66,21 @@ async def login() -> AsyncClient:
 
         if isinstance(resp, LoginResponse):
             await write_details_to_disk(resp, home_server)
+            message = "Logged in via password."
         else:
-            logger.critical(f'homeserver = "{home_server}"; user = "{bot_name}"')
-            logger.critical(f"Failed to log in: {resp}")
-            quit(1)
+            logger.error(f'homeserver = "{home_server}"; user = "{bot_name}"')
+            logger.error(f"Failed to log in: {resp}")
+            logger.error(f"Trying to register...")
 
-        logger.info("Logged in via password")
+            resp = await client.register(username=bot_name, password=bot_pass, device_name=device_name)
+            message = "Registered using specified credentials."
+
+            if not isinstance(resp, LoginResponse):
+                logger.critical(f'homeserver = "{home_server}"; user = "{bot_name}"')
+                logger.critical(f"Failed to register: {resp}")
+                quit(1)
+
+        logger.info(message)
 
     else:
         with open(config_file, "r") as f:
@@ -87,7 +103,17 @@ async def login() -> AsyncClient:
     return client
 
 
-async def sync_forever(client, timeout, full_state):
+async def sync_forever(client: AsyncClient, timeout, full_state):
     while True:
-        logger.info("Resyncing with matrix")
-        await client.sync(timeout=timeout, full_state=full_state,)
+        try:
+            logger.info("Resyncing with matrix")
+            for room_id in client.rooms.keys():
+                members = await client.joined_members(room_id=room_id)
+                if len(members.members) < 2:
+                    await client.room_leave(room_id)
+            await client.sync(timeout=timeout, full_state=full_state,)
+        except (ClientConnectionError, ServerDisconnectedError):
+            logger.warning("Unable to connect to homeserver, retrying in 15s...")
+            await sleep(15)
+        finally:
+            await client.close()

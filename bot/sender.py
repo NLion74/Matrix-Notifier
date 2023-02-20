@@ -32,7 +32,7 @@ async def fetch_content(msg, tags, markdown_enabled):
     else:
         if markdown_enabled and not msg['Title'] == "":
             content = {"msgtype": "m.text",
-                       "body": f"{msg['Title']}:\n{markdown(msg['Content'], extensions=['nl2br'])}",
+                       "body": f"{msg['Title']}:\n{msg['Content']}",
                        "format": "org.matrix.custom.html",
                        "formatted_body": f"{msg['Title']}:\n{markdown(msg['Content'], extensions=['nl2br'])}"}
         elif markdown_enabled:
@@ -86,7 +86,6 @@ async def send(msg, client):
 
                 if isinstance(res, ErrorResponse):
                     raise Exception(res)
+                logger.info(f"Message sent")
             except Exception as err:
                 logger.error(err)
-            finally:
-                logger.info(f"Message sent")
