@@ -100,7 +100,6 @@ async def login() -> AsyncClient:
 
     return client
 
-
 async def sync_forever(client: AsyncClient, timeout, full_state):
     while True:
         try:

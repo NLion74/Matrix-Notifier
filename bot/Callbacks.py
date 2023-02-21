@@ -40,20 +40,3 @@ class Callbacks:
         logger.error(
             f"Failed to decrypt event '{event.event_id}' in room '{room.room_id}'!"
         )
-
-        red_x_and_lock_emoji = "❌ 🔐"
-
-        content = {
-            "m.relates_to": {
-                "rel_type": "m.annotation",
-                "event_id": event.event_id,
-                "key": red_x_and_lock_emoji,
-            }
-        }
-
-        return await self.client.room_send(
-            room.room_id,
-            "m.reaction",
-            content,
-            ignore_unverified_devices=True,
-        )
