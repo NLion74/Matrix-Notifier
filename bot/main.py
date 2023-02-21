@@ -42,6 +42,7 @@ async def main():
 
     await asyncio.wait([f1, f2])
 
+
 try:
     asyncio.run(main())
 except KeyboardInterrupt:
