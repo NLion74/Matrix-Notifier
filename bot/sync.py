@@ -1,38 +1,93 @@
 import json
-import requests
-import os
 import logging
+import os
 from asyncio import sleep
+import asyncio
+import aiofiles as aiof
+import requests
+import time
 
-import sender
 import config
+import sender
 
 logger = logging.getLogger(__name__)
 
 
-async def check(messages, client):
-    data_dir = config.datadir_bot
-    if not os.path.exists(data_dir):
-        os.mkdir(data_dir)
+async def load_file(file_path):
+    try:
+        async with aiof.open(file_path, "r") as f:
+            file = await f.read()
+            await f.flush()
+        return file
+    except Exception as e:
+        logger.critical(e)
+        return False
 
-    # This is a mess, and I have to fix it.
-    if os.path.exists(f"{data_dir}/ids.json"):
-        with open(f"{data_dir}/ids.json", "r") as f:
-            ids = json.load(f)
-            f.close()
+
+async def write_file(file_path, what_to_write):
+    try:
+        async with aiof.open(file_path, "w") as f:
+            await f.write(what_to_write)
+            await f.flush()
+        return True
+    except Exception as e:
+        logger.error(e)
+        return False
+
+async def save_id(file_path, ids, id):
+    ids = await append(ids, id)
+    res = await write_file(file_path, json.dumps(ids))
+    if res:
+        return True
     else:
-        ids = []
+        return False
 
-    for msg in messages:
-        id = msg['Id']
-        if id in ids:
-            continue
+
+async def append(ids, id):
+    ids.append(id)
+    return ids
+
+
+async def check(messages, client):
+    try:
+        data_dir = config.datadir_bot
+        if not os.path.exists(data_dir):
+            os.mkdir(f"{data_dir}/ids.json")
+
+        # This is a mess, and I have to fix it.
+        if os.path.exists(f"{data_dir}/ids.json"):
+            ids = json.loads(await load_file(f"{data_dir}/ids.json"))
+            if not ids:
+                logger.critical("An error occurred while loading ids. Exiting...")
         else:
-            ids.append(id)
-            await sender.send(msg, client)
-            with open(f"{data_dir}/ids.json", "w") as f:
-                json.dump(ids, f)
+            ids = []
 
+        if not ids:
+            prev_id = -1
+        else:
+            prev_id = ids[(len(ids) - 1)]
+
+        if not messages:
+            curr_id = -1
+        else:
+            curr_id = messages[(len(messages) - 1)]['Id']
+
+        if curr_id >= prev_id or prev_id == -1:
+            for msg in messages:
+                if msg['Id'] in ids:
+                    continue
+                else:
+                    tasks = [asyncio.create_task(sender.send(msg, client)), asyncio.create_task(save_id(f"{data_dir}/ids.json", ids, msg['Id']))]
+                    res = await asyncio.gather(*tasks)
+                    if False in res:
+                        logger.error("Error with saving or sending ids. Exiting...")
+                        quit(1)
+        else:
+            os.remove(f"{data_dir}/ids.json")
+
+    except Exception as e:
+        logger.error(e)
+        pass
 
 async def sync(url, client):
     logger.info("Resyncing with server")

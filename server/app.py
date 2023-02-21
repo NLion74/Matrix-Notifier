@@ -36,7 +36,7 @@ def post_messages():
 
     saver.save_to_db(msg)
 
-    return "Message successfully send", 200
+    return "Message successfully saved to database", 200
 
 
 @app.route("/messages", methods=['GET'])
@@ -60,7 +60,7 @@ def get_messages():
     cur.execute(
         '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
 
-    cur.execute(f'''SELECT * FROM messages ORDER BY id DESC LIMIT {parameter.limit}''')
+    cur.execute(f'''SELECT * FROM (SELECT * FROM messages ORDER BY id DESC LIMIT {parameter.limit}) sub ORDER BY id ASC''')
     data = cur.fetchall()
     message_data_list = []
     for tuple in data:
@@ -95,7 +95,7 @@ def webhook_messages():
     saver.save_to_db(msg)
     saver.clean_db()
 
-    return "Message successfully send", 200
+    return "Message successfully saved to database", 200
 
 
 @app.route("/", methods=['GET'])

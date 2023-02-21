@@ -83,9 +83,10 @@ async def send(msg, client):
                                              message_type="m.room.message",
                                              content=content,
                                              ignore_unverified_devices=True,)
-
+                logger.info(f"Message with id {msg['Id']} has been sent succesfully.")
                 if isinstance(res, ErrorResponse):
                     raise Exception(res)
-                logger.info(f"Message sent")
+                return True
             except Exception as err:
                 logger.exception(err)
+                return False
