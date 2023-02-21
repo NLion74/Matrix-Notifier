@@ -1,4 +1,8 @@
+# Ignore this section
 import os
+import logging
+logger = logging.getLogger(__name__)
+
 
 # Set this to wherever the bot will be able to access the server
 # Example: You have a server running the matrix-notifier-bot with the ip 1.2.3.4 and the port set to 5505.
@@ -17,6 +21,7 @@ device_name = 'matrix-nio'
 datadir_bot = "./data"
 
 authorization = False
+# Cant contain any &'s or +'s
 auth_secret = ""
 
 
@@ -35,5 +40,8 @@ if docker:
 
 if str(authorization).lower() == "true" or authorization == True:
     authorization = True
+    if auth_secret.__contains__("&") or auth_secret.__contains__("+"):
+        logger.error("auth_secret contains invalid character")
+        quit(1)
 else:
     authorization = False

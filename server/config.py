@@ -1,4 +1,8 @@
+# Ignore this section
 import os
+import logging
+logger = logging.getLogger(__name__)
+
 
 # Port the server will use
 port = '5505'
@@ -7,6 +11,7 @@ port = '5505'
 datadir_server = "./data"
 
 authorization = False
+# Cant contain any &'s or +'s
 auth_secret = ""
 
 
@@ -21,5 +26,8 @@ if docker:
 
 if str(authorization).lower() == "true" or authorization == True:
     authorization = True
+    if auth_secret.__contains__("&") or auth_secret.__contains__("+"):
+        logger.error("auth_secret contains invalid character")
+        quit(1)
 else:
     authorization = False
