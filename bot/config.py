@@ -8,9 +8,9 @@ import os
 server_url = "http://127.0.0.1:5505"
 
 # Bot Creds
-bot_name="@bot:nlion.nl"
-bot_pass="9*L*g6ZD&j29KU!I"
-home_server="https://mtx.nlion.nl"
+bot_name=""
+bot_pass=""
+home_server=""
 device_name = 'matrix-nio'
 
 # Where data will persist for the bot
