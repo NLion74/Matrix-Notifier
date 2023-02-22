@@ -42,7 +42,7 @@ async def login() -> AsyncClient:
 
     bot_config = AsyncClientConfig(
         store_sync_tokens=True,
-        encryption_enabled=True,
+        #encryption_enabled=True,
     )
 
     if not os.path.exists(config_file):

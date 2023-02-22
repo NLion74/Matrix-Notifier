@@ -36,7 +36,11 @@ def post_messages():
 
     id = saver.save_to_db(msg)
 
-    return f"Message successfully saved to database with the id {id}", 200
+    msg_json = json.dumps(dict([('Id', id), ('Channels', msg.channels),
+                                ('Title', msg.title), ('Content', msg.content),
+                                ('Tags', msg.tags), ('Markdown', msg.markdown)]))
+
+    return msg_json, 200
 
 
 @app.route("/messages", methods=['GET'])
@@ -64,9 +68,9 @@ def get_messages():
     data = cur.fetchall()
     message_data_list = []
     for tuple in data:
-        message_data = dict([('Id', tuple[0]), ('Channels', tuple[1]),
+        message_data = dict([('Id', tuple[0]), ('Channels', json.loads(tuple[1])),
                             ('Title', tuple[2]), ('Content', tuple[3]),
-                            ('Tags', tuple[4]),('Markdown', tuple[5])])
+                            ('Tags', json.loads(tuple[4])),('Markdown', tuple[5])])
         message_data_list.append(message_data)
 
     content_data = json.dumps(message_data_list)
@@ -92,9 +96,13 @@ def webhook_messages():
 
     msg = parser.webhookmessageparse(parameter=parameter, content=message)
 
-    id = saver.save_to_db(msg)
+    id, channels, title, content, tags, markdown = saver.save_to_db(msg)
 
-    return f"Message successfully saved to database with the id {id}", 200
+    msg_json = json.dumps(dict([('Id', id), ('Channels', channels),
+                                ('Title', title), ('Content', content),
+                                ('Tags', tags),('Markdown', markdown)]))
+
+    return msg_json, 200
 
 
 @app.route("/", methods=['GET'])

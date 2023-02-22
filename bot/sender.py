@@ -9,9 +9,9 @@ from nio import (RoomSendResponse,
 logger = logging.getLogger(__name__)
 
 
-async def fetch_content(msg, tags, markdown_enabled):
-    if tags:
-        emojis = await convert_emojis(tags)
+async def fetch_content(msg, markdown_enabled):
+    if msg['Tags']:
+        emojis = await convert_emojis(msg['Tags'])
         if markdown_enabled and not msg['Title'] == "":
             content = {"msgtype": "m.text",
                        "body": f"{emojis}{msg['Title']}:\n{msg['Content']}",
@@ -63,21 +63,21 @@ async def convert_emojis(tags):
 
 
 async def send(msg, client):
-    roomids = msg['Channels']
+    '''roomids = msg['Channels']
     roomids = json.loads(roomids)
-    tags = json.loads(msg['Tags'])
+    tags = json.loads(msg['Tags'])'''
 
     if str(msg['Markdown']) == "true":
         markdown_enabled = True
     else:
         markdown_enabled = False
 
-    content = await fetch_content(msg=msg, tags=tags, markdown_enabled=markdown_enabled)
+    content = await fetch_content(msg=msg, markdown_enabled=markdown_enabled)
 
-    if not roomids:
+    if not msg['Channels']:
         logger.info("No Channel Id provided")
     else:
-        for room in roomids:
+        for room in msg['Channels']:
             try:
                 res = await client.room_send(room_id=room,
                                              message_type="m.room.message",
