@@ -4,46 +4,47 @@ import os
 from asyncio import sleep
 import asyncio
 import requests
+import sqlite3
 
 import config
 import sender
-from file_actions import load_file, write_file
 
 logger = logging.getLogger(__name__)
 
 
-async def save_id(file_path, ids, id):
-    ids = await append(ids, id)
-    res = await write_file(file_path, json.dumps(ids))
-    if res:
-        return True
-    else:
+async def save_id(con, cur, id):
+    try:
+        cur.execute(
+            f'''INSERT OR IGNORE INTO ids VALUES ('{id}')''')
+        con.commit()
+    except Exception as e:
+        logger.error(e)
         return False
-
-
-async def append(ids, id):
-    ids.append(id)
-    return ids
 
 
 async def check(messages, client):
     try:
         data_dir = config.datadir_bot
         if not os.path.exists(data_dir):
-            os.mkdir(f"{data_dir}/ids.json")
+            os.mkdir(data_dir)
 
-        # This is a mess, and I have to fix it.
-        if os.path.exists(f"{data_dir}/ids.json"):
-            ids = json.loads(await load_file(f"{data_dir}/ids.json"))
-            if not ids:
-                logger.critical("An error occurred while loading ids. Exiting...")
-        else:
-            ids = []
+        con = sqlite3.connect(f"{data_dir}/ids.db")
+        cur = con.cursor()
+
+        cur.execute(
+            '''CREATE TABLE IF NOT EXISTS ids (id INT PRIMARY KEY)''')
+
+        cur.execute(f'''SELECT * FROM (SELECT * FROM ids ORDER BY id DESC LIMIT 250) sub ORDER BY id ASC''')
+        data = cur.fetchall()
+        ids = []
+        for tuple in data:
+            ids_raw = tuple[0]
+            ids.append(ids_raw)
 
         if not ids:
             prev_id = -1
         else:
-            prev_id = ids[(len(ids) - 1)]
+            prev_id = int(ids[(len(ids) - 1)])
 
         if not messages:
             curr_id = -1
@@ -55,17 +56,20 @@ async def check(messages, client):
                 if msg['Id'] in ids:
                     continue
                 else:
-                    tasks = [asyncio.create_task(sender.send(msg, client)), asyncio.create_task(save_id(f"{data_dir}/ids.json", ids, msg['Id']))]
+                    tasks = [asyncio.create_task(sender.send(msg, client)), asyncio.create_task(save_id(con, cur, msg['Id']))]
                     res = await asyncio.gather(*tasks)
                     if False in res:
-                        logger.error("Error with saving or sending ids. Exiting...")
-                        quit(1)
+                        logger.error("Error with saving or sending ids.")
+                        return False
         else:
-            os.remove(f"{data_dir}/ids.json")
+            con.execute('''DROP TABLE IF EXISTS ids''')
 
     except Exception as e:
         logger.error(e)
         pass
+    finally:
+        con.commit()
+
 
 async def sync(url, client):
     logger.info("Resyncing with server")
