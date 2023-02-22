@@ -34,9 +34,9 @@ def post_messages():
 
     msg = parser.messageparse(parameter=parameter, body=body)
 
-    saver.save_to_db(msg)
+    id = saver.save_to_db(msg)
 
-    return "Message successfully saved to database", 200
+    return f"Message successfully saved to database with the id {id}", 200
 
 
 @app.route("/messages", methods=['GET'])
@@ -92,9 +92,9 @@ def webhook_messages():
 
     msg = parser.webhookmessageparse(parameter=parameter, content=message)
 
-    saver.save_to_db(msg)
+    id = saver.save_to_db(msg)
 
-    return "Message successfully saved to database", 200
+    return f"Message successfully saved to database with the id {id}", 200
 
 
 @app.route("/", methods=['GET'])

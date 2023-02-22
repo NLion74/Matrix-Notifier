@@ -42,3 +42,4 @@ def save_to_db(msg):
         f'''INSERT OR IGNORE INTO messages VALUES ('{id}', '{channels}', '{msg.title}', '{msg.content}', '{tags}', '{msg.markdown}')''')
 
     con.commit()
+    return id
