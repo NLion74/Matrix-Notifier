@@ -93,7 +93,6 @@ def webhook_messages():
     msg = parser.webhookmessageparse(parameter=parameter, content=message)
 
     saver.save_to_db(msg)
-    saver.clean_db()
 
     return "Message successfully saved to database", 200
 

@@ -1,3 +1,33 @@
+async function make_request(message, title, tags, token, channel, markdown) {
+    if (title !== "" || tags !== "") {
+        console.log("t")
+        const res = await fetch('/', {
+            method: 'POST',
+            headers: {
+                'Authorization': token,
+                'Channel': channel,
+                'Title': title,
+                'Tags': tags,
+                'Markdown': markdown
+            },
+            body: (message)
+        })
+        return res;
+    }
+    else {
+        const res = await fetch('/', {
+            method: 'POST',
+            headers: {
+                'Authorization': token,
+                'Channel': channel,
+                'Markdown': markdown
+            },
+            body: (message)
+        })
+        return res;
+    }
+}
+
 function check_checkbox(checkbox)  {
     if (checkbox.checked) {
         return "true";
@@ -22,17 +52,7 @@ const onSubmit = async (e) => {
     const channel = channelInput.value;
     const markdown = check_checkbox(markdownCheckbox);
 
-    const res = await fetch('/', {
-        method: 'POST',
-        headers: {
-            'Authorization': token,
-            'Channel': channel,
-            'Title': title,
-            'Tags': tags,
-            'Markdown': markdown
-        },
-        body: (message)
-    })
+    const res = await make_request(message, title, tags, token, channel, markdown)
 
     if (res.status !== 200) {
         const text = await res.text();
