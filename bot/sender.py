@@ -10,39 +10,23 @@ logger = logging.getLogger(__name__)
 
 
 async def fetch_content(msg, markdown_enabled):
-    if msg['Tags']:
+    if msg['Tags'] or msg['Title'] != "":
         emojis = await convert_emojis(msg['Tags'])
-        if markdown_enabled and not msg['Title'] == "":
+        if markdown_enabled == "":
             content = {"msgtype": "m.text",
                        "body": f"{emojis}{msg['Title']}:\n{msg['Content']}",
                        "format": "org.matrix.custom.html",
                        "formatted_body": f"{emojis}{msg['Title']}:\n{markdown(msg['Content'], extensions=['nl2br'])}"}
-        elif markdown_enabled:
-            content = {"msgtype": "m.text",
-                       "body": f"{emojis}:\n{msg['Content']}",
-                       "format": "org.matrix.custom.html",
-                       "formatted_body": f"{emojis}:\n{markdown(msg['Content'], extensions=['nl2br'])}"}
-        elif not msg['Title'] == "":
-            content = {"msgtype": "m.text",
-                       "body": f"{emojis}{msg['Title']}:\n{msg['Content']}"}
         else:
             content = {"msgtype": "m.text",
-                       "body": f"{emojis}:\n{msg['Content']}"}
+                       "body": f"{emojis}{msg['Title']}:\n{msg['Content']}"}
 
     else:
-        if markdown_enabled and not msg['Title'] == "":
-            content = {"msgtype": "m.text",
-                       "body": f"{msg['Title']}:\n{msg['Content']}",
-                       "format": "org.matrix.custom.html",
-                       "formatted_body": f"{msg['Title']}:\n{markdown(msg['Content'], extensions=['nl2br'])}"}
-        elif markdown_enabled:
+        if markdown_enabled == "":
             content = {"msgtype": "m.text",
                        "body": f"{msg['Content']}",
                        "format": "org.matrix.custom.html",
-                       "formatted_body": markdown(msg['Content'], extensions=['nl2br'])}
-        elif not msg['Title'] == "":
-            content = {"msgtype": "m.text",
-                       "body": f"{msg['Title']}:\n{msg['Content']}"}
+                       "formatted_body": f"{markdown(msg['Content'], extensions=['nl2br'])}"}
         else:
             content = {"msgtype": "m.text",
                        "body": f"{msg['Content']}"}
@@ -63,10 +47,6 @@ async def convert_emojis(tags):
 
 
 async def send(msg, client):
-    '''roomids = msg['Channels']
-    roomids = json.loads(roomids)
-    tags = json.loads(msg['Tags'])'''
-
     if str(msg['Markdown']) == "true":
         markdown_enabled = True
     else:
