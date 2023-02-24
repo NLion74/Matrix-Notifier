@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 async def fetch_content(msg, markdown_enabled):
     if msg['Tags'] or msg['Title'] != "":
         emojis = await convert_emojis(msg['Tags'])
-        if markdown_enabled == "":
+        if markdown_enabled:
             content = {"msgtype": "m.text",
                        "body": f"{emojis}{msg['Title']}:\n{msg['Content']}",
                        "format": "org.matrix.custom.html",
@@ -22,7 +22,7 @@ async def fetch_content(msg, markdown_enabled):
                        "body": f"{emojis}{msg['Title']}:\n{msg['Content']}"}
 
     else:
-        if markdown_enabled == "":
+        if markdown_enabled:
             content = {"msgtype": "m.text",
                        "body": f"{msg['Content']}",
                        "format": "org.matrix.custom.html",
