@@ -22,18 +22,18 @@ datadir_bot = "./data"
 
 authorization = False
 # Cant contain any &'s or +'s
-auth_secret = ""
+auth_secret = "some_random_string"
 
 
 # Do Not Touch
 # If docker is used it will use the environment values
 docker = os.environ.get('docker', False)
 if docker:
-    server_url = f"http://{os.environ.get('host', False)}:{os.environ.get('port', False)}"
-    bot_name = os.environ.get('botuser', False)
-    bot_pass = os.environ.get('botpass', False)
-    home_server = os.environ.get('homeserver', False)
-    device_name = os.environ.get('devicename', False)
+    server_url = f"http://{os.environ.get('SERVER_HOSTNAME', False)}:{os.environ.get('SERVER_PORT', False)}"
+    bot_name = os.environ.get('bot_user', False)
+    bot_pass = os.environ.get('bot_pass', False)
+    home_server = os.environ.get('home_server', False)
+    device_name = os.environ.get('device_name', False)
     datadir_bot = "/data"
     authorization = os.environ.get('authorization', False)
     auth_secret = os.environ.get('auth_secret', False)
@@ -41,7 +41,13 @@ if docker:
 if str(authorization).lower() == "true" or authorization == True:
     authorization = True
     if auth_secret.__contains__("&") or auth_secret.__contains__("+"):
-        logger.error("auth_secret contains invalid character")
+        logger.critical("auth_secret contains invalid characters. Following a list with prohibited characters:")
+        logger.critical("['&', '+']")
+        logger.critical("Please make sure your auth_secret does not contain any of the characters listed above and try again.")
         quit(1)
 else:
     authorization = False
+
+if str(bot_name) == "" or str(bot_name) == "" or str(bot_pass) == "" or str(home_server) == "" or not bot_name or not bot_pass or not home_server:
+    logger.critical("Missing Bot_Credentials.")
+    quit(1)

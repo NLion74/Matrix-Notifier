@@ -19,7 +19,7 @@ auth_secret = ""
 # If docker is used it will use the environment values
 docker = os.environ.get('docker', False)
 if docker:
-    port = os.environ.get('port', False)
+    port = os.environ.get('SERVER_PORT', False)
     datadir_server = "/data"
     authorization = os.environ.get('authorization', False)
     auth_secret = os.environ.get('auth_secret', False)

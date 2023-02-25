@@ -2,21 +2,23 @@ version: "3.3"
 
 services:
   bot:
-    image: nlion/matrix-notifier-bot
-    restart: unless-stopped
     container_name: "matrix-notifer-bot"
+    image: nlion/matrix-notifier-bot
+    depends_on:
+      - server
     env_file:
     - .env
     volumes:
       - ./data:/data
+    restart: unless-stopped
 
   server:
-    image: nlion/matrix-notifier-server
-    restart: unless-stopped
     container_name: "matrix-notifer-server"
+    image: nlion/matrix-notifier-server
     ports:
     - "5505:5505"
     env_file:
     - .env
     volumes:
       - ./data:/data
+    restart: unless-stopped

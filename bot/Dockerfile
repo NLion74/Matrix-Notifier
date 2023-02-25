@@ -10,12 +10,12 @@ RUN pip3 install --user --no-cache-dir -r ./requirements.txt
 
 ENV docker yes
 
-ENV port 5505
+ENV PORT 5505
 
-ENV devicename "matrix-nio"
-ENV botuser ""
-ENV botpass ""
-ENV homeserver ""
+ENV bot_user ""
+ENV bot_pass ""
+ENV home_server ""
+ENV device_name "matrix-nio"
 
 ENV authorization false
 ENV auth_secret ""
