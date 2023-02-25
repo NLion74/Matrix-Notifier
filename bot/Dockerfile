@@ -10,7 +10,7 @@ RUN pip3 install --user --no-cache-dir -r ./requirements.txt
 
 ENV docker yes
 
-ENV PORT 5505
+ENV SERVER_PORT 5505
 
 ENV bot_user ""
 ENV bot_pass ""
