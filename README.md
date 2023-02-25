@@ -1,4 +1,5 @@
 # Matrix-Notifier
+
 Simple REST-API for sending messages over the [Matrix](https://matrix.org) protocol, built with [matrix-nio](https://github.com/poljar/matrix-nio).
 
 ## Features
@@ -14,10 +15,12 @@ Simple REST-API for sending messages over the [Matrix](https://matrix.org) proto
 - Webhooks
 
 ## Setup
-
+> Note: Matrix-Notifier probably contains a lot of bugs.
+> If you encounter a bug, please consider opening an issue.
+ 
 The easiest way of installing would be to use docker, however if for any reason that is not an option you can also install it from source.
 
-Before starting, you may want to create a bot account on the homeserver of your liking. Or if your homeserver supports registration without email adress and captcha, it will just create an account using the specified credentials. 
+Before starting, you may want to create a bot account on the homeserver of your liking. Or if your home_server supports registration without email adress and captcha, it will just create an account using the specified credentials. 
 
 If you're ever having trouble with the database just use the example-database.db provided under examples/example-database.
 
@@ -31,7 +34,7 @@ To do so just move to the directory and use this command:
 pip3 install -r requirements.txt
 ```
 
-### Install with Docker
+### Installation via Docker (recommended)
 
 There are two docker-compose.yml files provided, the docker-compose.yml and the dev-docker-compose.yml. The docker-compose.yml is what's recommended and also the most stable, using the image from dockerhub and the other one building from the git repository.
 
@@ -51,7 +54,7 @@ cp example.env .env
 docker-compose up -d
 ```
 
-If you're using the dev docker-compose follow these instructions below:
+If you're using the dev-docker-compose follow these instructions below:
 ```
 # Clone the repository
 git clone https://github.com/NLion74/Matrix-Notifier
@@ -68,7 +71,7 @@ docker-compose up -d
 
 Now everything should be up and running, and you can now move to the [Usage Section](#Usage).
 
-### Install from source
+### From source Installation
 
 Building from source is not recommended but if you decide to do so anyway here's a guide.
 
@@ -214,8 +217,6 @@ Default is set to 100.
 curl 127.0.0.1:5505/messages?limit=250
 ```
 
-
-
 #### List of all options
 
 ```
@@ -264,7 +265,14 @@ if authorization is enabled you will have to also add an authorization query.
 
 Note that if your room id contains a "," the server will break. I don't know if room ids with "," in them exist but if they do this will be an issue that you should be aware of.
 
-Also, when using webhooks make sure your auth_secret doesn't contain any "&" because that's used to split the queries.
+Also, when using webhooks make sure your auth_secret doesn't contain any of the following characters:
+```&, +```.
+
+This is because these characters are used for querys to split the queries and represent spaces.
+
+## Issues
+
+Matrix-Notifier probably contains a lot of bugs. So if you encounter a bug, please consider opening an issue or contact me directly. For the latter take a look at the [Contact Section](#Contact).
 
 ## Contact
 If there are any questions regarding this project, feel free to contact me over any platform listed on https://nlion.nl/.
