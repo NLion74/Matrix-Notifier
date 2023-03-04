@@ -42,6 +42,8 @@ jobs:
         id: metadata
         uses: docker/metadata-action@v4
         with:
+          flavor: |
+            latest=false
           images: |
             name=nlion/${{matrix.image}},enable=${{ github.event_name == 'release' }}
           tags: |
