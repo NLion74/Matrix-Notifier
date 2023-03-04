@@ -42,11 +42,10 @@ jobs:
         id: metadata
         uses: docker/metadata-action@v4
         with:
-          flavor: |
-            latest=true
           images: |
             name=nlion/${{matrix.image}},enable=${{ github.event_name == 'release' }}
           tags: |
+            type="latest"
             # Tag with git tag on release
             type=ref,event=tag
             type=raw,value=release,enable=${{ github.event_name == 'release' }}
