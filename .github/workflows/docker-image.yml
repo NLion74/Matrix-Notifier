@@ -59,3 +59,4 @@ jobs:
           platforms: ${{ matrix.platforms }}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
+          push: true
