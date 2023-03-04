@@ -1,0 +1,57 @@
+name: Build and push docker images
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      # Prevent a failure in one image from stopping the other builds
+      fail-fast: false
+      matrix:
+        include:
+          - context: "server"
+            image: "matrix-notifier-server"
+            platforms: "linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/amd64"
+          - context: "bot"
+            image: "matrix-notifier-bot"
+            platforms: "linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/amd64"
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2.1.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2.4.1
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      - name: Generate docker image tags
+        id: metadata
+        uses: docker/metadata-action@v4
+        with:
+          flavor: |
+            latest=true
+          images: |
+            name=nlion/${{matrix.image}},enable=${{ github.event_name == 'release' }}
+          tags: |
+            # Tag with git tag on release
+            type=ref,event=tag
+            type=raw,value=release,enable=${{ github.event_name == 'release' }}
+            
+      - name: print
+        run:
+          echo ${{ steps.metadata.outputs.tags }}
+          echo echo ${{ steps.metadata.outputs.images }}
