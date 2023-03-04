@@ -54,4 +54,5 @@ jobs:
       - name: print
         run:
           echo ${{ steps.metadata.outputs.tags }}
-          echo echo ${{ steps.metadata.outputs.images }}
+          echo "Tesdt"
+          echo ${{ steps.metadata.outputs.images }}
