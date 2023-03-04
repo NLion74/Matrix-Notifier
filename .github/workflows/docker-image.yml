@@ -8,7 +8,7 @@ on:
     types: [published]
 
 jobs:
-  build:
+  build_and_push:
     runs-on: ubuntu-latest
     strategy:
       # Prevent a failure in one image from stopping the other builds
@@ -52,6 +52,10 @@ jobs:
             # Tag with git tag on release
             type=ref,event=tag
             
-      - name: print
-        run:
-          echo ${{ steps.metadata.outputs.tags }}
+      - name: Build and push image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: ${{ matrix.context }}
+          platforms: ${{ matrix.platforms }}
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
