@@ -17,10 +17,10 @@ jobs:
         include:
           - context: "server"
             image: "matrix-notifier-server"
-            platforms: "linux/arm/v7,linux/arm64/v8,linux/amd64"
+            platforms: "linux/arm/v7,linux/arm64,linux/amd64"
           - context: "bot"
             image: "matrix-notifier-bot"
-            platforms: "linux/arm/v7,linux/arm64/v8,linux/amd64"
+            platforms: "linux/arm/v7,linux/arm64,linux/amd64"
 
     steps:
       - name: Checkout
