@@ -1,6 +1,6 @@
 FROM debian
 
-RUN apt-get update && apt-get install -y python3 python3-pip libolm-dev
+RUN apt-get update && apt-get install -y python3 python3-pip libolm-dev build-essential libssl-dev libffi-dev rustc
 
 WORKDIR /app
 
