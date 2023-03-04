@@ -45,12 +45,12 @@ jobs:
           flavor: |
             latest=false
           images: |
-            name=nlion/${{matrix.image}},enable=${{ github.event_name == 'release' }}
+            name=nlion/${{matrix.image}}
           tags: |
             # Tag with latest
-            type=raw,value=latest
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             # Tag with git tag on release
-            type=ref,event=tag
+            type=ref,event=tag,enable=${{ github.event_name == 'release' }}
             
       - name: Build and push image
         uses: docker/build-push-action@v4.0.0
