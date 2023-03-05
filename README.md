@@ -1,5 +1,9 @@
 # Matrix-Notifier
 
+[![Bot Pulls](https://img.shields.io/docker/pulls/nlion/matrix-notifier-bot?label=bot%20pulls&style=flat-square)](https://hub.docker.com/repository/docker/nlion/matrix-notifier-bot)
+[![Server Pulls](https://img.shields.io/docker/pulls/nlion/matrix-notifier-server?label=server%20pulls&style=flat-square)](https://hub.docker.com/repository/docker/nlion/matrix-notifier-server)
+[![Version](https://img.shields.io/github/v/tag/NLion74/Matrix-Notifier?label=version&style=flat-square)](https://github.com/NLion74/Matrix-Notifier)
+
 Simple REST-API for sending messages over the [Matrix](https://matrix.org) protocol, built with [matrix-nio](https://github.com/poljar/matrix-nio).
 
 ## Features
