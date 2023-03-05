@@ -31,6 +31,10 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2.4.1
+        # Fixes ghcr showing unknown architecture
+        with:
+          driver-opts: |
+            image=moby/buildkit:v0.10.6
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
