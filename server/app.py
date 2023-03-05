@@ -64,7 +64,9 @@ def get_messages():
     cur.execute(
         '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
 
-    cur.execute(f'''SELECT * FROM (SELECT * FROM messages ORDER BY id DESC LIMIT {parameter.limit}) sub ORDER BY id ASC''')
+    cur.execute(
+        'SELECT * FROM (SELECT * FROM messages ORDER BY id DESC LIMIT ?) sub ORDER BY id ASC', parameter.limit)
+
     data = cur.fetchall()
     message_data_list = []
     for tuple in data:

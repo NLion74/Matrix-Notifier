@@ -39,7 +39,7 @@ def save_to_db(msg):
     tags = json.dumps(msg.tags)
 
     cur.execute(
-        f'''INSERT OR IGNORE INTO messages VALUES ('{id}', '{channels}', '{msg.title}', '{msg.content}', '{tags}', '{msg.markdown}')''')
+        'INSERT INTO messages VALUES (?, ?, ?, ?, ?, ?)', (id, channels, msg.title, msg.content, tags, msg.markdown))
 
     con.commit()
     return id
