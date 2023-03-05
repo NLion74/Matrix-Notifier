@@ -13,6 +13,7 @@ Simple REST-API for sending messages over the [Matrix](https://matrix.org) proto
 - Title support
 - Web UI to send messages
 - Webhooks
+- Pushing messages as json
 
 ## Setup
 > Note: Matrix-Notifier probably contains a lot of bugs.
@@ -142,6 +143,28 @@ curl "127.0.0.1:5505/webhook?channel=!liLFnvuVbMtrtbOYMS:matrix.org&title=Server
 ```
 
 Which would result in a notification like this.
+
+![notification.png](assets/images/notifications.png)
+
+#### Push as json
+
+You can also push messages via json. This feature supports both POST and GET http requests.
+
+To push messages as json, you have to make a request to the ```/json``` the body has to be a json dictionary.
+
+Specifying a message is required.
+
+```
+curl 127.0.0.1:5505/json \
+  -d '{
+    "channel": "!liLFnvuVbMtrtbOYMS:matrix.org",
+    "title": "Server Failure",
+    "tags": "exclamation, computer",
+    "message": "Your server went down!"
+  }'
+```
+
+This would result in a notification like this:
 
 ![notification.png](assets/images/notifications.png)
 

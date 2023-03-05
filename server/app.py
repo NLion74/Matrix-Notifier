@@ -98,11 +98,38 @@ def webhook_messages():
 
     msg = parser.webhookmessageparse(parameter=parameter, content=message)
 
-    id, channels, title, content, tags, markdown = saver.save_to_db(msg)
+    id = saver.save_to_db(msg)
 
-    msg_json = json.dumps(dict([('Id', id), ('Channels', channels),
-                                ('Title', title), ('Content', content),
-                                ('Tags', tags),('Markdown', markdown)]))
+    msg_json = json.dumps(dict([('Id', id), ('Channels', msg.channels),
+                                ('Title', msg.title), ('Content', msg.content),
+                                ('Tags', msg.tags), ('Markdown', msg.markdown)]))
+
+    return msg_json, 200
+
+
+@app.route("/json", methods=['GET', 'POST'])
+def json_messages():
+    body = request.get_data()
+
+    parameter, message = parser.jsonparse(body=body)
+
+    if parameter == "JSONDecodeError":
+        return "Json decode error", 403
+    elif parameter == "message required":
+        return "message required", 403
+
+    auth_res = authenticator.auth(parameter.auth_pass)
+
+    if not auth_res:
+        return "Unauthorized", 401
+
+    msg = parser.webhookmessageparse(parameter=parameter, content=message)
+
+    id = saver.save_to_db(msg)
+
+    msg_json = json.dumps(dict([('Id', id), ('Channels', msg.channels),
+                                ('Title', msg.title), ('Content', msg.content),
+                                ('Tags', msg.tags), ('Markdown', msg.markdown)]))
 
     return msg_json, 200
 

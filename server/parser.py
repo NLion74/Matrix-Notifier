@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import logging
+import json
 
 logger = logging.getLogger()
 
@@ -148,3 +149,65 @@ def webhookmessageparse(parameter, content):
                   channels=parameter.channels, markdown=parameter.markdown,
                   tags=parameter.tags)
     return msg
+
+def jsonparse(body):
+    # Defaults
+    message = ""
+    title = ""
+    channels = []
+    auth_pass = ""
+    markdown = "false"
+    parsed_tags = []
+    limit = 100
+
+    content = ""
+    try:
+        content = body.decode("utf-8")
+    except UnicodeError:
+        logger.error("Client doesn't seem to be using valid utf-8")
+        try:
+            content = body.decode("cp932")
+        except UnicodeError:
+            try:
+                content = body.decode("ascii")
+            except UnicodeError:
+                try:
+                    content = body.decode("ISO-8859-1")
+                except UnicodeError:
+                    logger.error("Couldn't decode request data")
+
+    try:
+        json_body = json.loads(content)
+    except json.JSONDecodeError:
+        return "JSONDecodeError", "JSONDecodeError"
+
+    for key, value in json_body.items():
+        if key == "X-Message" or key.lower() == "message" or key.lower() == "ms":
+            message = value
+        if key == "X-Title" or key.lower() == "title" or key.lower() == "t":
+            title = value
+        elif key == "X-Channel" or key.lower() == "channel" or key.lower() == "c":
+            channels.append(value)
+        elif key == "X-Authorization" or key.lower() == "authorization" or key.lower() == "auth":
+            auth_pass = value
+        elif key == "X-Markdown" or key.lower() == "markdown" or key.lower() == "m":
+            if str(value).lower() == "true" or str(value).lower() == "false":
+                markdown = str(value).lower()
+            else:
+                return "wrong_markdown", "wrong_markdown"
+        elif key == "X-Tags" or key.lower() == "tags" or key.lower() == "tag" or key.lower() == "ta":
+            tags = value.rsplit(",")
+            parsed_tags = []
+            for tag in tags:
+                tag = str(tag).lower()
+                tag = remove_spaces(tag)
+                parsed_tags.append(tag)
+
+    if message == "":
+        return "message required", "message required"
+
+    parameter = ParaMeter(title=title, channels=channels,
+                          auth_pass=auth_pass, markdown=markdown,
+                          tags=parsed_tags, limit=limit)
+
+    return parameter, message
