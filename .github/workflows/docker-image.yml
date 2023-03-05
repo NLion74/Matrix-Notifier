@@ -64,7 +64,18 @@ jobs:
             # Tag with git tag on release
             type=ref,event=tag,enable=${{ github.event_name == 'release' }}
 
-      - name: Build and push image
+      # First only pushing amd64 architecture for faster deployment
+      - name: First Push
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: ${{ matrix.context }}
+          platforms: "linux/amd64"
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          push: true
+
+      # Secondly deploying the rest of the architectures
+      - name: Second Push
         uses: docker/build-push-action@v4.0.0
         with:
           context: ${{ matrix.context }}
