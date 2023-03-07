@@ -1,0 +1,28 @@
+version: "3.3"
+
+services:
+  bot:
+    container_name: "matrix-notifer-bot"
+    build:
+      context: ../bot
+      dockerfile: Dockerfile
+    depends_on:
+      - server
+    env_file:
+    - .test-env
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  server:
+    container_name: "matrix-notifer-server"
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    ports:
+    - "5505:5505"
+    env_file:
+    - .test-env
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
