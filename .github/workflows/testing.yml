@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  Start:
-    name: Start
+  Start and Test:
+    name: Start and Test
 
     runs-on: ubuntu-latest
 
@@ -21,18 +21,9 @@ jobs:
       - name: Check out code from Github
         uses: actions/checkout@v3
 
-      - name: Create Envfile
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_bot_user: ${{ secrets.BOT_USERNAME }}
-          envkey_bot_pass: ${{ secrets.BOT_PASSWORD }}
-          envkey_home_server: ${{ secrets.HOME_SERVER }}
-          envkey_authorization: "true"
-          envkey_auth_secret: ${{ secrets.SERVER_SECRET }}
-          envkey_SERVER_HOSTNAME: "server"
-          directory: ./docker
-          file_name: .test-env
-          fail_on_empty: false
+      - name: Create env file
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .test-env
 
       - name: Run Matrix-Notifier
         working-directory: ./docker
