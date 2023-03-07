@@ -1,0 +1,49 @@
+name: Testing
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Start:
+    name: Start
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [ "3.8", "3.9", "3.10" ]
+
+    steps:
+      - name: Check out code from Github
+        uses: actions/checkout@v3
+
+      - name: Create Envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_bot_user: ${{ secrets.BOT_USERNAME }}
+          envkey_bot_pass: ${{ secrets.BOT_PASSWORD }}
+          envkey_home_server: ${{ secrets.HOME_SERVER }}
+          envkey_authorization: "true"
+          envkey_auth_secret: ${{ secrets.SERVER_SECRET }}
+          envkey_SERVER_HOSTNAME: "server"
+          directory: ./docker
+          file_name: .test-env
+          fail_on_empty: false
+
+      - name: Run Matrix-Notifier
+        working-directory: ./docker
+        run: docker-compose -f /dev-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from matrix-notifer-server
+
+      - name: Install requirements.txt
+        run: pip3 install --no-cache-dir -r ./tests/requirements.txt
+
+      - name: Run pytest
+        run: pytest tests/
