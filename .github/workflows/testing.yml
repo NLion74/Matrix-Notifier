@@ -23,7 +23,7 @@ jobs:
 
       - name: Create env file
         run: |
-          echo "${{ secrets.ENVFILE }}" > .test-env
+          echo "${{ secrets.ENV_FILE }}" > .test-env
 
       - name: Run Matrix-Notifier
         working-directory: ./docker
