@@ -75,5 +75,10 @@ jobs:
 
 
   Codecov:
+  name: code cov test
+
+  runs-on: ubuntu-20.04
+
+  steps:
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
