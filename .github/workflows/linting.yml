@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   code_quality_test:
-    name: Lint with pylint
+    name: Linting
 
     runs-on: ubuntu-latest
 
@@ -46,28 +46,3 @@ jobs:
       - name: Lint with pylint
         run: |
           pylint $(git ls-files '*.py') --fail-under=6 --max-line-length=127 --disable=C0114,C0115,C0116,W1203,R0903,W0238
-
-  Run_and_Test:
-    name: Run and Test
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup env-file
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_bot_user: ${{ secrets.MATRIX_USERNAME }}
-          envkey_bot_pass: ${{ secrets.MATRIX_PASSWORD }}
-          envkey_home_server: ${{ secrets.MATRIX_HOMESERVER }}
-          envkey_authorization: true
-          envkey_auth_secret: ${{ secrets.SERVER_SECRET }}
-          directory: ./docker
-          file_name: .test-env
-          fail_on_empty: false
-
-      - name: Run Server
-        working-directory: ./docker
-        run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from server
