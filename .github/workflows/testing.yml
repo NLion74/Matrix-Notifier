@@ -72,13 +72,12 @@ jobs:
           export PWD=$(pwd)
           python3 -m pylint plex_auto_languages --fail-under=9 --max-line-length=127 --disable=C0114,C0115,C0116,W1203,R0903,W0238 --init-hook='import sys; sys.path.append("${PWD}")'
 
-
-
-  Codecov:
-  name: code cov test
-
-  runs-on: ubuntu-20.04
-
-  steps:
+  coverage:
+    name: upload coverage to codecov
+    runs-on: ubuntu-20.04
+    needs: pytest
+    steps:
+    - name: Check out code from GitHub
+      uses: actions/checkout@v3
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
