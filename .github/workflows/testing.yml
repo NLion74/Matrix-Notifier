@@ -75,7 +75,6 @@ jobs:
   coverage:
     name: upload coverage to codecov
     runs-on: ubuntu-20.04
-    needs: pytest
     steps:
     - name: Check out code from GitHub
       uses: actions/checkout@v3
