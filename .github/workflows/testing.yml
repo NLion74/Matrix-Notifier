@@ -40,7 +40,7 @@ jobs:
 
       - name: Run Matrix-Notifier
         working-directory: ./docker
-        run: docker-compose -f /dev-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from matrix-notifer-server
+        run: docker-compose -f dev-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from matrix-notifer-server
 
       - name: Install requirements.txt
         run: pip3 install --no-cache-dir -r ./tests/requirements.txt
