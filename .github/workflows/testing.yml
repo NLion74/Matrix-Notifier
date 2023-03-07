@@ -22,7 +22,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Create env file
+        working-directory: ./docker
         run: |
+          touch .test-env
           echo "${{ secrets.ENV_FILE }}" > .test-env
 
       - name: Run Matrix-Notifier
