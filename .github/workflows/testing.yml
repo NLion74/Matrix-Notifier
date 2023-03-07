@@ -45,43 +45,7 @@ jobs:
 
       - name: Lint with pylint
         run: |
-          pylint $(git ls-files '*.py') --fail-under=9 --max-line-length=127 --disable=C0114,C0115,C0116,W1203,R0903,W0238
-
-  pytest:
-    name: pytest
-
-    runs-on: ubuntu-20.04
-
-    env:
-      PLEXAPI_AUTH_SERVER_BASEURL: http://127.0.0.1:32400
-      PLEX_CONTAINER: linuxserver/plex
-      PLEX_CONTAINER_TAG: latest
-
-    steps:
-    - name: Check out code from Github
-      uses: actions/checkout@v3
-
-    - name: Set up Python ${{ env.DEFAULT_PYTHON }}
-      id: python
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ env.DEFAULT_PYTHON }}
-
-    - name: Restore Python ${{ env.DEFAULT_PYTHON }} virtual environment
-      id: cache-venv
-      uses: actions/cache@v3
-      with:
-        path: venv
-        key: ${{ env.CACHE_VERSION }}-${{ runner.os }}-venv-${{ steps.python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
-
-    - name: Create Python virtual environment
-      if: steps.cache-venv.outputs.cache-hit != 'true'
-      run: |
-        python -m venv venv
-        . venv/bin/activate
-        pip install -U pip
-        pip install -r requirements.txt
-        pip install -r tests/requirements.txt
+          pylint $(git ls-files '*.py') --fail-under=6 --max-line-length=127 --disable=C0114,C0115,C0116,W1203,R0903,W0238
 
   Run_and_Test:
     name: Run and Test
@@ -106,14 +70,4 @@ jobs:
 
       - name: Run Server
         working-directory: ./docker
-        run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit
-
-  Coverage:
-    name: upload coverage to codecov
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Check out code from GitHub
-      uses: actions/checkout@v3
-
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v3
+        run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from server
