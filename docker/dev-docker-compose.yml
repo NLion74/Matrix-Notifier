@@ -20,7 +20,7 @@ services:
       context: ../server
       dockerfile: Dockerfile
     ports:
-    - "7278:5505"
+    - "5505:5505"
     env_file:
     - .env
     volumes:
