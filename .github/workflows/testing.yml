@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  Start and Test:
+  Start_and_Test:
     name: Start and Test
 
     runs-on: ubuntu-latest
