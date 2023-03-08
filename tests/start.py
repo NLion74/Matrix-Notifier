@@ -1,10 +1,9 @@
 import pytest
-from time import sleep
+import time
 
 
 def main():
     res = pytest.main(["."])
-    sleep(30)
     quit(int(res))
 
 
