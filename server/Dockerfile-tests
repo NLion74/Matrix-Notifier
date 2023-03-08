@@ -6,6 +6,8 @@ WORKDIR /app
 
 COPY ./ ./
 
+ENV PATH="/root/.local/bin:${PATH}"
+
 RUN pip3 install --user --no-cache-dir -r requirements.txt
 
 RUN pip3 install --user --no-cache-dir coverage
