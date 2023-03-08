@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   bot:
-    container_name: "matrix-notifer-bot"
+    container_name: "matrix-notifier-bot"
     image: nlion/matrix-notifier-bot:latest
     depends_on:
       - server
@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 
   server:
-    container_name: "matrix-notifer-server"
+    container_name: "matrix-notifier-server"
     image: nlion/matrix-notifier-server:latest
     ports:
     - "5505:5505"

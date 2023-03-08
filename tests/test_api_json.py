@@ -3,15 +3,41 @@ import json
 
 import config
 
-url = config.matrix_notifier_url
+url = config.server_url
 auth_secret = config.auth_secret
-channel = config.test_channel
+channel = config.channel
+
+
+def test_json_content_withoutauth():
+    message = "Test message!"
+    payload = {
+        "message": message,
+        "channel": channel
+    }
+    res = requests.post(f"{url}/json", data=json.dumps(payload))
+    assert res.status_code == 401
+
+
+def test_json_content_nomessage():
+    payload = {
+        "channel": channel
+    }
+    res = requests.post(f"{url}/json", data=json.dumps(payload))
+    assert res.status_code == 403
+
+
+def test_json_content_wrongjson():
+    payload = "Duhhhh"
+    res = requests.post(f"{url}/json", data=json.dumps(payload))
+    assert res.status_code == 500
 
 
 def test_json_content():
     message = "Test message!"
     payload = {
-        "message": message
+        "message": message,
+        "channel": channel,
+        "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
     assert res.status_code == 200
@@ -21,7 +47,9 @@ def test_json_content():
 def test_json_ids():
     message = "Test message!"
     payload = {
-        "message": message
+        "message": message,
+        "channel": channel,
+        "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
     id = json.loads(res.text)['Id']
@@ -33,7 +61,9 @@ def test_json_ids():
 def test_json_utf8():
     message = "öäüßÖÄÜ€"
     payload = {
-        "message": message
+        "message": message,
+        "channel": channel,
+        "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
     assert res.status_code == 200
@@ -45,7 +75,9 @@ def test_json_title():
     title = "Test Title"
     payload = {
         "message": message,
-        "title": title
+        "title": title,
+        "channel": channel,
+        "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
     assert res.status_code == 200
@@ -57,12 +89,13 @@ def test_json_tags():
     tags = "warning, skull"
     payload = {
         "message": message,
-        "tags": tags
+        "tags": tags,
+        "channel": channel,
+        "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
     assert res.status_code == 200
     assert json.loads(res.text)['Tags'] == ["warning", "skull"]
-    # assert message came over matrix
 
 
 def test_json_tags_spaces():
@@ -70,12 +103,13 @@ def test_json_tags_spaces():
     tags = "warning,                                                skull"
     payload = {
         "message": message,
-        "tags": tags
+        "tags": tags,
+        "channel": channel,
+        "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
     assert res.status_code == 200
     assert json.loads(res.text)['Tags'] == ["warning", "skull"]
-    # assert message came over matrix
 
 
 def test_json_tags_withoutspaces():
@@ -83,12 +117,13 @@ def test_json_tags_withoutspaces():
     tags = "warning,skull"
     payload = {
         "message": message,
-        "tags": tags
+        "tags": tags,
+        "channel": channel,
+        "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
     assert res.status_code == 200
     assert json.loads(res.text)['Tags'] == ["warning", "skull"]
-    # assert message came over matrix
 
 
 def test_json_markdown():
@@ -96,9 +131,10 @@ def test_json_markdown():
     markdown = "TrUe"
     payload = {
         "message": message,
-        "markdown": markdown
+        "markdown": markdown,
+        "channel": channel,
+        "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
     assert res.status_code == 200
     assert json.loads(res.text)['Markdown'] == markdown.lower()
-    # assert message came over matrix

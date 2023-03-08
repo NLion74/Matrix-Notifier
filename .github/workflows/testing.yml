@@ -27,12 +27,6 @@ jobs:
           touch .test-env
           echo "${{ secrets.ENV_FILE }}" > .test-env
 
-      - name: Run Matrix-Notifier
+      - name: Run and Test Matrix-Notifier
         working-directory: ./docker
         run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from server
-
-      - name: Install requirements.txt
-        run: pip3 install --no-cache-dir -r ./tests/requirements.txt
-
-      - name: Run pytest
-        run: pytest tests/
