@@ -6,8 +6,6 @@ WORKDIR /app
 
 COPY ./ ./
 
-ENV PATH="/root/.local/bin:${PATH}"
-
 RUN pip3 install --user --no-cache-dir -r requirements.txt
 
 RUN pip3 install --user --no-cache-dir coverage
@@ -24,4 +22,4 @@ ENV device_name "matrix-nio"
 ENV authorization false
 ENV auth_secret ""
 
-CMD [ "coverage", "run", "-p", "main.py" ]
+CMD [ "python3", "-m", "coverage", "run", "-p", "main.py" ]

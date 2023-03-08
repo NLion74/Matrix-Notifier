@@ -6,8 +6,6 @@ WORKDIR /app
 
 COPY ./ ./
 
-ENV PATH="/root/.local/bin:${PATH}"
-
 RUN pip3 install --user --no-cache-dir -r requirements.txt
 
 RUN pip3 install --user --no-cache-dir coverage
@@ -21,4 +19,4 @@ ENV auth_secret ""
 
 EXPOSE 5505
 
-CMD [ "coverage", "run", "-p", "app.py" ]
+CMD [ "python3", "-m", "coverage", "run", "-p", "app.py" ]
