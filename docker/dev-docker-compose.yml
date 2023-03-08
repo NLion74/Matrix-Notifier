@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   bot:
-    container_name: "matrix-notifer-bot"
+    container_name: "matrix-notifier-bot"
     build:
       context: ../bot
       dockerfile: Dockerfile
@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
 
   server:
-    container_name: "matrix-notifer-server"
+    container_name: "matrix-notifier-server"
     build:
       context: ../server
       dockerfile: Dockerfile

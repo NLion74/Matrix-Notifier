@@ -64,8 +64,6 @@ def headerparse(headers):
                 tag = str(tag).lower()
                 tag = remove_spaces(tag)
                 parsed_tags.append(tag)
-        elif header == "X-Limit" or header.lower() == "limit" or header.lower() == "l":
-            limit = header_content
 
 
     parameter = ParaMeter(title=title, channels=channels,

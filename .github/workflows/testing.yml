@@ -1,0 +1,36 @@
+name: Testing
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Running_Tests:
+    name: Running Tests
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code from Github
+        uses: actions/checkout@v3
+
+      - name: Create env file
+        working-directory: ./docker
+        run: |
+          touch .test-env
+          echo "${{ secrets.ENV_FILE }}" > .test-env
+
+      - name: Building Matrix-Notifier Tests
+        working-directory: ./docker
+        run: docker-compose -f test-docker-compose.yml build
+
+      - name: Running Matrix-Notifier Tests
+        working-directory: ./docker
+        run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from tester

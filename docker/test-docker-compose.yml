@@ -1,0 +1,42 @@
+version: "3.3"
+
+services:
+  bot:
+    container_name: "matrix-notifier-bot"
+    build:
+      context: ../bot
+      dockerfile: Dockerfile
+    depends_on:
+      - server
+    env_file:
+    - .test-env
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  server:
+    container_name: "matrix-notifier-server"
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    ports:
+    - "5505:5505"
+    env_file:
+    - .test-env
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  tester:
+    container_name: "matrix-notifier-tester"
+    build:
+      context: ../tests
+      dockerfile: Dockerfile
+    depends_on:
+      - server
+      - bot
+    env_file:
+    - .test-env
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
