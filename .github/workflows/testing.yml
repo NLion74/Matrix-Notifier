@@ -47,7 +47,7 @@ jobs:
 
       - name: Merge coverage reports
         working-directory: ./tests
-        run: python3 ./merge.py ${{ github.workspace }}/docker/data
+        run: python3 ./merge.py
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v2

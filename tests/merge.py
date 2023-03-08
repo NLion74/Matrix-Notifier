@@ -1,10 +1,9 @@
 import coverage
-import sys
 
 
 def main():
     cov = coverage.Coverage()
-    cov.combine(data_paths=sys.argv[1])
+    cov.combine("../docker/data")
 
 
 if __name__ == "__main__":
