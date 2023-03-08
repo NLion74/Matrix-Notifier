@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  Start_and_Test:
-    name: Start and Test
+  Running_Tests:
+    name: Runnning Tests
 
     runs-on: ubuntu-latest
 
@@ -26,6 +26,10 @@ jobs:
         run: |
           touch .test-env
           echo "${{ secrets.ENV_FILE }}" > .test-env
+
+      - name: Build Matrix-Notifier Tests
+        working-directory: ./docker
+        run: docker-compose -f test-docker-compose.yml build
 
       - name: Run and Test Matrix-Notifier
         working-directory: ./docker

@@ -12,4 +12,4 @@ ENV docker yes
 
 ENV auth_secret ""
 
-CMD ["pytest", "."]
+CMD ["python3", "start.py"]

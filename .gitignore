@@ -133,4 +133,4 @@ databases/
 data/
 .idea
 dev-testing-tools
-.test-env
+test.env
