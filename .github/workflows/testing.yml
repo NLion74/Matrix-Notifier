@@ -34,3 +34,14 @@ jobs:
       - name: Running Matrix-Notifier Tests
         working-directory: ./docker
         run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from tester
+
+      - name: Merge coverage reports
+        working-directory: ./tests
+        run: python3 ./merge.py ../docker/data
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v2
+        with:
+          files: ${{ github.workspace }}/docker/data/.coverage
+          fail_ci_if_error: true
+          verbose: true

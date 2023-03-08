@@ -1,0 +1,25 @@
+FROM debian
+
+RUN apt-get update && apt-get install -y python3 python3-pip libolm-dev build-essential libssl-dev libffi-dev rustc
+
+WORKDIR /app
+
+COPY ./ ./
+
+RUN pip3 install --user --no-cache-dir -r ./requirements.txt
+
+RUN pip3 install --user --no-cache-dir coverage
+
+ENV docker yes
+
+ENV SERVER_PORT 5505
+
+ENV bot_user ""
+ENV bot_pass ""
+ENV home_server ""
+ENV device_name "matrix-nio"
+
+ENV authorization false
+ENV auth_secret ""
+
+CMD [ "coverage", "run", "-p", "main.py" ]
