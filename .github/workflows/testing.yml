@@ -29,4 +29,4 @@ jobs:
 
       - name: Run and Test Matrix-Notifier
         working-directory: ./docker
-        run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from server
+        run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from tester
