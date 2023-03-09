@@ -47,7 +47,7 @@ jobs:
 
       - name: Merge coverage reports
         working-directory: ./docker
-        run: python -m coverage combine data
+        run: python -m coverage combine ./data
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v2

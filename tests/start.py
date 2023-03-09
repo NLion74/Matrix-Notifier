@@ -1,7 +1,11 @@
+from ctypes import c_int
+
 import pytest
 import sqlite3
 from time import sleep
 import logging
+
+import config
 
 logger = logging.getLogger(__name__)
 
@@ -17,14 +21,14 @@ def get_latest_id(cur: sqlite3.Cursor, tablename):
 
 
 def main():
-    res = pytest.main(["-x", "."])
+    res = pytest.main(["."])
     logger.info("Done with testing, now waiting for bot to finish sending all messages.")
 
     sleep(1)
 
     try:
-        con_server = sqlite3.connect("./messages.db")
-        con_bot = sqlite3.connect("./ids.db")
+        con_server = sqlite3.connect(f"{config.database_dir}/messages.db")
+        con_bot = sqlite3.connect(f"{config.database_dir}/ids.db")
         cur_server = con_server.cursor()
         cur_bot = con_bot.cursor()
 
