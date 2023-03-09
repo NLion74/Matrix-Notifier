@@ -1,19 +1,6 @@
 version: "3.3"
 
 services:
-  bot:
-    container_name: "matrix-notifier-bot"
-    build:
-      context: ../bot
-      dockerfile: Dockerfile-tests
-    depends_on:
-      - server
-    env_file:
-    - .test-env
-    volumes:
-      - ./data:/data
-    restart: unless-stopped
-
   server:
     container_name: "matrix-notifier-server"
     build:
@@ -25,7 +12,20 @@ services:
     - .test-env
     volumes:
       - ./data:/data
-    restart: unless-stopped
+    restart: no
+
+  bot:
+    container_name: "matrix-notifier-bot"
+    build:
+      context: ../bot
+      dockerfile: Dockerfile-tests
+    depends_on:
+      - server
+    env_file:
+    - .test-env
+    volumes:
+      - ./data:/data
+    restart: no
 
   tester:
     container_name: "matrix-notifier-tester"
@@ -39,4 +39,4 @@ services:
     - .test-env
     volumes:
       - ./data:/data
-    restart: unless-stopped
+    restart: no
