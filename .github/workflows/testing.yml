@@ -45,9 +45,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install coverage
 
+      - name: Listing all items in data directory (Testing)
+        run: ls ./docker/data
+
       - name: Merge coverage reports
-        working-directory: ./docker
-        run: python -m coverage combine ./data
+        working-directory: ./docker/data
+        run: python -m coverage combine .
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v2
