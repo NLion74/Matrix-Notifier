@@ -46,8 +46,8 @@ jobs:
           pip install coverage
 
       - name: Merge coverage reports
-        working-directory: ./tests
-        run: python3 ./merge.py
+        working-directory: ./docker
+        run: python -m coverage combine data
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v2
