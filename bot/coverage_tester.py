@@ -1,14 +1,17 @@
+from coverage import Coverage
+
 import config
 import logging
-import coverage
+from time import time
 
 logger = logging.getLogger(__name__)
 
 
 class CoverageHandler:
-    def __int__(self):
-        cov = coverage.Coverage()
-        self.cov = cov
+    def __init__(self):
+        if config.coverage:
+            coveragedatafile = ".coverage-" + str(int(time()))
+            self.cov = Coverage(data_file=f"{config.datadir_bot}/{coveragedatafile}")
 
     def start(self):
         if config.coverage:
