@@ -15,6 +15,7 @@ from exit_handler import Exit
 logger = logging.getLogger()
 
 cov = CoverageHandler()
+cov.start()
 
 exit_handler = Exit(cov)
 
@@ -25,7 +26,6 @@ app = Flask(__name__,
             static_folder='web/static',
             static_url_path='/static',
             template_folder='web/templates')
-
 
 @app.route("/", methods=['POST'])
 def post_messages():
@@ -150,5 +150,4 @@ def get_page():
 
 
 if __name__ == "__main__":
-    cov.start()
     app.run(host='0.0.0.0', port=config.port)

@@ -12,18 +12,19 @@ import bot
 from coverage_tester import CoverageHandler
 from exit_handler import Exit
 
-cov = CoverageHandler()
-
-exit_handler = Exit(cov)
-
-signal.signal(signal.SIGTERM, exit_handler.exit_cleanly)
-signal.signal(signal.SIGINT, exit_handler.exit_cleanly)
-
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(message)s',
                     datefmt='%m-%d %H:%M',)
 
 logger = logging.getLogger()
+
+cov = CoverageHandler()
+cov.start()
+
+exit_handler = Exit(cov)
+
+signal.signal(signal.SIGTERM, exit_handler.exit_cleanly)
+signal.signal(signal.SIGINT, exit_handler.exit_cleanly)
 
 
 async def main():
