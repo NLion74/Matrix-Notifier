@@ -14,6 +14,10 @@ authorization = False
 # Cant contain any &'s or +'s
 auth_secret = ""
 
+# Used for tests
+# If enabled creates .coverage files on exit
+coverage = False
+
 
 # Do Not Touch
 # If docker is used it will use the environment values
@@ -23,11 +27,17 @@ if docker:
     datadir_server = "/data"
     authorization = os.environ.get('authorization', False)
     auth_secret = os.environ.get('auth_secret', False)
+    coverage = os.environ.get('coverage', False)
 
 if str(authorization).lower() == "true" or authorization == True:
     authorization = True
     if auth_secret.__contains__("&") or auth_secret.__contains__("+"):
         logger.error("auth_secret contains invalid character")
         quit(1)
+else:
+    authorization = False
+
+if str(coverage).lower() == "true" or authorization == True:
+    authorization = True
 else:
     authorization = False

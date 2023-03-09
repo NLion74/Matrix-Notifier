@@ -1,7 +1,5 @@
 FROM debian
 
-STOPSIGNAL SIGINT
-
 RUN apt-get update && apt-get install -y python3 python3-pip libolm-dev build-essential libssl-dev libffi-dev rustc
 
 WORKDIR /app
@@ -9,8 +7,6 @@ WORKDIR /app
 COPY ./ ./
 
 RUN pip3 install --user --no-cache-dir -r requirements.txt
-
-RUN pip3 install --user --no-cache-dir coverage
 
 ENV docker yes
 
@@ -23,5 +19,7 @@ ENV device_name "matrix-nio"
 
 ENV authorization false
 ENV auth_secret ""
+
+ENV coverage "true"
 
 CMD [ "python3", "-m", "coverage", "run", "-p", "main.py" ]
