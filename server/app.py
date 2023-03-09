@@ -9,12 +9,12 @@ import config
 import parser
 import authenticator
 import saver
-from coverage_tester import coverage_handler
+from coverage_tester import CoverageHandler
 from exit_handler import Exit
 
 logger = logging.getLogger()
 
-cov = coverage_handler()
+cov = CoverageHandler()
 
 exit_handler = Exit(cov)
 

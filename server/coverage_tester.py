@@ -5,9 +5,10 @@ import coverage
 logger = logging.getLogger(__name__)
 
 
-class coverage_handler:
+class CoverageHandler:
     def __int__(self):
-        self.cov =  coverage.Coverage()
+        cov = coverage.Coverage()
+        self.cov = cov
 
     def start(self):
         if config.coverage:

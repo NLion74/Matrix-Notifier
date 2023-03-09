@@ -5,7 +5,7 @@ services:
     container_name: "matrix-notifier-server"
     build:
       context: ../server
-      dockerfile: Dockerfile-tests
+      dockerfile: Dockerfile
     ports:
     - "5505:5505"
     env_file:
@@ -17,7 +17,7 @@ services:
     container_name: "matrix-notifier-bot"
     build:
       context: ../bot
-      dockerfile: Dockerfile-tests
+      dockerfile: Dockerfile
     depends_on:
       - server
     env_file:
