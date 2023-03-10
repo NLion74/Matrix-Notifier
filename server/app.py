@@ -3,24 +3,25 @@ import sqlite3
 import os
 import json
 import logging
-import signal
+from time import time
 
 import config
 import parser
 import authenticator
 import saver
-from coverage_tester import CoverageHandler
 from exit_handler import Exit
 
 logger = logging.getLogger()
 
-cov = CoverageHandler()
-cov.start()
+if config.coverage:
+    from coverage import Coverage
+    coveragedatafile = ".coverage-" + str(int(time()))
+    cov = Coverage(data_file=f"{config.datadir_server}/coverage/{coveragedatafile}")
+    cov.start()
+else:
+    cov = ""
 
 exit_handler = Exit(cov)
-
-signal.signal(signal.SIGTERM, exit_handler.exit_cleanly)
-signal.signal(signal.SIGINT, exit_handler.exit_cleanly)
 
 app = Flask(__name__,
             static_folder='web/static',

@@ -3,14 +3,14 @@ from nio import (InviteMemberEvent,
                  RoomMessageText,
                  MegolmEvent,)
 import logging
-import signal
+from time import time
 
 import sync
 import config as configfile
 from Callbacks import Callbacks
 import bot
-from coverage_tester import CoverageHandler
 from exit_handler import Exit
+import config
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(message)s',
@@ -18,13 +18,15 @@ logging.basicConfig(level=logging.INFO,
 
 logger = logging.getLogger()
 
-cov = CoverageHandler()
-cov.start()
+if config.coverage:
+    from coverage import Coverage
+    coveragedatafile = ".coverage-" + str(int(time()))
+    cov = Coverage(data_file=f"{config.datadir_bot}/coverage/{coveragedatafile}")
+    cov.start()
+else:
+    cov = ""
 
 exit_handler = Exit(cov)
-
-signal.signal(signal.SIGTERM, exit_handler.exit_cleanly)
-signal.signal(signal.SIGINT, exit_handler.exit_cleanly)
 
 
 async def main():

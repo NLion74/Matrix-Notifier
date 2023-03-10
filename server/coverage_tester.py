@@ -3,7 +3,6 @@ from coverage import Coverage
 import config
 import logging
 from time import time
-import os
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +23,12 @@ class CoverageHandler:
         if config.coverage:
             logger.info("Saving coverage files")
 
-            if not os.path.exists(f"{config.datadir_server}/coverage"):
-                os.mkdir(f"{config.datadir_server}/coverage")
-
-            self.cov.stop()
-            self.cov.save()
+            try:
+                self.cov.stop()
+                self.cov.save()
+                logger.info("Successfully saved coverage")
+            except Exception as e:
+                logger.critical("Exception occurred while saving coverage:")
+                logger.critical(e)
+            finally:
+                quit(0)
