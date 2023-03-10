@@ -16,7 +16,7 @@ auth_secret = ""
 
 # Used for tests
 # If enabled creates .coverage files on exit
-coverage = True
+coverage = False
 
 
 # Do Not Touch
