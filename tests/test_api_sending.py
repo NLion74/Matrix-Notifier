@@ -100,7 +100,7 @@ def test_sending_markdown_wrong():
     message = "> Hey, im actually accessed"
     markdown = "Wow"
     res = requests.post(url, headers={"Channel": channel, "Authorization": auth_secret, "Markdown": markdown}, data=message.encode("utf-8"))
-    assert res.status_code == 403
+    assert res.status_code == 400
 
 
 def test_sending_channel_multiple():

@@ -23,7 +23,7 @@ def test_json_content_nomessage():
         "channel": channel
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
-    assert res.status_code == 403
+    assert res.status_code == 400
 
 
 def test_json_content_wrongjson():
