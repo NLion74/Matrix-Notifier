@@ -25,7 +25,7 @@ def post_messages():
     parameter = parser.headerparse(headers=headers)
 
     if parameter == "wrong_markdown":
-        return "Wrong markdown format", 403
+        return "Wrong markdown format", 400
 
     auth_res = authenticator.auth(parameter.auth_pass)
 
@@ -89,7 +89,7 @@ def webhook_messages():
     parameter, message = parser.queryparse(queries=queries)
 
     if parameter == "wrong_markdown":
-        return "Wrong query format", 403
+        return "Wrong query format", 400
 
     auth_res = authenticator.auth(parameter.auth_pass)
 
@@ -114,9 +114,9 @@ def json_messages():
     parameter, message = parser.jsonparse(body=body)
 
     if parameter == "JSONDecodeError":
-        return "Json decode error", 403
+        return "Json decode error", 400
     elif parameter == "message required":
-        return "message required", 403
+        return "message required", 400
 
     auth_res = authenticator.auth(parameter.auth_pass)
 
