@@ -21,20 +21,6 @@ jobs:
       - name: Check out code from Github
         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2.4.1
-        # Fixes ghcr showing unknown architecture
-        with:
-          driver-opts: |
-            image=moby/buildkit:v0.10.6
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHCR_TOKEN }}
-
       - name: Create env file
         working-directory: ./docker
         run: |
@@ -43,8 +29,32 @@ jobs:
 
       - name: Building Matrix-Notifier Tests
         working-directory: ./docker
-        run: docker buildx bake --file test-docker-compose.yml --file docker-compose-cache.json
+        run: docker-compose -f test-docker-compose.yml build
 
       - name: Running Matrix-Notifier Tests
         working-directory: ./docker
         run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from tester
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install coverage
+        run: |
+          python -m pip install --upgrade pip
+          pip install coverage
+
+      - name: Listing all items in data directory (Testing)
+        run: ls ./docker/data/coverage
+
+      - name: Merge coverage reports
+        working-directory: ./docker/data/coverage
+        run: python -m coverage combine .
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v2
+        with:
+          files: ${{ github.workspace }}/docker/data/.coverage
+          fail_ci_if_error: true
+          verbose: true
