@@ -2,40 +2,36 @@
   "target": {
     "bot": {
       "cache-from": [
-        "type=registry,ref=ghcr.io/NLion74/bot:cache"
+        "type=registry,ref=ghcr.io/nlion74/bot-tests:cache"
       ],
       "cache-to": [
-        "type=registry,ref=ghcr.io/NLion74/bot:cache"
+        "type=registry,ref=ghcr.io/nlion74/bot:cache"
       ],
       "output": [
         "type=docker"
       ]
     }
   },
-  "target": {
     "server": {
       "cache-from": [
-        "type=registry,ref=ghcr.io/NLion74/server:cache"
+        "type=registry,ref=ghcr.io/nlion74/server-tests:cache"
       ],
       "cache-to": [
-        "type=registry,ref=ghcr.io/NLion74/server:cache"
+        "type=registry,ref=ghcr.io/nlion74/server-tests:cache"
       ],
       "output": [
         "type=docker"
       ]
-    }
-  },
-  "target": {
+    },
     "tester": {
       "cache-from": [
-        "type=registry,ref=ghcr.io/NLion74/tester:cache"
+        "type=registry,ref=ghcr.io/nlion74/tester-tests:cache"
       ],
       "cache-to": [
-        "type=registry,ref=ghcr.io/NLion74/tester:cache"
+        "type=registry,ref=ghcr.io/nlion74/tester-tests:cache"
       ],
       "output": [
         "type=docker"
       ]
     }
-  }
 }
