@@ -24,7 +24,7 @@ Simple REST-API for sending messages over the [Matrix](https://matrix.org) proto
 > If you encounter a bug, please consider opening an issue.
 
 - [Setup](#setup)
-  - [Requirements](#requirements)
+  - [Dependencies](#dependencies)
   - [Docker installation](#installation-via-docker--recommended-)
   - [From source installation](#from-source-installation)
 - [Usage](#usage)
