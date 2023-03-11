@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import logging
 import json
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 @dataclass

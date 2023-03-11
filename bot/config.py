@@ -24,6 +24,10 @@ authorization = False
 # Cant contain any &'s or +'s
 auth_secret = "some_random_string"
 
+# Used for tests
+# If enabled creates .coverage files on exit
+coverage = False
+
 
 # Do Not Touch
 # If docker is used it will use the environment values
@@ -37,6 +41,7 @@ if docker:
     datadir_bot = "/data"
     authorization = os.environ.get('authorization', False)
     auth_secret = os.environ.get('auth_secret', False)
+    coverage = os.environ.get('coverage', False)
 
 if str(authorization).lower() == "true" or authorization == True:
     authorization = True
@@ -45,6 +50,11 @@ if str(authorization).lower() == "true" or authorization == True:
         logger.critical("['&', '+']")
         logger.critical("Please make sure your auth_secret does not contain any of the characters listed above and try again.")
         quit(1)
+else:
+    authorization = False
+
+if str(coverage).lower() == "true" or authorization == True:
+    authorization = True
 else:
     authorization = False
 

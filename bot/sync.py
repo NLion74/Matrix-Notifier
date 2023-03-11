@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 async def save_id(con, cur, id):
     try:
         cur.execute(
-            f'''INSERT OR IGNORE INTO ids VALUES (:id)''', {"id": id})
+            '''INSERT OR IGNORE INTO ids VALUES (:id)''', {"id": id})
         con.commit()
     except Exception as e:
         logger.error(e)
