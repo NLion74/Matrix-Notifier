@@ -286,6 +286,18 @@ This will return the last 100 messages in json format by default. You can howeve
 curl 127.0.0.1:5505/messages?limit=250
 ```
 
+You can also reference specific messages by their id.
+
+```
+curl 127.0.0.1:5505/messages/10
+```
+
+Now if you want to reference multiple messages by their id you can seperate by them with a ",".
+
+```
+curl 127.0.0.1:5505/messages/10,12,99
+```
+
 if authorization is enabled you will have to also add an authorization query.
 
 ### Disclaimer

@@ -24,11 +24,11 @@ class Message:
     markdown: str
 
 
-def remove_spaces(tag):
-    if str(tag).startswith(" "):
-        tag = tag[1::]
-        tag = remove_spaces(tag)
-    return tag
+def remove_spaces(item):
+    if str(item).startswith(" "):
+        item = item[1::]
+        item = remove_spaces(item)
+    return item
 
 
 def headerparse(headers):
@@ -209,3 +209,16 @@ def jsonparse(body):
                           tags=parsed_tags, limit=limit)
 
     return parameter, message
+
+
+def id_parse(id):
+    id = remove_spaces(id)
+    ids = []
+    if id.__contains__(","):
+        id_list = str(id.rsplit(","))
+        for id in id_list:
+            ids.append(str(id))
+    else:
+        ids.append(str(id))
+
+    return ids
