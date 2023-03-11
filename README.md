@@ -19,9 +19,23 @@ Simple REST-API for sending messages over the [Matrix](https://matrix.org) proto
 - Webhooks
 - Pushing messages as json
 
-## Setup
+## Table of contents
 > Note: Matrix-Notifier probably contains a lot of bugs.
 > If you encounter a bug, please consider opening an issue.
+
+- [Setup](#setup)
+  - [Requirements](#requirements)
+  - [Docker installation](#installation-via-docker--recommended-)
+  - [From source installation](#from-source-installation)
+- [Usage](#usage)
+  - [Sending messages](#sending-messages)
+  - [Options](#options)
+  - [Getting messages](#getting-messages-from-the-server)
+- [Disclaimer](#disclaimer)
+- [Issues](#issues)
+- [Contact](#contact)
+
+## Setup
  
 The easiest way of installing would be to use docker, however if for any reason that is not an option you can also install it from source.
 
@@ -29,21 +43,24 @@ Before starting, you may want to create a bot account on the homeserver of your 
 
 If you're ever having trouble with the database just use the example-database.db provided under examples/example-database.
 
-### Requirements
+### Dependencies
 
-If you're using the docker-compose.yml you will need to have docker and docker-compose as well as curl installed, and when using the dev-docker-compose.yml you will also need git.
+#### Install via docker
 
-Building from source is not recommended however if you decide to do so anyway you can install the requirements by using the requirements.txt provided in the server and bot directory.
-To do so just move to the directory and use this command:
-```
-pip3 install -r requirements.txt
-```
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://github.com/docker/compose)
+
+#### Install from source
+
+- [Python3](https://www.python.org/)
+- [Python3-pip](https://pypi.org/project/pip/)
 
 ### Installation via Docker (recommended)
 
 There are two docker-compose.yml files provided, the docker-compose.yml and the dev-docker-compose.yml. The docker-compose.yml is what's recommended and also the most stable, using the image from dockerhub and the other one building from the git repository.
 
 If you're using the default docker-compose follow the instructions below:
+
 ```
 # Create a directory for your docker-compose and move into it
 mkdir ./matrix-notifier && cd ./matrix-notifier
@@ -60,6 +77,7 @@ docker-compose up -d
 ```
 
 If you're using the dev-docker-compose follow these instructions below:
+
 ```
 # Clone the repository
 git clone https://github.com/NLion74/Matrix-Notifier
@@ -78,8 +96,6 @@ Now everything should be up and running, and you can now move to the [Usage Sect
 
 ### From source Installation
 
-Building from source is not recommended but if you decide to do so anyway here's a guide.
-
 ```
 # Clone the repository
 git clone https://github.com/NLion74/Matrix-Notifier
@@ -87,11 +103,17 @@ git clone https://github.com/NLion74/Matrix-Notifier
 # Move into the repository's server folder
 cd ./Matrix-Notifier/server
 
+# Installing the dependencies
+pip3 install -r requirements.txt
+
 # Edit the config.py and start the server
 python3 app.py
 
 # Move into the repository's bot folder
 cd ../bot
+
+# Installing the dependencies
+pip3 install -r requirements.txt
 
 # Edit the config.py and start the bot
 python3 main.py
@@ -302,12 +324,9 @@ if authorization is enabled you will have to also add an authorization query.
 
 ### Disclaimer
 
+**This is an experimental project. It could break at any time and should not be considered production ready.**
+
 Note that if your room id contains a "," the server will break. I don't know if room ids with "," in them exist but if they do this will be an issue that you should be aware of.
-
-Also, when using webhooks make sure your auth_secret doesn't contain any of the following characters:
-```&, +```.
-
-This is because these characters are used for querys to split the queries and represent spaces.
 
 ## Issues
 
