@@ -311,7 +311,7 @@ This is because these characters are used for querys to split the queries and re
 
 ## Issues
 
-Matrix-Notifier probably contains a lot of bugs. So if you encounter a bug, please consider opening an issue or contact me directly. For the latter take a look at the [Contact Section](#Contact).
+Matrix-Notifier probably contains a lot of bugs. So if you encounter a bug, please consider opening an issue or contacting me directly. For the latter take a look at the [Contact Section](#Contact).
 
 ## Contact
 If there are any questions regarding this project, feel free to contact me over any platform listed on https://nlion.nl/.
