@@ -43,45 +43,6 @@ def post_messages():
     return msg_json, 200
 
 
-@app.route("/messages", methods=['GET'])
-def get_messages():
-    queries = dict(request.args)
-
-    parameter, message = parser.queryparse(queries=queries)
-
-    auth_res = authenticator.auth(parameter.auth_pass)
-
-    if not auth_res:
-        return "Unauthorized", 401
-
-    data_dir = config.datadir_server
-    if not os.path.exists(data_dir):
-        os.mkdir(data_dir)
-
-    con = sqlite3.connect(f"{data_dir}/messages.db")
-    cur = con.cursor()
-
-    cur.execute(
-        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
-
-    cur.execute(
-        'SELECT * FROM (SELECT * FROM messages ORDER BY id DESC LIMIT :limit) sub ORDER BY id ASC', {"limit": parameter.limit})
-
-    data = cur.fetchall()
-    message_data_list = []
-    for tuple in data:
-        message_data = dict([('Id', tuple[0]), ('Channels', json.loads(tuple[1])),
-                            ('Title', tuple[2]), ('Content', tuple[3]),
-                            ('Tags', json.loads(tuple[4])),('Markdown', tuple[5])])
-        message_data_list.append(message_data)
-
-    content_data = json.dumps(message_data_list)
-
-    con.commit()
-
-    return content_data, 200
-
-
 @app.route("/webhook", methods=['GET', 'POST'])
 def webhook_messages():
     queries = dict(request.args)
@@ -132,6 +93,91 @@ def json_messages():
                                 ('Tags', msg.tags), ('Markdown', msg.markdown)]))
 
     return msg_json, 200
+
+
+@app.route("/messages", methods=['GET'])
+def get_messages():
+    queries = dict(request.args)
+
+    parameter, message = parser.queryparse(queries=queries)
+
+    auth_res = authenticator.auth(parameter.auth_pass)
+
+    if not auth_res:
+        return "Unauthorized", 401
+
+    data_dir = config.datadir_server
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+
+    con = sqlite3.connect(f"{data_dir}/messages.db")
+    cur = con.cursor()
+
+    cur.execute(
+        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
+
+    cur.execute(
+        'SELECT * FROM (SELECT * FROM messages ORDER BY id DESC LIMIT :limit) sub ORDER BY id ASC', {"limit": parameter.limit})
+
+    data = cur.fetchall()
+    message_data_list = []
+    for tuple in data:
+        message_data = dict([('Id', tuple[0]), ('Channels', json.loads(tuple[1])),
+                            ('Title', tuple[2]), ('Content', tuple[3]),
+                            ('Tags', json.loads(tuple[4])),('Markdown', tuple[5])])
+        message_data_list.append(message_data)
+
+    content_data = json.dumps(message_data_list)
+
+    con.commit()
+
+    return content_data, 200
+
+
+@app.route("/messages/<message_id>", methods=['GET'])
+def get_message_byid(message_id):
+    queries = dict(request.args)
+
+    parameter, message = parser.queryparse(queries=queries)
+
+    auth_res = authenticator.auth(parameter.auth_pass)
+
+    if not auth_res:
+        return "Unauthorized", 401
+
+    data_dir = config.datadir_server
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+
+    con = sqlite3.connect(f"{data_dir}/messages.db")
+    cur = con.cursor()
+
+    cur.execute(
+        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
+
+    ids = parser.id_parse(message_id)
+
+    message_data_list = []
+    for id in ids:
+        cur.execute(
+            'SELECT * FROM messages WHERE id = :id', {"id": id})
+        data = cur.fetchall()
+
+        if not data == []:
+            for tuple in data:
+                message_data = dict([('Id', tuple[0]), ('Channels', json.loads(tuple[1])),
+                                     ('Title', tuple[2]), ('Content', tuple[3]),
+                                     ('Tags', json.loads(tuple[4])), ('Markdown', tuple[5])])
+                message_data_list.append(message_data)
+
+    if not message_data_list == []:
+        content_data = json.dumps(message_data_list)
+
+        con.commit()
+        return content_data, 200
+    else:
+        con.commit()
+        return "Id not found", 404
 
 
 @app.route("/", methods=['GET'])
