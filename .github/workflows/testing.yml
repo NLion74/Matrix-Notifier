@@ -43,7 +43,7 @@ jobs:
 
       - name: Building Matrix-Notifier Tests
         working-directory: ./docker
-        run: docker buildx bake --file test-docker-compose.yml --file test-docker-compose-cache.json
+        run: docker buildx bake --file test-docker-compose.yml --file docker-compose-cache.json
 
       - name: Running Matrix-Notifier Tests
         working-directory: ./docker
