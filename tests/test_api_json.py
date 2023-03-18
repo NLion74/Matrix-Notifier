@@ -132,7 +132,7 @@ def test_json_markdown():
     payload = {
         "message": message,
         "markdown": markdown,
-        "channel": channel,
+        "channel": f"{channel}, {channel}",
         "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))

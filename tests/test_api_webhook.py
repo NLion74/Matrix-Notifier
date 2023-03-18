@@ -86,5 +86,5 @@ def test_webhook_markdown_wrong():
 
 def test_webhook_channel_multiple():
     message = "> Hey, im actually accessed"
-    res = requests.get(f"{url}/webhook?auth={auth_secret}&channel={channel}&c={channel}&message={message.replace(' ', '+')}")
+    res = requests.get(f"{url}/webhook?auth={auth_secret}&channel={channel},{channel}&message={message.replace(' ', '+')}")
     assert res.status_code == 200
