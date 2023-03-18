@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import logging
 import json
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -45,6 +45,7 @@ def headerparse(headers):
             title = header_content
         elif header == "X-Channel" or header.lower() == "channel" or header.lower() == "c":
             if "," in header_content:
+                header_content = remove_spaces(header_content)
                 temp_channels = header_content.rsplit(",")
                 for channel in temp_channels:
                     channels.append(channel)
@@ -113,6 +114,7 @@ def queryparse(queries):
             title = query_content
         elif query == "X-Channel" or query.lower() == "channel" or query.lower() == "c":
             if "," in query_content:
+                query_content = remove_spaces(query_content)
                 temp_channels = query_content.rsplit(",")
                 for channel in temp_channels:
                     channels.append(channel)
@@ -147,6 +149,7 @@ def webhookmessageparse(parameter, content):
                   channels=parameter.channels, markdown=parameter.markdown,
                   tags=parameter.tags)
     return msg
+
 
 def jsonparse(body):
     # Defaults
@@ -185,7 +188,13 @@ def jsonparse(body):
         if key == "X-Title" or key.lower() == "title" or key.lower() == "t":
             title = value
         elif key == "X-Channel" or key.lower() == "channel" or key.lower() == "c":
-            channels.append(value)
+            if "," in value:
+                value = remove_spaces(value)
+                temp_channels = value.rsplit(",")
+                for channel in temp_channels:
+                    channels.append(channel)
+            else:
+                channels.append(value)
         elif key == "X-Authorization" or key.lower() == "authorization" or key.lower() == "auth":
             auth_pass = value
         elif key == "X-Markdown" or key.lower() == "markdown" or key.lower() == "m":
