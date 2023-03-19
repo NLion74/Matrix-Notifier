@@ -25,9 +25,7 @@ class Message:
 
 
 def remove_spaces(item):
-    if str(item).startswith(" "):
-        item = item[1::]
-        item = remove_spaces(item)
+    item = item.replace(" ", "")
     return item
 
 
@@ -66,7 +64,7 @@ def headerparse(headers):
                 tag = remove_spaces(tag)
                 parsed_tags.append(tag)
 
-
+    channels = list(set(channels))
     parameter = ParaMeter(title=title, channels=channels,
                           auth_pass=auth_pass, markdown=markdown,
                           tags=parsed_tags, limit=limit)
@@ -137,6 +135,7 @@ def queryparse(queries):
         elif query == "X-Limit" or query.lower() == "limit" or query.lower() == "l":
             limit = query_content
 
+    channels = list(set(channels))
     parameter = ParaMeter(title=title, channels=channels,
                           auth_pass=auth_pass, markdown=markdown,
                           tags=parsed_tags, limit=limit)
@@ -213,6 +212,7 @@ def jsonparse(body):
     if message == "":
         return "message required", "message required"
 
+    channels = list(set(channels))
     parameter = ParaMeter(title=title, channels=channels,
                           auth_pass=auth_pass, markdown=markdown,
                           tags=parsed_tags, limit=limit)

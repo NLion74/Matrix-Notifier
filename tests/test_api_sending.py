@@ -103,7 +103,15 @@ def test_sending_markdown_wrong():
     assert res.status_code == 400
 
 
-def test_sending_channel_multiple():
-    message = "> Hey, im actually accessed"
-    res = requests.post(url, headers={"Channel": channel, "channel": channel, "Authorization": auth_secret}, data=message.encode("utf-8"))
+def test_sending_channel_multipleduplicate():
+    message = "Test"
+    res = requests.post(url, headers={"Channel": f"{channel}, {channel}", "Authorization": auth_secret}, data=message.encode("utf-8"))
     assert res.status_code == 200
+    assert json.loads(res.text)['Channels'] == [channel]
+
+
+def test_sending_channel_multipleunique():
+    message = "Test"
+    res = requests.post(url, headers={"Channel": f"{channel}, !IvYrlASwHuqfFHxFIpL:matrix.org", "Authorization": auth_secret}, data=message.encode("utf-8"))
+    assert res.status_code == 200
+    assert json.loads(res.text)['Channels'] == [channel, "!IvYrlASwHuqfFHxFIpL:matrix.org"]

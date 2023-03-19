@@ -84,7 +84,16 @@ def test_webhook_markdown_wrong():
     assert res.status_code == 400
 
 
-def test_webhook_channel_multiple():
-    message = "> Hey, im actually accessed"
-    res = requests.get(f"{url}/webhook?auth={auth_secret}&channel={channel},{channel}&message={message.replace(' ', '+')}")
+def test_webhook_channel_multipleduplicate():
+    message = "Test"
+    res = requests.get(f"{url}/webhook?auth={auth_secret}&channel={channel},+{channel}&message={message.replace(' ', '+')}")
     assert res.status_code == 200
+    assert json.loads(res.text)['Channels'] == [channel]
+
+
+def test_webhook_channel_multipleunique():
+    message = "Test"
+    res = requests.get(
+        f"{url}/webhook?auth={auth_secret}&channel={channel},+!IvYrlASwHuqfFHxFIpL:matrix.org&message={message.replace(' ', '+')}")
+    assert res.status_code == 200
+    assert json.loads(res.text)['Channels'] == [channel, "!IvYrlASwHuqfFHxFIpL:matrix.org"]
