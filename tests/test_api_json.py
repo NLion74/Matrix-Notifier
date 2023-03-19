@@ -132,9 +132,31 @@ def test_json_markdown():
     payload = {
         "message": message,
         "markdown": markdown,
-        "channel": f"{channel}, {channel}",
+        "channel": channel,
         "auth": auth_secret
     }
     res = requests.post(f"{url}/json", data=json.dumps(payload))
     assert res.status_code == 200
     assert json.loads(res.text)['Markdown'] == markdown.lower()
+
+
+def test_json_channel_multipleduplicate():
+    payload = {
+        "message": "Test",
+        "channel": f"{channel}, {channel}",
+        "auth": auth_secret
+    }
+    res = requests.post(f"{url}/json", data=json.dumps(payload))
+    assert res.status_code == 200
+    assert json.loads(res.text)['Channels'] == [channel]
+
+
+def test_json_channel_multipleunique():
+    payload = {
+        "message": "Test",
+        "channel": f"{channel}, !IvYrlASwHuqfFHxFIpL:matrix.org",
+        "auth": auth_secret
+    }
+    res = requests.post(f"{url}/json", data=json.dumps(payload))
+    assert res.status_code == 200
+    assert json.loads(res.text)['Channels'] == [channel, "!IvYrlASwHuqfFHxFIpL:matrix.org"]
