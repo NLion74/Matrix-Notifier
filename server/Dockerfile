@@ -15,6 +15,9 @@ ENV SERVER_PORT 5505
 ENV authorization false
 ENV auth_secret ""
 
+ENV message_preserve_time 72
+ENV message_purge_interval 30
+
 EXPOSE 5505
 
 CMD [ "python3", "app.py" ]

@@ -3,6 +3,7 @@ import sqlite3
 import os
 import json
 import logging
+from apscheduler.schedulers.background import BackgroundScheduler
 
 import config
 import parser
@@ -16,6 +17,7 @@ app = Flask(__name__,
             static_url_path='/static',
             template_folder='web/templates')
 
+scheduler = BackgroundScheduler()
 
 @app.route("/", methods=['POST'])
 def post_messages():
@@ -34,11 +36,12 @@ def post_messages():
 
     msg = parser.messageparse(parameter=parameter, body=body)
 
-    id = saver.save_to_db(msg)
+    id, message_time = saver.save_to_db(msg)
 
-    msg_json = json.dumps(dict([('Id', id), ('Channels', msg.channels),
-                                ('Title', msg.title), ('Content', msg.content),
-                                ('Tags', msg.tags), ('Markdown', msg.markdown)]))
+    msg_json = json.dumps(dict([('Id', id), ('time', message_time),
+                                ('Channels', msg.channels), ('Title', msg.title),
+                                ('Content', msg.content), ('Tags', msg.tags),
+                                ('Markdown', msg.markdown)]))
 
     return msg_json, 200
 
@@ -59,11 +62,12 @@ def webhook_messages():
 
     msg = parser.webhookmessageparse(parameter=parameter, content=message)
 
-    id = saver.save_to_db(msg)
+    id, message_time = saver.save_to_db(msg)
 
-    msg_json = json.dumps(dict([('Id', id), ('Channels', msg.channels),
-                                ('Title', msg.title), ('Content', msg.content),
-                                ('Tags', msg.tags), ('Markdown', msg.markdown)]))
+    msg_json = json.dumps(dict([('Id', id), ('time', message_time),
+                                ('Channels', msg.channels), ('Title', msg.title),
+                                ('Content', msg.content), ('Tags', msg.tags),
+                                ('Markdown', msg.markdown)]))
 
     return msg_json, 200
 
@@ -86,11 +90,12 @@ def json_messages():
 
     msg = parser.webhookmessageparse(parameter=parameter, content=message)
 
-    id = saver.save_to_db(msg)
+    id, message_time = saver.save_to_db(msg)
 
-    msg_json = json.dumps(dict([('Id', id), ('Channels', msg.channels),
-                                ('Title', msg.title), ('Content', msg.content),
-                                ('Tags', msg.tags), ('Markdown', msg.markdown)]))
+    msg_json = json.dumps(dict([('Id', id), ('time', message_time),
+                                ('Channels', msg.channels), ('Title', msg.title),
+                                ('Content', msg.content), ('Tags', msg.tags),
+                                ('Markdown', msg.markdown)]))
 
     return msg_json, 200
 
@@ -114,7 +119,7 @@ def get_messages():
     cur = con.cursor()
 
     cur.execute(
-        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
+        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, date text, channels text, title text, content text, tags text, markdown text)''')
 
     cur.execute(
         'SELECT * FROM (SELECT * FROM messages ORDER BY id DESC LIMIT :limit) sub ORDER BY id ASC', {"limit": parameter.limit})
@@ -122,9 +127,10 @@ def get_messages():
     data = cur.fetchall()
     message_data_list = []
     for tuple in data:
-        message_data = dict([('Id', tuple[0]), ('Channels', json.loads(tuple[1])),
-                            ('Title', tuple[2]), ('Content', tuple[3]),
-                            ('Tags', json.loads(tuple[4])),('Markdown', tuple[5])])
+        message_data = dict([('Id', tuple[0]), ('time', tuple[1]),
+                             ('Channels', json.loads(tuple[2])), ('Title', tuple[3]),
+                             ('Content', tuple[4]), ('Tags', json.loads(tuple[5])),
+                             ('Markdown', tuple[6])])
         message_data_list.append(message_data)
 
     content_data = json.dumps(message_data_list)
@@ -153,7 +159,7 @@ def get_message_byid(message_id):
     cur = con.cursor()
 
     cur.execute(
-        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, channels text, title text, content text, tags text, markdown text)''')
+        '''CREATE TABLE IF NOT EXISTS messages (id INT PRIMARY KEY, date text, channels text, title text, content text, tags text, markdown text)''')
 
     ids = parser.id_parse(message_id)
 
@@ -165,9 +171,10 @@ def get_message_byid(message_id):
 
         if not data == []:
             for tuple in data:
-                message_data = dict([('Id', tuple[0]), ('Channels', json.loads(tuple[1])),
-                                     ('Title', tuple[2]), ('Content', tuple[3]),
-                                     ('Tags', json.loads(tuple[4])), ('Markdown', tuple[5])])
+                message_data = dict([('Id', tuple[0]), ('time', tuple[1]),
+                                     ('Channels', json.loads(tuple[2])), ('Title', tuple[3]),
+                                     ('Content', tuple[4]), ('Tags', json.loads(tuple[5])),
+                                     ('Markdown', tuple[6])])
                 message_data_list.append(message_data)
 
     if not message_data_list == []:
@@ -186,4 +193,6 @@ def get_page():
 
 
 if __name__ == "__main__":
+    job = scheduler.add_job(saver.clean_db, 'interval', minutes=config.message_purge_interval)
+    scheduler.start()
     app.run(host='0.0.0.0', port=config.port)

@@ -23,17 +23,17 @@ async def save_id(con, cur, id):
 
 
 async def check(messages, client):
+    data_dir = config.datadir_bot
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+
+    con = sqlite3.connect(f"{data_dir}/ids.db")
+    cur = con.cursor()
+
+    cur.execute(
+        '''CREATE TABLE IF NOT EXISTS ids (id INT PRIMARY KEY)''')
+
     try:
-        data_dir = config.datadir_bot
-        if not os.path.exists(data_dir):
-            os.mkdir(data_dir)
-
-        con = sqlite3.connect(f"{data_dir}/ids.db")
-        cur = con.cursor()
-
-        cur.execute(
-            '''CREATE TABLE IF NOT EXISTS ids (id INT PRIMARY KEY)''')
-
         cur.execute(f'''SELECT * FROM (SELECT * FROM ids ORDER BY id DESC LIMIT 250) sub ORDER BY id ASC''')
         data = cur.fetchall()
         ids = []

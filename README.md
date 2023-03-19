@@ -9,15 +9,16 @@ Simple REST-API for sending messages over the [Matrix](https://matrix.org) proto
 ## Features
 
 - Docker support
-- Authentication support
-- Sending encrypted messages
+- Encryption support
 - UTF-8 support
-- Markdown support for messages
+- Markdown support
 - Tag support to embed emojis in the title by using their short codes
-- Title support
 - Web UI to send messages
-- Webhooks
-- Pushing messages as json
+- Webhook support
+- Json support
+- Title support
+- Authentication support
+- Automatic message purging
 
 ## Table of contents
 > Note: Matrix-Notifier probably contains a lot of bugs.
