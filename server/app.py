@@ -74,10 +74,10 @@ def json_messages():
 
     parameter, message = parser.jsonparse(body=body)
 
-    if parameter == "JSONDecodeError":
-        return "Json decode error", 400
+    if parameter == "invalid json":
+        return "Invalid json", 400
     elif parameter == "message required":
-        return "message required", 400
+        return "Message required", 400
 
     auth_res = authenticator.auth(parameter.auth_pass)
 
