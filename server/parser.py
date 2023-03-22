@@ -176,10 +176,10 @@ def jsonparse(body):
                 except UnicodeError:
                     logger.error("Couldn't decode request data")
 
-    try:
-        json_body = json.loads(content)
-    except json.JSONDecodeError:
-        return "JSONDecodeError", "JSONDecodeError"
+    json_body = json.loads(content)
+
+    if not type(json_body) == type({}):
+        return "invalid json", "invalid json"
 
     for key, value in json_body.items():
         if key == "X-Message" or key.lower() == "message" or key.lower() == "ms":

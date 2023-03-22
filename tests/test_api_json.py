@@ -29,7 +29,7 @@ def test_json_content_nomessage():
 def test_json_content_wrongjson():
     payload = "Duhhhh"
     res = requests.post(f"{url}/json", data=json.dumps(payload))
-    assert res.status_code == 500
+    assert res.status_code == 400
 
 
 def test_json_content():
