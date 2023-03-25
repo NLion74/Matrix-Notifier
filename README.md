@@ -4,10 +4,14 @@
 [![Server Pulls](https://img.shields.io/docker/pulls/nlion/matrix-notifier-server?label=server%20pulls&style=flat-square)](https://hub.docker.com/repository/docker/nlion/matrix-notifier-server)
 [![Version](https://img.shields.io/github/v/tag/NLion74/Matrix-Notifier?label=version&style=flat-square)](https://github.com/NLion74/Matrix-Notifier)
 
-Simple REST-API for sending messages over the [Matrix](https://matrix.org) protocol, built with [matrix-nio](https://github.com/poljar/matrix-nio).
+Simple API designed to be compatible with multiple different formats for sending messages over the [Matrix](https://matrix.org) protocol, built with [matrix-nio](https://github.com/poljar/matrix-nio).
 
 ## Features
 
+- Sending messages via POST
+- Web UI to send messages
+- Webhooks
+- Pushing messages as json
 - Docker support
 - Authentication support
 - Sending encrypted messages
@@ -15,9 +19,6 @@ Simple REST-API for sending messages over the [Matrix](https://matrix.org) proto
 - Markdown support for messages
 - Tag support to embed emojis in the title by using their short codes
 - Title support
-- Web UI to send messages
-- Webhooks
-- Pushing messages as json
 
 ## Table of contents
 > Note: Matrix-Notifier probably contains a lot of bugs.
@@ -129,7 +130,7 @@ To obtain the room id of a room on [Element](https://element.io/) right-click th
 
 ### Sending messages
 
-Messages can either be sent via HTTP POST request and by using the Web UI or via HTTP GET request by using Webhooks.
+Messages can either be sent via HTTP POST request and by using the Web UI or even via HTTP GET request by using Webhooks.
 
 #### POST
 
