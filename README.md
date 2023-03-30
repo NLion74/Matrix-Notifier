@@ -4,7 +4,7 @@
 [![Server Pulls](https://img.shields.io/docker/pulls/nlion/matrix-notifier-server?label=server%20pulls&style=flat-square)](https://hub.docker.com/repository/docker/nlion/matrix-notifier-server)
 [![Version](https://img.shields.io/github/v/tag/NLion74/Matrix-Notifier?label=version&style=flat-square)](https://github.com/NLion74/Matrix-Notifier)
 
-Simple API designed to be compatible with multiple different formats for sending messages over the [Matrix](https://matrix.org) protocol, built with [matrix-nio](https://github.com/poljar/matrix-nio).
+API for sending messages over the [Matrix](https://matrix.org) protocol, built with [matrix-nio](https://github.com/poljar/matrix-nio).
 
 ## Features
 
