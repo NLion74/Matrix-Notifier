@@ -46,7 +46,7 @@ jobs:
           pip install coverage
 
       - name: Listing all items in data directory (Testing)
-        run: ls ./docker/data/coverage
+        run: ls -Al ./docker/data/coverage
 
       - name: Merge coverage reports
         working-directory: ./docker/data/coverage
