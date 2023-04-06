@@ -1,5 +1,3 @@
-from ctypes import c_int
-
 import pytest
 import sqlite3
 from time import sleep

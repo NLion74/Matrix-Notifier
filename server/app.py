@@ -15,8 +15,9 @@ logger = logging.getLogger()
 
 if config.coverage:
     from coverage import Coverage
-    coveragedatafile = ".coverage-" + str(int(time()))
+    coveragedatafile = ".coverage-server-" + str(int(time()))
     cov = Coverage(data_file=f"{config.datadir_server}/coverage/{coveragedatafile}")
+    cov.erase()
     cov.start()
 else:
     cov = ""
