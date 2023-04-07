@@ -35,7 +35,7 @@ jobs:
         working-directory: ./docker
         run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from tester
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: "3.10"
@@ -50,7 +50,7 @@ jobs:
 
       - name: Merge coverage reports
         working-directory: ./docker/data/coverage
-        run: sudo python -m coverage combine .coverage-*
+        run: python -m coverage combine .coverage-*
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v2
