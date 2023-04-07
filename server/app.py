@@ -3,19 +3,31 @@ import sqlite3
 import os
 import json
 import logging
+from time import time
 
 import config
 import parser
 import authenticator
 import saver
+from exit_handler import Exit
 
 logger = logging.getLogger()
+
+if config.coverage:
+    from coverage import Coverage
+    coveragedatafile = ".coverage-server-" + str(int(time()))
+    cov = Coverage(data_file=f"{config.datadir_server}/coverage/{coveragedatafile}")
+    cov.erase()
+    cov.start()
+else:
+    cov = ""
+
+exit_handler = Exit(cov)
 
 app = Flask(__name__,
             static_folder='web/static',
             static_url_path='/static',
             template_folder='web/templates')
-
 
 @app.route("/", methods=['POST'])
 def post_messages():

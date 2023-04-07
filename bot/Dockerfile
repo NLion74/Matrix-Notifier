@@ -20,4 +20,6 @@ ENV device_name "matrix-nio"
 ENV authorization false
 ENV auth_secret ""
 
+ENV coverage "false"
+
 CMD [ "python3", "main.py" ]

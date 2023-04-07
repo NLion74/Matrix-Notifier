@@ -1,0 +1,14 @@
+bot_user=@test_bot12:matrix.org
+bot_pass=r89hxphLEFg453op
+home_server=https://matrix.org
+device_name=matrix-nio
+
+authorization=True
+auth_secret=E3usEZNLZuu654ic
+
+SERVER_HOSTNAME=server
+SERVER_PORT=5505
+
+channel=!sRJmeXlBklTaAorRJn:matrix.org
+
+coverage=true

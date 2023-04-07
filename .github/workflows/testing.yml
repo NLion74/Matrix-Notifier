@@ -34,3 +34,30 @@ jobs:
       - name: Running Matrix-Notifier Tests
         working-directory: ./docker
         run: docker-compose -f test-docker-compose.yml --env-file .test-env up --abort-on-container-exit --exit-code-from tester
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install coverage
+        run: |
+          python -m pip install --upgrade pip
+          sudo pip install coverage
+      
+      - name: Listing all items in data directory (Testing)
+        run: ls -Al ./docker/data/coverage
+
+      - name: Merge coverage reports
+        working-directory: ./docker/data/coverage
+        run: sudo python -m coverage combine .coverage-*
+
+      - name: Listing all items in data directory (Testing)
+        run: ls -Al ./docker/data/coverage
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v2
+        with:
+          files: ${{ github.workspace }}/docker/data/coverage/.coverage
+          fail_ci_if_error: true
+          verbose: true
