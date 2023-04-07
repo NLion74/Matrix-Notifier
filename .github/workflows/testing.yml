@@ -50,7 +50,7 @@ jobs:
 
       - name: Merge coverage reports
         working-directory: ./docker/data/coverage
-        run: python ../../../tests/combine_coverage.py .
+        run: sudo coverage combine .coverage-*
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v2
